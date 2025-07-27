@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { inter } from './lib/fonts';
 import { Toaster } from '@/app/components/ui/sonner';
+import { ThemeProvider } from './theme-provider';
 
 export const metadata: Metadata = {
   title: 'LMS Platform',
@@ -14,9 +15,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.className}>
+    <html lang="en" className={inter.className} suppressHydrationWarning>
       <body>
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
         <Toaster />
       </body>
     </html>
