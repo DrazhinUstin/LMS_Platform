@@ -10,6 +10,12 @@ export const env = createEnv({
     GOOGLE_CLIENT_ID: z.string().min(1),
     GOOGLE_CLIENT_SECRET: z.string().min(1),
     RESEND_API_KEY: z.string().min(1),
+    AWS_ACCESS_KEY_ID: z.string().min(1),
+    AWS_SECRET_ACCESS_KEY: z.string().min(1),
+    AWS_ENDPOINT_URL_S3: z.url(),
+    AWS_ENDPOINT_URL_IAM: z.url(),
+    AWS_REGION: z.string().min(1),
+    AWS_BUCKET_NAME: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_BASE_URL: z.url(),
