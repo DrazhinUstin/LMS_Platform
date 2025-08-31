@@ -6,11 +6,12 @@ import { type FileRejection, useDropzone } from 'react-dropzone';
 import { Button } from '@/app/components/ui/button';
 import { cn } from '@/app/lib/utils';
 import { toast } from 'sonner';
-import { CircleAlertIcon, LoaderIcon } from 'lucide-react';
+import { CircleAlertIcon, Loader2Icon, LoaderIcon, Trash2Icon } from 'lucide-react';
 
 interface UploadState {
   isUploading: boolean;
   isError: boolean;
+  isDeleting: boolean;
   file: File | null;
   objectURL: string | null;
   s3key?: string;
@@ -19,6 +20,7 @@ interface UploadState {
 const initialUploadState: UploadState = {
   isUploading: false,
   isError: false,
+  isDeleting: false,
   file: null,
   objectURL: null,
 };
@@ -106,6 +108,36 @@ export default function FileUploader() {
     });
   };
 
+  const onDelete = async () => {
+    if (!uploadState.s3key) return;
+
+    setUploadState((prev) => ({ ...prev, isDeleting: true }));
+
+    try {
+      const response = await fetch('/api/s3/delete', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ key: uploadState.s3key }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete a file!');
+      }
+
+      setUploadState(initialUploadState);
+
+      toast('File deleted successfully!');
+    } catch (error) {
+      console.error(error);
+
+      setUploadState((prev) => ({ ...prev, isDeleting: false }));
+
+      toast.error(`Failed to delete a file <${uploadState.file?.name}>. Please try again.`);
+    }
+  };
+
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
     onDrop,
     onDropRejected,
@@ -115,7 +147,7 @@ export default function FileUploader() {
     },
     multiple: false,
     maxSize: 5 * 1024 * 1024,
-    disabled: uploadState.isUploading,
+    disabled: uploadState.isUploading || !!uploadState.s3key,
   });
 
   return (
@@ -127,13 +159,21 @@ export default function FileUploader() {
       )}
     >
       <input {...getInputProps()} />
-      <FilePreview uploadState={uploadState} open={open} />
+      <FilePreview uploadState={uploadState} open={open} onDelete={onDelete} />
     </div>
   );
 }
 
-function FilePreview({ uploadState, open }: { uploadState: UploadState; open: () => void }) {
-  const { isUploading, isError, objectURL, s3key } = uploadState;
+function FilePreview({
+  uploadState,
+  open,
+  onDelete,
+}: {
+  uploadState: UploadState;
+  open: () => void;
+  onDelete: () => void;
+}) {
+  const { isUploading, isError, isDeleting, objectURL, s3key } = uploadState;
 
   useEffect(() => {
     if (!objectURL) return;
@@ -142,24 +182,41 @@ function FilePreview({ uploadState, open }: { uploadState: UploadState; open: ()
 
   if (isUploading) {
     return (
-      <div className="relative grid place-items-center bg-black/25">
-        <img src={objectURL as string} alt="File preview" className="max-h-full max-w-full" />
-        <LoaderIcon className="absolute size-5 animate-spin text-white" />
+      <div className="relative max-h-full max-w-full">
+        <img src={objectURL as string} alt="File preview" className="h-full w-full" />
+        <LoaderIcon className="absolute top-1/2 left-1/2 z-50 size-5 -translate-x-1/2 -translate-y-1/2 animate-spin text-white" />
+        <div className="absolute inset-0 h-full w-full bg-black/20" />
       </div>
     );
   }
 
   if (isError) {
     return (
-      <div className="border-destructive relative grid place-items-center border bg-black/25">
-        <img src={objectURL as string} alt="File preview" className="max-h-full max-w-full" />
-        <CircleAlertIcon className="text-destructive absolute size-5" />
+      <div className="border-destructive relative max-h-full max-w-full border">
+        <img src={objectURL as string} alt="File preview" className="h-full w-full" />
+        <CircleAlertIcon className="text-destructive absolute top-1/2 left-1/2 z-50 size-5 -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute inset-0 h-full w-full bg-black/20" />
       </div>
     );
   }
 
   if (s3key) {
-    return <img src={objectURL as string} alt="File preview" className="max-h-full max-w-full" />;
+    return (
+      <div className="relative max-h-full max-w-full">
+        <img src={objectURL as string} alt="File preview" className="h-full w-full" />
+        <Button
+          type="button"
+          variant="destructive"
+          size="icon"
+          className="absolute top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2"
+          onClick={onDelete}
+          disabled={isDeleting}
+        >
+          {isDeleting ? <Loader2Icon className="animate-spin" /> : <Trash2Icon />}
+        </Button>
+        <div className="absolute inset-0 h-full w-full bg-black/20" />
+      </div>
+    );
   }
 
   return (
