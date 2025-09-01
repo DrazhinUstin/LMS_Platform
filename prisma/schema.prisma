@@ -81,6 +81,7 @@ model Category {
 model Course {
   id               String       @id @default(uuid())
   title            String
+  previewImageKey  String
   briefDescription String
   description      String
   duration         Int

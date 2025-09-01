@@ -24,12 +24,21 @@ import {
 } from '@/app/components/ui/select';
 import TextEditor from '@/app/components/text-editor';
 import ButtonLoading from '@/app/components/button-loading';
+import FileUploader from '@/app/components/file-uploader';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { useTransition } from 'react';
 
 export default function CreateCourseForm({ categories }: { categories: Category[] }) {
+  const [isPending, startTransition] = useTransition();
+
+  const router = useRouter();
+
   const form = useForm({
     resolver: zodResolver(CourseSchema),
     defaultValues: {
       title: '',
+      previewImageKey: '',
       briefDescription: '',
       description: '',
       duration: '',
@@ -41,7 +50,27 @@ export default function CreateCourseForm({ categories }: { categories: Category[
   });
 
   function onSubmit(values: z.output<typeof CourseSchema>) {
-    console.log(values);
+    startTransition(async () => {
+      try {
+        const response = await fetch('/api/courses/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(values),
+        });
+
+        if (!response.ok) {
+          throw new Error();
+        }
+
+        toast('Course created successfully!');
+
+        router.push('/dashboard/courses');
+      } catch {
+        toast.error('Failed to create a course. Please try again.');
+      }
+    });
   }
 
   return (
@@ -200,7 +229,20 @@ export default function CreateCourseForm({ categories }: { categories: Category[
             </FormItem>
           )}
         />
-        <ButtonLoading type="submit" className="w-full">
+        <FormField
+          control={form.control}
+          name="previewImageKey"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Preview image</FormLabel>
+              <FormControl>
+                <FileUploader onFileUploaded={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <ButtonLoading type="submit" className="w-full" loading={isPending}>
           Submit
         </ButtonLoading>
       </form>

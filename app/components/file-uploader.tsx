@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { type FileRejection, useDropzone } from 'react-dropzone';
 import { Button } from '@/app/components/ui/button';
 import { cn } from '@/app/lib/utils';
@@ -25,10 +25,14 @@ const initialUploadState: UploadState = {
   objectURL: null,
 };
 
-export default function FileUploader() {
+export default function FileUploader({
+  onFileUploaded,
+}: {
+  onFileUploaded: (s3key: string) => void;
+}) {
   const [uploadState, setUploadState] = useState(initialUploadState);
 
-  const onDrop = useCallback(async (acceptedFiles: File[]) => {
+  const onDrop = async (acceptedFiles: File[]) => {
     if (!acceptedFiles.length) {
       return;
     }
@@ -71,6 +75,8 @@ export default function FileUploader() {
 
       setUploadState((prev) => ({ ...prev, isUploading: false, s3key: key }));
 
+      onFileUploaded(key);
+
       toast('File uploaded successfully!');
     } catch (error) {
       console.error(error);
@@ -79,7 +85,7 @@ export default function FileUploader() {
 
       toast.error(`Failed to upload a file <${file.name}>. Please try again.`);
     }
-  }, []);
+  };
 
   const onDropRejected = (fileRejections: FileRejection[]) => {
     fileRejections.forEach(({ file, errors }) => {

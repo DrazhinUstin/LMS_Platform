@@ -6,6 +6,7 @@ const requiredString = z.string().refine((str) => !!str.trim().length, { error: 
 export const CourseSchema = z.object({
   categoryName: requiredString,
   title: requiredString.max(100, { error: 'The title must not be longer than 100 characters!' }),
+  previewImageKey: requiredString,
   briefDescription: requiredString.max(200, {
     error: 'The brief description must not be longer than 200 characters!',
   }),
