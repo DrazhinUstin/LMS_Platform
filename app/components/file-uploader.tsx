@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import { type FileRejection, useDropzone } from 'react-dropzone';
 import { Button } from '@/app/components/ui/button';
-import { cn } from '@/app/lib/utils';
+import { cn, getS3ObjectUrl } from '@/app/lib/utils';
 import { toast } from 'sonner';
 import { CircleAlertIcon, Loader2Icon, LoaderIcon, Trash2Icon } from 'lucide-react';
 
@@ -26,11 +26,16 @@ const initialUploadState: UploadState = {
 };
 
 export default function FileUploader({
+  s3key,
   onFileUploaded,
 }: {
+  s3key?: string;
   onFileUploaded: (s3key: string) => void;
 }) {
-  const [uploadState, setUploadState] = useState(initialUploadState);
+  const [uploadState, setUploadState] = useState({
+    ...initialUploadState,
+    ...(s3key ? { s3key, objectURL: getS3ObjectUrl(s3key) } : {}),
+  });
 
   const onDrop = async (acceptedFiles: File[]) => {
     if (!acceptedFiles.length) {
@@ -134,6 +139,8 @@ export default function FileUploader({
 
       setUploadState(initialUploadState);
 
+      onFileUploaded('');
+
       toast('File deleted successfully!');
     } catch (error) {
       console.error(error);
@@ -229,7 +236,7 @@ function FilePreview({
     <>
       <p>Drag &apos;n&apos; drop file here, or click the button below</p>
       <Button type="button" onClick={open}>
-        Select files
+        Select file
       </Button>
     </>
   );

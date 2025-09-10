@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
         search: '',
       },
       new URL('https://avatars.githubusercontent.com/u/**/*?v=4'),
+      {
+        protocol: 'https',
+        hostname: 'lms-platform-by-ustin.t3.storage.dev',
+        port: '',
+      },
     ],
   },
 };
