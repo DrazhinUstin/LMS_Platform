@@ -1,7 +1,7 @@
 'use client';
 
 import { Prisma } from '@/generated/prisma';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   DndContext,
   KeyboardSensor,
@@ -27,14 +27,17 @@ import {
   CollapsibleTrigger,
 } from '@/app/components/ui/collapsible';
 import { ChevronDownIcon, GripVerticalIcon } from 'lucide-react';
+import { toast } from 'sonner';
+import { reorderChapters, reorderLessons } from './actions';
 
 interface Props {
+  courseId: string;
   data: Prisma.ChapterGetPayload<{ include: { lessons: true } }>[];
 }
 
 type ChapterType = Props['data'][0] & { isOpen: boolean };
 
-export default function EditCourseStructure({ data }: Props) {
+export default function EditCourseStructure({ courseId, data }: Props) {
   const [chapters, setChapters] = useState<ChapterType[]>(
     data.map((item) => ({ ...item, isOpen: true }))
   );
@@ -46,6 +49,15 @@ export default function EditCourseStructure({ data }: Props) {
     })
   );
 
+  useEffect(() => {
+    setChapters((prev) =>
+      data.map((item) => ({
+        ...item,
+        isOpen: prev.find(({ id }) => id === item.id)?.isOpen ?? true,
+      }))
+    );
+  }, [data]);
+
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
 
@@ -55,6 +67,8 @@ export default function EditCourseStructure({ data }: Props) {
     const overData = over.data.current as SortableItemProps['data'] | undefined;
 
     if (!activeData || !overData) return;
+
+    const backup = [...chapters];
 
     if (activeData.type === 'chapter') {
       const oldIndex = chapters.findIndex((chapter) => chapter.id === active.id);
@@ -70,6 +84,24 @@ export default function EditCourseStructure({ data }: Props) {
       }));
 
       setChapters(reorderedChapters);
+
+      toast.promise(
+        () =>
+          reorderChapters(
+            courseId,
+            reorderedChapters.map(({ id, position }) => ({ id, position }))
+          ),
+        {
+          loading: 'Reordering chapters...',
+          success: () => {
+            return 'Chapters were reordered successfully!';
+          },
+          error: () => {
+            setChapters(backup);
+            return 'Failed to reorder chapters! Please try again!';
+          },
+        }
+      );
     }
 
     if (
@@ -95,6 +127,24 @@ export default function EditCourseStructure({ data }: Props) {
       );
 
       setChapters(newChapters);
+
+      toast.promise(
+        () =>
+          reorderLessons(
+            courseId,
+            reorderedLessons.map(({ id, position }) => ({ id, position }))
+          ),
+        {
+          loading: 'Reordering lessons...',
+          success: () => {
+            return 'Lessons were reordered successfully!';
+          },
+          error: () => {
+            setChapters(backup);
+            return 'Failed to reorder lessons! Please try again!';
+          },
+        }
+      );
     }
   }
 

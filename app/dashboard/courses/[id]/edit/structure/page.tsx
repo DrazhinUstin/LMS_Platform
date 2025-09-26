@@ -17,7 +17,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   return (
     <main className="space-y-8">
       <h2 className="text-center text-2xl font-bold">Edit course structure</h2>
-      <EditCourseStructure data={course.chapters} />
+      <EditCourseStructure courseId={course.id} data={course.chapters} />
     </main>
   );
 }
