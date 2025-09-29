@@ -8,7 +8,12 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 
   const course = await prisma.course.findUnique({
     where: { id },
-    include: { chapters: { include: { lessons: true } } },
+    include: {
+      chapters: {
+        include: { lessons: { orderBy: { position: 'asc' } } },
+        orderBy: { position: 'asc' },
+      },
+    },
   });
 
   if (!course) {

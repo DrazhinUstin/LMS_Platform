@@ -45,6 +45,36 @@ export async function createChapter(courseId: string, data: z.infer<typeof Chapt
   }
 }
 
+export async function editChapter(chapterId: string, data: z.infer<typeof ChapterSchema>) {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session) {
+      throw new Error('Unauthorized!');
+    }
+
+    const validation = ChapterSchema.safeParse(data);
+
+    if (!validation.success) {
+      throw new Error('Invalid data!');
+    }
+
+    const updatedChapter = await prisma.chapter.update({
+      where: { id: chapterId },
+      data: validation.data,
+    });
+
+    revalidatePath(`/dashboard/courses/${updatedChapter.courseId}/edit/structure`);
+
+    return updatedChapter;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 type ChapterPosition = Prisma.ChapterGetPayload<{ select: { id: true; position: true } }>;
 
 export async function reorderChapters(courseId: string, data: ChapterPosition[]) {

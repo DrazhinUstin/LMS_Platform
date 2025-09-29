@@ -29,6 +29,7 @@ import {
 import { ChevronDownIcon, GripVerticalIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { reorderChapters, reorderLessons } from './actions';
+import EditChapterDialog from './edit-chapter-dialog';
 
 interface Props {
   courseId: string;
@@ -165,16 +166,21 @@ export default function EditCourseStructure({ courseId, data }: Props) {
                 }
                 className="rounded-lg border shadow-sm"
               >
-                <div className="flex items-center gap-x-2 p-2">
-                  <Button variant="ghost" size="icon" {...chapterListeners}>
-                    <GripVerticalIcon />
-                  </Button>
-                  <CollapsibleTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <ChevronDownIcon />
+                <div className="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 p-2">
+                  <div>
+                    <Button variant="ghost" size="icon" {...chapterListeners}>
+                      <GripVerticalIcon />
                     </Button>
-                  </CollapsibleTrigger>
+                    <CollapsibleTrigger asChild>
+                      <Button variant="ghost" size="icon">
+                        <ChevronDownIcon />
+                      </Button>
+                    </CollapsibleTrigger>
+                  </div>
                   <h4>{chapter.title}</h4>
+                  <div>
+                    <EditChapterDialog chapter={{ id: chapter.id, title: chapter.title }} />
+                  </div>
                 </div>
                 <CollapsibleContent className="border-t p-2">
                   <SortableContext items={chapter.lessons} strategy={verticalListSortingStrategy}>
