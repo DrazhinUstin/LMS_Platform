@@ -5,6 +5,45 @@ import { Prisma } from '@/generated/prisma';
 import { auth } from '@/app/lib/auth';
 import { headers } from 'next/headers';
 import { revalidatePath } from 'next/cache';
+import z from 'zod';
+import { ChapterSchema } from '@/app/lib/schemas';
+
+export async function createChapter(courseId: string, data: z.infer<typeof ChapterSchema>) {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session) {
+      throw new Error('Unauthorized!');
+    }
+
+    const validation = ChapterSchema.safeParse(data);
+
+    if (!validation.success) {
+      throw new Error('Invalid data!');
+    }
+
+    const { title } = validation.data;
+
+    const courseLastChapter = await prisma.chapter.findFirst({
+      where: { courseId },
+      orderBy: { position: 'desc' },
+      select: { position: true },
+    });
+
+    const createdChapter = await prisma.chapter.create({
+      data: { courseId, title, position: (courseLastChapter?.position ?? 0) + 1 },
+    });
+
+    revalidatePath(`/dashboard/courses/${courseId}/edit/structure`);
+
+    return createdChapter;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 type ChapterPosition = Prisma.ChapterGetPayload<{ select: { id: true; position: true } }>;
 

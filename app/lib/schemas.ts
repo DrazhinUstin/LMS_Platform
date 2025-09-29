@@ -22,3 +22,7 @@ export const CourseSchema = z.object({
   level: z.enum(Object.values(CourseLevel)),
   status: z.enum(Object.values(CourseStatus)),
 });
+
+export const ChapterSchema = z.object({
+  title: requiredString.max(100, { error: 'The title must not be longer than 100 characters!' }),
+});
