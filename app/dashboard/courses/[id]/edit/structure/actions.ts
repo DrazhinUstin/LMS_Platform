@@ -75,6 +75,29 @@ export async function editChapter(chapterId: string, data: z.infer<typeof Chapte
   }
 }
 
+export async function deleteChapter(chapterId: string) {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session) {
+      throw new Error('Unauthorized!');
+    }
+
+    const deletedChapter = await prisma.chapter.delete({
+      where: { id: chapterId },
+    });
+
+    revalidatePath(`/dashboard/courses/${deletedChapter.courseId}/edit/structure`);
+
+    return deletedChapter;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 type ChapterPosition = Prisma.ChapterGetPayload<{ select: { id: true; position: true } }>;
 
 export async function reorderChapters(courseId: string, data: ChapterPosition[]) {
