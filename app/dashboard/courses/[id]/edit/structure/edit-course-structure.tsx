@@ -32,6 +32,7 @@ import { reorderChapters, reorderLessons } from './actions';
 import EditChapterDialog from './edit-chapter-dialog';
 import DeleteChapterDialog from './delete-chapter-dialog';
 import CreateLessonDialog from './create-lesson-dialog';
+import DeleteLessonDialog from './delete-lesson-dialog';
 
 interface Props {
   courseId: string;
@@ -194,11 +195,14 @@ export default function EditCourseStructure({ courseId, data }: Props) {
                         data={{ type: 'lesson', chapterId: lesson.chapterId }}
                       >
                         {(lessonListeners) => (
-                          <article className="flex items-center gap-x-2">
+                          <article className="grid grid-cols-[auto_1fr_auto] items-center gap-x-2">
                             <Button variant="ghost" size="icon" {...lessonListeners}>
                               <GripVerticalIcon />
                             </Button>
                             <h4>{lesson.title}</h4>
+                            <div>
+                              <DeleteLessonDialog lessonId={lesson.id} />
+                            </div>
                           </article>
                         )}
                       </SortableItem>
