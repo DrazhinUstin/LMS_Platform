@@ -31,6 +31,7 @@ import { toast } from 'sonner';
 import { reorderChapters, reorderLessons } from './actions';
 import EditChapterDialog from './edit-chapter-dialog';
 import DeleteChapterDialog from './delete-chapter-dialog';
+import CreateLessonDialog from './create-lesson-dialog';
 
 interface Props {
   courseId: string;
@@ -203,6 +204,7 @@ export default function EditCourseStructure({ courseId, data }: Props) {
                       </SortableItem>
                     ))}
                   </SortableContext>
+                  <CreateLessonDialog chapterId={chapter.id} />
                 </CollapsibleContent>
               </Collapsible>
             )}

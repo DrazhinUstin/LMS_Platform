@@ -6,7 +6,7 @@ import { auth } from '@/app/lib/auth';
 import { headers } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import z from 'zod';
-import { ChapterSchema } from '@/app/lib/schemas';
+import { ChapterSchema, LessonSchema } from '@/app/lib/schemas';
 
 export async function createChapter(courseId: string, data: z.infer<typeof ChapterSchema>) {
   try {
@@ -92,6 +92,42 @@ export async function deleteChapter(chapterId: string) {
     revalidatePath(`/dashboard/courses/${deletedChapter.courseId}/edit/structure`);
 
     return deletedChapter;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function createLesson(chapterId: string, data: z.infer<typeof LessonSchema>) {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session) {
+      throw new Error('Unauthorized!');
+    }
+
+    const validation = LessonSchema.safeParse(data);
+
+    if (!validation.success) {
+      throw new Error('Invalid data!');
+    }
+
+    const chapterLastLesson = await prisma.lesson.findFirst({
+      where: { chapterId },
+      orderBy: { position: 'desc' },
+      select: { position: true },
+    });
+
+    const { chapter, ...createdLesson } = await prisma.lesson.create({
+      data: { chapterId, ...validation.data, position: (chapterLastLesson?.position ?? 0) + 1 },
+      include: { chapter: { select: { courseId: true } } },
+    });
+
+    revalidatePath(`/dashboard/courses/${chapter.courseId}/edit/structure`);
+
+    return createdLesson;
   } catch (error) {
     console.error(error);
     throw error;
