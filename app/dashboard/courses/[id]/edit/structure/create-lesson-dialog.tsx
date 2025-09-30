@@ -58,8 +58,16 @@ export default function CreateLessonDialog({ chapterId }: { chapterId: string })
     });
   }
 
+  function handleOpenChange(open: boolean) {
+    if (isPending) return;
+
+    setIsDialogOpen(open);
+
+    if (!open) form.reset();
+  }
+
   return (
-    <Dialog open={isDialogOpen} onOpenChange={(open) => !isPending && setIsDialogOpen(open)}>
+    <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button variant="secondary" className="w-full">
           <PlusIcon />

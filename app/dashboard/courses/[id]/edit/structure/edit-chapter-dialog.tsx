@@ -59,8 +59,16 @@ export default function EditChapterDialog({ chapter }: { chapter: ChapterData })
     });
   }
 
+  function handleOpenChange(open: boolean) {
+    if (isPending) return;
+
+    setIsDialogOpen(open);
+
+    if (!open) form.reset();
+  }
+
   return (
-    <Dialog open={isDialogOpen} onOpenChange={(open) => !isPending && setIsDialogOpen(open)}>
+    <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon" title="Edit chapter">
           <SquarePenIcon />
