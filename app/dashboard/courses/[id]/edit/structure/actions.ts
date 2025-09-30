@@ -75,7 +75,13 @@ export async function editChapter(chapterId: string, data: z.infer<typeof Chapte
   }
 }
 
-export async function deleteChapter(chapterId: string) {
+export async function deleteChapter({
+  courseId,
+  chapterId,
+}: {
+  courseId: string;
+  chapterId: string;
+}) {
   try {
     const session = await auth.api.getSession({
       headers: await headers(),
@@ -85,11 +91,29 @@ export async function deleteChapter(chapterId: string) {
       throw new Error('Unauthorized!');
     }
 
-    const deletedChapter = await prisma.chapter.delete({
-      where: { id: chapterId },
+    const course = await prisma.course.findUnique({
+      where: { id: courseId },
+      select: { chapters: { select: { id: true }, orderBy: { position: 'asc' } } },
     });
 
-    revalidatePath(`/dashboard/courses/${deletedChapter.courseId}/edit/structure`);
+    if (!course) {
+      throw new Error('Course does not exist!');
+    }
+
+    const chaptersToReorder = course.chapters
+      .filter(({ id }) => id !== chapterId)
+      .map(({ id }, index) =>
+        prisma.chapter.update({ where: { id }, data: { position: index + 1 } })
+      );
+
+    const [deletedChapter] = await prisma.$transaction([
+      prisma.chapter.delete({
+        where: { id: chapterId },
+      }),
+      ...chaptersToReorder,
+    ]);
+
+    revalidatePath(`/dashboard/courses/${courseId}/edit/structure`);
 
     return deletedChapter;
   } catch (error) {
@@ -134,7 +158,13 @@ export async function createLesson(chapterId: string, data: z.infer<typeof Lesso
   }
 }
 
-export async function deleteLesson(lessonId: string) {
+export async function deleteLesson({
+  chapterId,
+  lessonId,
+}: {
+  chapterId: string;
+  lessonId: string;
+}) {
   try {
     const session = await auth.api.getSession({
       headers: await headers(),
@@ -144,10 +174,27 @@ export async function deleteLesson(lessonId: string) {
       throw new Error('Unauthorized!');
     }
 
-    const { chapter, ...deletedLesson } = await prisma.lesson.delete({
-      where: { id: lessonId },
-      include: { chapter: { select: { courseId: true } } },
+    const chapter = await prisma.chapter.findUnique({
+      where: { id: chapterId },
+      select: { courseId: true, lessons: { select: { id: true }, orderBy: { position: 'asc' } } },
     });
+
+    if (!chapter) {
+      throw new Error('Chapter does not exist!');
+    }
+
+    const lessonsToReorder = chapter.lessons
+      .filter(({ id }) => id !== lessonId)
+      .map(({ id }, index) =>
+        prisma.lesson.update({ where: { id }, data: { position: index + 1 } })
+      );
+
+    const [deletedLesson] = await prisma.$transaction([
+      prisma.lesson.delete({
+        where: { id: lessonId },
+      }),
+      ...lessonsToReorder,
+    ]);
 
     revalidatePath(`/dashboard/courses/${chapter.courseId}/edit/structure`);
 

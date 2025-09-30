@@ -183,7 +183,7 @@ export default function EditCourseStructure({ courseId, data }: Props) {
                   <h4>{chapter.title}</h4>
                   <div>
                     <EditChapterDialog chapter={{ id: chapter.id, title: chapter.title }} />
-                    <DeleteChapterDialog chapterId={chapter.id} />
+                    <DeleteChapterDialog courseId={courseId} chapterId={chapter.id} />
                   </div>
                 </div>
                 <CollapsibleContent className="border-t p-2">
@@ -201,7 +201,7 @@ export default function EditCourseStructure({ courseId, data }: Props) {
                             </Button>
                             <h4>{lesson.title}</h4>
                             <div>
-                              <DeleteLessonDialog lessonId={lesson.id} />
+                              <DeleteLessonDialog chapterId={chapter.id} lessonId={lesson.id} />
                             </div>
                           </article>
                         )}

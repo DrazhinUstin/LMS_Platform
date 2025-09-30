@@ -17,7 +17,13 @@ import { toast } from 'sonner';
 import { deleteLesson } from './actions';
 import { Trash2Icon } from 'lucide-react';
 
-export default function DeleteLessonDialog({ lessonId }: { lessonId: string }) {
+export default function DeleteLessonDialog({
+  chapterId,
+  lessonId,
+}: {
+  chapterId: string;
+  lessonId: string;
+}) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [isPending, startTransition] = useTransition();
@@ -25,7 +31,7 @@ export default function DeleteLessonDialog({ lessonId }: { lessonId: string }) {
   function handleDelete() {
     startTransition(async () => {
       try {
-        await deleteLesson(lessonId);
+        await deleteLesson({ chapterId, lessonId });
 
         setIsDialogOpen(false);
 
