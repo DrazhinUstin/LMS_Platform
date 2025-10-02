@@ -242,7 +242,11 @@ export default function EditCourseForm({
             <FormItem>
               <FormLabel>Preview image</FormLabel>
               <FormControl>
-                <FileUploader s3key={field.value} onFileUploaded={field.onChange} />
+                <FileUploader
+                  s3key={field.value}
+                  onFileUploaded={field.onChange}
+                  acceptedFileType="image"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

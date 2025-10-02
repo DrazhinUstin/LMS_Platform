@@ -26,13 +26,14 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/app/components/ui/collapsible';
-import { ChevronDownIcon, GripVerticalIcon } from 'lucide-react';
+import { ChevronDownIcon, GripVerticalIcon, SquarePenIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { reorderChapters, reorderLessons } from './actions';
 import EditChapterDialog from './edit-chapter-dialog';
 import DeleteChapterDialog from './delete-chapter-dialog';
 import CreateLessonDialog from './create-lesson-dialog';
 import DeleteLessonDialog from './delete-lesson-dialog';
+import Link from 'next/link';
 
 interface Props {
   courseId: string;
@@ -201,6 +202,14 @@ export default function EditCourseStructure({ courseId, data }: Props) {
                             </Button>
                             <h4>{lesson.title}</h4>
                             <div>
+                              <Button variant="ghost" size="icon" asChild>
+                                <Link
+                                  href={`/dashboard/courses/${courseId}/edit/structure/${chapter.id}/${lesson.id}`}
+                                  title="Edit lesson"
+                                >
+                                  <SquarePenIcon />
+                                </Link>
+                              </Button>
                               <DeleteLessonDialog chapterId={chapter.id} lessonId={lesson.id} />
                             </div>
                           </article>

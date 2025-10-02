@@ -236,7 +236,7 @@ export default function CreateCourseForm({ categories }: { categories: Category[
             <FormItem>
               <FormLabel>Preview image</FormLabel>
               <FormControl>
-                <FileUploader onFileUploaded={field.onChange} />
+                <FileUploader onFileUploaded={field.onChange} acceptedFileType="image" />
               </FormControl>
               <FormMessage />
             </FormItem>

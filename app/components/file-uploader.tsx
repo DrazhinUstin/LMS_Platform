@@ -8,6 +8,8 @@ import { cn, getS3ObjectUrl } from '@/app/lib/utils';
 import { toast } from 'sonner';
 import { CircleAlertIcon, Loader2Icon, LoaderIcon, Trash2Icon } from 'lucide-react';
 
+type AcceptedFileType = 'image' | 'video';
+
 interface UploadState {
   isUploading: boolean;
   isError: boolean;
@@ -28,9 +30,11 @@ const initialUploadState: UploadState = {
 export default function FileUploader({
   s3key,
   onFileUploaded,
+  acceptedFileType,
 }: {
   s3key?: string;
   onFileUploaded: (s3key: string) => void;
+  acceptedFileType: AcceptedFileType;
 }) {
   const [uploadState, setUploadState] = useState({
     ...initialUploadState,
@@ -98,14 +102,14 @@ export default function FileUploader({
 
       if (errorCode === 'file-invalid-type') {
         toast.error(
-          `Unable to upload a file <${file.name}>. Invalid type. Only images are allowed.`
+          `Unable to upload a file <${file.name}>. Invalid type. Only ${acceptedFileType}s are allowed.`
         );
         return;
       }
 
       if (errorCode === 'file-too-large') {
         toast.error(
-          `Unable to upload a file <${file.name}>. File is too big. Max file size is 5MB.`
+          `Unable to upload a file <${file.name}>. File is too big. Max file size is 5MB for images and 500MB for videos.`
         );
         return;
       }
@@ -156,10 +160,10 @@ export default function FileUploader({
     onDropRejected,
     noClick: true,
     accept: {
-      'image/*': [],
+      [acceptedFileType === 'image' ? 'image/*' : 'video/*']: [],
     },
     multiple: false,
-    maxSize: 5 * 1024 * 1024,
+    maxSize: acceptedFileType === 'image' ? 5 * 1024 * 1024 : 500 * 1024 * 1024,
     disabled: uploadState.isUploading || !!uploadState.s3key,
   });
 
@@ -172,16 +176,23 @@ export default function FileUploader({
       )}
     >
       <input {...getInputProps()} />
-      <FilePreview uploadState={uploadState} open={open} onDelete={onDelete} />
+      <FilePreview
+        acceptedFileType={acceptedFileType}
+        uploadState={uploadState}
+        open={open}
+        onDelete={onDelete}
+      />
     </div>
   );
 }
 
 function FilePreview({
+  acceptedFileType,
   uploadState,
   open,
   onDelete,
 }: {
+  acceptedFileType: AcceptedFileType;
   uploadState: UploadState;
   open: () => void;
   onDelete: () => void;
@@ -189,14 +200,21 @@ function FilePreview({
   const { isUploading, isError, isDeleting, objectURL, s3key } = uploadState;
 
   useEffect(() => {
-    if (!objectURL) return;
+    if (!objectURL || objectURL.startsWith('http')) return;
     return () => URL.revokeObjectURL(objectURL);
   }, [objectURL]);
+
+  const displayFile = (url: string) =>
+    acceptedFileType === 'image' ? (
+      <img src={url} alt="File preview" className="h-full w-full" />
+    ) : (
+      <video src={url} className="h-full w-full" controls />
+    );
 
   if (isUploading) {
     return (
       <div className="relative max-h-full max-w-full">
-        <img src={objectURL as string} alt="File preview" className="h-full w-full" />
+        {displayFile(objectURL as string)}
         <LoaderIcon className="absolute top-1/2 left-1/2 z-50 size-5 -translate-x-1/2 -translate-y-1/2 animate-spin text-white" />
         <div className="absolute inset-0 h-full w-full bg-black/20" />
       </div>
@@ -206,7 +224,7 @@ function FilePreview({
   if (isError) {
     return (
       <div className="border-destructive relative max-h-full max-w-full border">
-        <img src={objectURL as string} alt="File preview" className="h-full w-full" />
+        {displayFile(objectURL as string)}
         <CircleAlertIcon className="text-destructive absolute top-1/2 left-1/2 z-50 size-5 -translate-x-1/2 -translate-y-1/2" />
         <div className="absolute inset-0 h-full w-full bg-black/20" />
       </div>
@@ -216,7 +234,7 @@ function FilePreview({
   if (s3key) {
     return (
       <div className="relative max-h-full max-w-full">
-        <img src={objectURL as string} alt="File preview" className="h-full w-full" />
+        {displayFile(objectURL as string)}
         <Button
           type="button"
           variant="destructive"
@@ -227,7 +245,9 @@ function FilePreview({
         >
           {isDeleting ? <Loader2Icon className="animate-spin" /> : <Trash2Icon />}
         </Button>
-        <div className="absolute inset-0 h-full w-full bg-black/20" />
+        {acceptedFileType !== 'video' && (
+          <div className="absolute inset-0 h-full w-full bg-black/20" />
+        )}
       </div>
     );
   }
