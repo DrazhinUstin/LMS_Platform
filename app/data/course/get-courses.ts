@@ -53,8 +53,12 @@ export async function getCourses({
       ...queryWhereInput,
       ...(categoryName && { categoryName }),
       ...(level && { level }),
-      ...(minPrice && { price: { gte: +minPrice * 100 } }),
-      ...(maxPrice && { price: { lte: +maxPrice * 100 } }),
+      ...((minPrice || maxPrice) && {
+        price: {
+          ...(minPrice && { gte: +minPrice * 100 }),
+          ...(maxPrice && { lte: +maxPrice * 100 }),
+        },
+      }),
       ...(authorId && { authorId }),
     };
 

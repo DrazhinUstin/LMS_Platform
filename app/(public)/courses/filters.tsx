@@ -112,14 +112,18 @@ export default function Filters({ categories }: { categories: Category[] }) {
           <Input
             type="number"
             id="price"
-            placeholder="Minimum price"
+            placeholder="From"
+            step="0.01"
+            min="0"
             value={filters.minPrice}
             onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })}
           />
           <span>-</span>
           <Input
             type="number"
-            placeholder="Maximum price"
+            placeholder="To"
+            step="0.01"
+            min="0"
             value={filters.maxPrice}
             onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
           />
