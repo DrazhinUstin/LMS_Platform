@@ -4,6 +4,8 @@ import { courseSortingOrderData, coursesPerPage, getCourses } from '@/app/data/c
 import { Suspense } from 'react';
 import CourseCard, { CourseCardSkeleton } from './course-card';
 import { getCategories } from '@/app/data/category/get-categories';
+import getCoursesCount from '@/app/data/course/get-courses-count';
+import PaginationBar from '@/app/components/pagination-bar';
 
 interface Props {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -41,7 +43,13 @@ export default async function Page({ searchParams }: Props) {
 }
 
 async function CoursesGrid({ filters, orderBy, page }: Parameters<typeof getCourses>[0]) {
-  const courses = await getCourses({ filters, orderBy, page });
+  const [courses, count] = await Promise.all([
+    getCourses({ filters, orderBy, page }),
+    getCoursesCount({ filters }),
+  ]);
+
+  const totalPages = Math.ceil(count / coursesPerPage);
+
   return (
     <div>
       <div className="grid grid-cols-[repeat(auto-fill,_minmax(280px,_1fr))] items-start gap-8">
@@ -52,6 +60,7 @@ async function CoursesGrid({ filters, orderBy, page }: Parameters<typeof getCour
       {courses.length === 0 && (
         <p className="text-center">Unfortunately, no courses matching your query were found 😞</p>
       )}
+      <PaginationBar currentPage={page as number} totalPages={totalPages} className="mt-8" />
     </div>
   );
 }

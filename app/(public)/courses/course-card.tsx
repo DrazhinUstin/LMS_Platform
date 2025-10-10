@@ -14,7 +14,7 @@ export default function CourseCard({ course }: { course: Course }) {
         alt="course preview image"
         width={600}
         height={400}
-        className="aspect-video w-full rounded-t-lg"
+        className="aspect-video w-full rounded-t-lg object-cover"
       />
       <div className="space-y-2 rounded-b-lg border border-t-0 p-2">
         <h4 className="line-clamp-1 font-semibold">
