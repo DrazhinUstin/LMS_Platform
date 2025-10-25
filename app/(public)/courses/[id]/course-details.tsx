@@ -3,7 +3,6 @@ import { formatPrice, getS3ObjectUrl } from '@/app/lib/utils';
 import {
   ChevronsUpDownIcon,
   ClockIcon,
-  CreditCardIcon,
   GraduationCapIcon,
   InfinityIcon,
   LayoutGridIcon,
@@ -17,6 +16,7 @@ import {
   CollapsibleTrigger,
 } from '@/app/components/ui/collapsible';
 import { Button } from '@/app/components/ui/button';
+import EnrollButton from './enroll-button';
 
 export default function CourseDetails({ course }: { course: CourseTypeWithInclude }) {
   return (
@@ -141,10 +141,7 @@ export default function CourseDetails({ course }: { course: CourseTypeWithInclud
               <p>Available on mobile / desktop devices</p>
             </li>
           </ul>
-          <Button className="w-full">
-            <CreditCardIcon />
-            Buy now
-          </Button>
+          <EnrollButton courseId={course.id} />
         </div>
       </div>
     </div>

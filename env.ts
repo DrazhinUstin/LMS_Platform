@@ -16,6 +16,7 @@ export const env = createEnv({
     AWS_ENDPOINT_URL_IAM: z.url(),
     AWS_REGION: z.string().min(1),
     AWS_BUCKET_NAME: z.string().min(1),
+    STRIPE_SECRET_KEY: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_BASE_URL: z.url(),
