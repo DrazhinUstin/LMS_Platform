@@ -23,19 +23,19 @@ export async function enrollInCourse(courseId: string) {
 
     const course = await prisma.course.findUnique({
       where: { id: courseId },
-      select: { price: true },
+      select: { price: true, stripePriceId: true },
     });
 
     if (!course) {
       throw new Error('Course does not exist!');
     }
 
-    const userStripeId = await prisma.user.findUnique({
+    const userWithStripeCustomerId = await prisma.user.findUnique({
       where: { id: user.id },
-      select: { stripeId: true },
+      select: { stripeCustomerId: true },
     });
 
-    if (!userStripeId?.stripeId) {
+    if (!userWithStripeCustomerId?.stripeCustomerId) {
       const createdCustomer = await stripe.customers.create({
         name: user.name,
         email: user.email,
@@ -44,7 +44,7 @@ export async function enrollInCourse(courseId: string) {
 
       await prisma.user.update({
         where: { id: user.id },
-        data: { stripeId: createdCustomer.id },
+        data: { stripeCustomerId: createdCustomer.id },
       });
     }
 
@@ -69,7 +69,7 @@ export async function enrollInCourse(courseId: string) {
       }
 
       const checkout = await stripe.checkout.sessions.create({
-        line_items: [{ price: 'price_1SLuoSCsqxMV5IBVQ8pIUwGl', quantity: 1 }],
+        line_items: [{ price: course.stripePriceId, quantity: 1 }],
         mode: 'payment',
         success_url: `${env.BETTER_AUTH_URL}/payments/success`,
         cancel_url: `${env.BETTER_AUTH_URL}/payments/cancel`,

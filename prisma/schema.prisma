@@ -10,18 +10,18 @@ datasource db {
 }
 
 model User {
-  id            String       @id
-  stripeId      String?
-  name          String
-  email         String
-  emailVerified Boolean
-  image         String?
-  createdAt     DateTime
-  updatedAt     DateTime
-  sessions      Session[]
-  accounts      Account[]
-  courses       Course[]
-  enrollments   Enrollment[]
+  id               String       @id
+  stripeCustomerId String?      @unique
+  name             String
+  email            String
+  emailVerified    Boolean
+  image            String?
+  createdAt        DateTime
+  updatedAt        DateTime
+  sessions         Session[]
+  accounts         Account[]
+  courses          Course[]
+  enrollments      Enrollment[]
 
   @@unique([email])
   @@map("user")
@@ -82,12 +82,14 @@ model Category {
 
 model Course {
   id               String       @id @default(uuid())
+  stripeProductId  String       @unique
   title            String
   previewImageKey  String
   briefDescription String
   description      String
   duration         Int
   price            Int
+  stripePriceId    String       @unique
   level            CourseLevel  @default(BEGINNER)
   status           CourseStatus @default(DRAFT)
   category         Category     @relation(fields: [categoryName], references: [name], onDelete: Cascade)

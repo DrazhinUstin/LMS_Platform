@@ -1,5 +1,6 @@
 import { auth } from '@/app/lib/auth';
 import { prisma } from '@/app/lib/prisma';
+import { stripe } from '@/app/lib/stripe';
 import { revalidatePath } from 'next/cache';
 import { headers } from 'next/headers';
 
@@ -17,12 +18,27 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
 
     const { id } = await params;
 
-    const course = await prisma.course.findUnique({ where: { id }, select: { id: true } });
+    const course = await prisma.course.findUnique({
+      where: { id },
+      select: { id: true, stripeProductId: true, stripePriceId: true },
+    });
 
     if (!course) {
       return new Response('Record not found!', {
         status: 404,
       });
+    }
+
+    await stripe.products.update(course.stripeProductId, { default_price: '' });
+
+    await stripe.prices.update(course.stripePriceId, {
+      active: false,
+    });
+
+    try {
+      await stripe.products.del(course.stripeProductId);
+    } catch {
+      await stripe.products.update(course.stripeProductId, { active: false });
     }
 
     const deletedCourse = await prisma.course.delete({ where: { id: course.id } });

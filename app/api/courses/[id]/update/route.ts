@@ -1,7 +1,9 @@
 import { auth } from '@/app/lib/auth';
 import { prisma } from '@/app/lib/prisma';
 import { CourseSchema } from '@/app/lib/schemas';
+import { stripe } from '@/app/lib/stripe';
 import { headers } from 'next/headers';
+import Stripe from 'stripe';
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -17,7 +19,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
 
     const { id } = await params;
 
-    const course = await prisma.course.findUnique({ where: { id }, select: { id: true } });
+    const course = await prisma.course.findUnique({
+      where: { id },
+      select: { id: true, stripeProductId: true, price: true, stripePriceId: true },
+    });
 
     if (!course) {
       return new Response('Record not found!', {
@@ -35,9 +40,29 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       });
     }
 
+    let newStripePrice: Stripe.Price | null = null;
+
+    if (course.price !== validation.data.price) {
+      newStripePrice = await stripe.prices.create({
+        product: course.stripeProductId,
+        currency: 'usd',
+        unit_amount: validation.data.price,
+      });
+    }
+
+    await stripe.products.update(course.stripeProductId, {
+      name: validation.data.title,
+      description: validation.data.briefDescription,
+      ...(newStripePrice && { default_price: newStripePrice.id }),
+    });
+
+    if (newStripePrice) {
+      await stripe.prices.update(course.stripePriceId, { active: false });
+    }
+
     const updatedCourse = await prisma.course.update({
       where: { id: course.id },
-      data: { ...validation.data },
+      data: { ...validation.data, ...(newStripePrice && { stripePriceId: newStripePrice.id }) },
     });
 
     return Response.json(updatedCourse);
