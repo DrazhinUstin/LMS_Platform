@@ -1,7 +1,12 @@
+import { Suspense } from 'react';
+import Totals, { TotalsSkeleton } from './totals';
+
 export default function Page() {
   return (
     <main>
-      <h2>Overview</h2>
+      <Suspense fallback={<TotalsSkeleton />}>
+        <Totals />
+      </Suspense>
     </main>
   );
 }
