@@ -9,6 +9,7 @@ export interface CourseFilters {
   minPrice?: string;
   maxPrice?: string;
   authorId?: string;
+  notEnrolledByUserId?: string;
 }
 
 export type CourseSortingOrder = { [key in keyof Course]?: Prisma.SortOrder };
@@ -36,7 +37,8 @@ export async function getCourses({
   page?: number;
 }) {
   try {
-    const { query, categoryName, level, minPrice, maxPrice, authorId } = filters;
+    const { query, categoryName, level, minPrice, maxPrice, authorId, notEnrolledByUserId } =
+      filters;
 
     let queryWhereInput: Prisma.CourseWhereInput = {};
 
@@ -60,6 +62,7 @@ export async function getCourses({
         },
       }),
       ...(authorId && { authorId }),
+      ...(notEnrolledByUserId && { enrollments: { none: { userId: notEnrolledByUserId } } }),
     };
 
     const courses = await prisma.course.findMany({

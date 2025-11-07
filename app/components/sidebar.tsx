@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronRightIcon, HouseIcon, LayoutListIcon, SquarePenIcon } from 'lucide-react';
+import { ChevronRightIcon } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { useState } from 'react';
 import { cn } from '@/app/lib/utils';
@@ -10,17 +10,13 @@ import { Session } from '@/app/lib/auth';
 import UserDropdown from '@/app/components/user-dropdown';
 import { usePathname } from 'next/navigation';
 
-const sidebarLinks: { title: string; icon: React.ReactNode; href: string }[] = [
-  { title: 'Home', icon: <HouseIcon className="size-5" />, href: '/dashboard' },
-  { title: 'Courses', icon: <LayoutListIcon className="size-5" />, href: '/dashboard/courses' },
-  {
-    title: 'Quick create',
-    icon: <SquarePenIcon className="size-5" />,
-    href: '/dashboard/courses/create',
-  },
-];
-
-export default function Sidebar({ user }: { user: Session['user'] }) {
+export default function Sidebar({
+  user,
+  navLinks,
+}: {
+  user: Session['user'];
+  navLinks: { title: string; icon: React.ReactNode; href: string }[];
+}) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
   return (
@@ -47,7 +43,7 @@ export default function Sidebar({ user }: { user: Session['user'] }) {
       </header>
       <div>
         <nav className="flex flex-col gap-y-8">
-          {sidebarLinks.map(({ title, icon, href }) => (
+          {navLinks.map(({ title, icon, href }) => (
             <Link
               key={title}
               href={href}

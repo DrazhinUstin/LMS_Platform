@@ -3,8 +3,9 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { cn } from '@/app/lib/utils';
+import { Session } from '@/app/lib/auth';
 
-export default function NavbarMenu() {
+export default function NavbarMenu({ user }: { user: Session['user'] | null }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -25,7 +26,7 @@ export default function NavbarMenu() {
       >
         <Link href="/">Home</Link>
         <Link href="/courses">Courses</Link>
-        <Link href="/dashboard">Dashboard</Link>
+        {user && <Link href="/customer">Dashboard</Link>}
       </nav>
       <button
         onClick={() => setIsMenuOpen(!isMenuOpen)}

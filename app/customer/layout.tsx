@@ -2,16 +2,11 @@ import { auth } from '@/app/lib/auth';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import Sidebar from '@/app/components/sidebar';
-import { HouseIcon, LayoutGridIcon, SquarePenIcon } from 'lucide-react';
+import { HouseIcon, LayoutGridIcon } from 'lucide-react';
 
 const sidebarNavLinks: React.ComponentProps<typeof Sidebar>['navLinks'] = [
-  { title: 'Home', icon: <HouseIcon className="size-5" />, href: '/dashboard' },
-  { title: 'Courses', icon: <LayoutGridIcon className="size-5" />, href: '/dashboard/courses' },
-  {
-    title: 'Quick create',
-    icon: <SquarePenIcon className="size-5" />,
-    href: '/dashboard/courses/create',
-  },
+  { title: 'Home', icon: <HouseIcon className="size-5" />, href: '/customer' },
+  { title: 'My courses', icon: <LayoutGridIcon className="size-5" />, href: '/customer/courses' },
 ];
 
 export default async function Layout({
