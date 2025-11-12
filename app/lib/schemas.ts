@@ -30,6 +30,6 @@ export const ChapterSchema = z.object({
 export const LessonSchema = z.object({
   title: requiredString.max(100, { error: 'The title must not be longer than 100 characters!' }),
   description: requiredString.optional(),
-  previewImageKey: requiredString.optional(),
+  posterKey: requiredString.optional(),
   videoKey: requiredString.optional(),
 });

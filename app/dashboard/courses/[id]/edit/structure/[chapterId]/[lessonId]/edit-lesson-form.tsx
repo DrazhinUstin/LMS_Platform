@@ -29,7 +29,7 @@ export default function EditLessonForm({ lesson }: { lesson: Lesson }) {
     defaultValues: {
       title: lesson.title,
       description: lesson.description ?? undefined,
-      previewImageKey: lesson.previewImageKey ?? undefined,
+      posterKey: lesson.posterKey ?? undefined,
       videoKey: lesson.videoKey ?? undefined,
     },
   });
@@ -84,10 +84,10 @@ export default function EditLessonForm({ lesson }: { lesson: Lesson }) {
         />
         <FormField
           control={form.control}
-          name="previewImageKey"
+          name="posterKey"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Preview image</FormLabel>
+              <FormLabel>Poster image</FormLabel>
               <FormControl>
                 <FileUploader
                   s3key={field.value}

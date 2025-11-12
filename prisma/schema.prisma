@@ -130,16 +130,16 @@ model Chapter {
 }
 
 model Lesson {
-  id              String   @id @default(uuid())
-  title           String
-  description     String?
-  previewImageKey String?
-  videoKey        String?
-  position        Int
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  chapter         Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-  chapterId       String
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  posterKey   String?
+  videoKey    String?
+  position    Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  chapter     Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  chapterId   String
 
   @@map("lessons")
 }
