@@ -10,8 +10,8 @@ datasource db {
 }
 
 model User {
-  id               String       @id
-  stripeCustomerId String?      @unique
+  id               String           @id
+  stripeCustomerId String?          @unique
   name             String
   email            String
   emailVerified    Boolean
@@ -22,6 +22,7 @@ model User {
   accounts         Account[]
   courses          Course[]
   enrollments      Enrollment[]
+  lessonProgresses LessonProgress[]
 
   @@unique([email])
   @@map("user")
@@ -130,16 +131,17 @@ model Chapter {
 }
 
 model Lesson {
-  id          String   @id @default(uuid())
-  title       String
-  description String?
-  posterKey   String?
-  videoKey    String?
-  position    Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  chapter     Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-  chapterId   String
+  id             String           @id @default(uuid())
+  title          String
+  description    String?
+  posterKey      String?
+  videoKey       String?
+  position       Int
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  chapter        Chapter          @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  chapterId      String
+  userProgresses LessonProgress[]
 
   @@map("lessons")
 }
@@ -162,4 +164,17 @@ enum EnrollmentStatus {
   PENDING
   ACTIVE
   CANCELED
+}
+
+model LessonProgress {
+  isCompleted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  lessonId    String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+
+  @@id([lessonId, userId])
+  @@map("lesson_progresses")
 }
