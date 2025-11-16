@@ -1,13 +1,23 @@
-import { getCourse } from '@/app/data/course/get-course';
-import { notFound } from 'next/navigation';
+import { getUserCourse } from '@/app/data/course/get-user-course';
+import { notFound, redirect } from 'next/navigation';
 import { getS3ObjectUrl } from '@/app/lib/utils';
 import { ClockIcon, GraduationCapIcon, LayoutGridIcon } from 'lucide-react';
 import Image from 'next/image';
+import { auth } from '@/app/lib/auth';
+import { headers } from 'next/headers';
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
-  const course = await getCourse(id);
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    redirect('/login');
+  }
+
+  const course = await getUserCourse({ courseId: id, userId: session.user.id });
 
   if (!course) notFound();
 

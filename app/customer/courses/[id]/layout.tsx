@@ -1,6 +1,8 @@
-import { getCourse } from '@/app/data/course/get-course';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import CourseStructure from './course-structure';
+import { getUserCourse } from '@/app/data/course/get-user-course';
+import { auth } from '@/app/lib/auth';
+import { headers } from 'next/headers';
 
 export default async function Layout({
   children,
@@ -11,7 +13,15 @@ export default async function Layout({
 }) {
   const { id } = await params;
 
-  const course = await getCourse(id);
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    redirect('/login');
+  }
+
+  const course = await getUserCourse({ courseId: id, userId: session.user.id });
 
   if (!course) notFound();
 

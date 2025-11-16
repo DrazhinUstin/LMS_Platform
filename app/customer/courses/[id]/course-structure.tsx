@@ -1,6 +1,6 @@
 'use client';
 
-import type { CourseTypeWithInclude } from '@/app/data/course/get-course';
+import type { UserCourseTypeWithInclude } from '@/app/data/course/get-user-course';
 import { Button } from '@/app/components/ui/button';
 import {
   Collapsible,
@@ -8,11 +8,11 @@ import {
   CollapsibleTrigger,
 } from '@/app/components/ui/collapsible';
 import Link from 'next/link';
-import { ChevronsUpDownIcon, PlayIcon } from 'lucide-react';
+import { ChevronsUpDownIcon, CircleCheckIcon, PlayIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/app/lib/utils';
 
-export default function CourseStructure({ course }: { course: CourseTypeWithInclude }) {
+export default function CourseStructure({ course }: { course: UserCourseTypeWithInclude }) {
   const pathname = usePathname();
   return (
     <div className="space-y-2">
@@ -29,6 +29,15 @@ export default function CourseStructure({ course }: { course: CourseTypeWithIncl
                   <p className="text-muted-foreground font-normal">
                     {chapter._count.lessons} lessons
                   </p>
+                  {chapter.lessons.reduce(
+                    (acc, lesson) => acc + (lesson.userProgresses[0]?.isCompleted ? 1 : 0),
+                    0
+                  ) === chapter._count.lessons && (
+                    <p className="flex items-center gap-x-0.5 text-xs font-normal text-green-600">
+                      <CircleCheckIcon className="size-3 text-green-600" />
+                      Completed
+                    </p>
+                  )}
                 </div>
               </div>
             </Button>
@@ -39,7 +48,7 @@ export default function CourseStructure({ course }: { course: CourseTypeWithIncl
                 key={lesson.id}
                 variant="outline"
                 className={cn(
-                  'justify-normal',
+                  'flex h-auto justify-normal',
                   pathname.endsWith(lesson.id) &&
                     'bg-accent text-accent-foreground dark:bg-input/50'
                 )}
@@ -49,9 +58,17 @@ export default function CourseStructure({ course }: { course: CourseTypeWithIncl
                   <span className="bg-primary/10 grid size-6 shrink-0 place-items-center rounded-full">
                     <PlayIcon />
                   </span>
-                  <span className="truncate">
-                    {lessonIndex + 1}. {lesson.title}
-                  </span>
+                  <div className="truncate">
+                    <h4>
+                      {lessonIndex + 1}. {lesson.title}
+                    </h4>
+                    {lesson.userProgresses[0]?.isCompleted && (
+                      <p className="flex items-center gap-x-0.5 text-xs font-normal text-green-600">
+                        <CircleCheckIcon className="size-3 text-green-600" />
+                        Completed
+                      </p>
+                    )}
+                  </div>
                 </Link>
               </Button>
             ))}
