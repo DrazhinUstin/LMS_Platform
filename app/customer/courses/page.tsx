@@ -1,10 +1,30 @@
 import { auth } from '@/app/lib/auth';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { prisma } from '@/app/lib/prisma';
-import CourseCard from '@/app/(public)/courses/course-card';
+import {
+  enrollmentSortingOrderData,
+  enrollmentsPerPage,
+  getEnrollments,
+} from '@/app/data/enrollments/get-enrollments';
+import { Suspense } from 'react';
+import { getEnrollmentsCount } from '@/app/data/enrollments/get-enrollments-count';
+import PaginationBar from '@/app/components/pagination-bar';
+import SortOrder from '@/app/components/sort-order';
+import CourseCard, { CourseCardSkeleton } from './course-card';
 
-export default async function Page() {
+interface Props {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function Page(props: Props) {
+  const searchParams = await props.searchParams;
+
+  const { orderBy, page, ...filters } = searchParams;
+
+  const parsedOrderBy = orderBy && !Array.isArray(orderBy) ? JSON.parse(orderBy) : undefined;
+
+  const currentPage = Number(page) || 1;
+
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -13,22 +33,54 @@ export default async function Page() {
     redirect('/login');
   }
 
-  const enrolledCourses = (
-    await prisma.enrollment.findMany({
-      where: { userId: session.user.id, status: 'ACTIVE' },
-      orderBy: { createdAt: 'desc' },
-      select: { course: true },
-    })
-  ).map(({ course }) => course);
-
   return (
     <main className="space-y-8">
-      <h2 className="text-center text-2xl font-semibold">Courses you are enrolled in</h2>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {enrolledCourses.map((course) => (
+      <h2 className="text-center text-2xl font-bold">Courses you are enrolled in</h2>
+      <div className="space-y-8">
+        <div className="flex justify-end">
+          <SortOrder options={enrollmentSortingOrderData} />
+        </div>
+        <Suspense key={JSON.stringify(searchParams)} fallback={<CoursesGridSkeleton />}>
+          <CoursesGrid
+            filters={{ ...filters, userId: session.user.id }}
+            orderBy={parsedOrderBy}
+            page={currentPage}
+          />
+        </Suspense>
+      </div>
+    </main>
+  );
+}
+
+async function CoursesGrid({ filters, orderBy, page }: Parameters<typeof getEnrollments>[0]) {
+  const [enrollments, count] = await Promise.all([
+    getEnrollments({ filters, orderBy, page }),
+    getEnrollmentsCount({ filters }),
+  ]);
+
+  const totalPages = Math.ceil(count / enrollmentsPerPage);
+
+  return (
+    <div>
+      <div className="grid grid-cols-[repeat(auto-fill,_minmax(280px,_1fr))] items-start gap-8">
+        {enrollments.map(({ course }) => (
           <CourseCard key={course.id} course={course} />
         ))}
       </div>
-    </main>
+      {enrollments.length === 0 && (
+        <p className="text-center">Unfortunately, no enrolled courses were found 😞</p>
+      )}
+      <PaginationBar currentPage={page as number} totalPages={totalPages} className="mt-8" />
+    </div>
+  );
+}
+
+function CoursesGridSkeleton() {
+  return (
+    <div className="grid grid-cols-[repeat(auto-fill,_minmax(280px,_1fr))] gap-8">
+      {Array.from({ length: enrollmentsPerPage }).map((_, index) => (
+        <CourseCardSkeleton key={index} />
+      ))}
+    </div>
   );
 }
