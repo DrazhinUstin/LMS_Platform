@@ -2,7 +2,7 @@ import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { prisma } from '@/app/lib/prisma';
 import { env } from '@/env';
-import { emailOTP } from 'better-auth/plugins';
+import { admin, emailOTP } from 'better-auth/plugins';
 import { Resend } from 'resend';
 
 const resend = new Resend(env.RESEND_API_KEY);
@@ -36,6 +36,7 @@ export const auth = betterAuth({
         }
       },
     }),
+    admin(),
   ],
 });
 

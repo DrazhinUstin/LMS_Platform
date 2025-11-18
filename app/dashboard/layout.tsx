@@ -1,6 +1,6 @@
 import { auth } from '@/app/lib/auth';
 import { headers } from 'next/headers';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import Sidebar from '@/app/components/sidebar';
 import { HouseIcon, LayoutGridIcon, SquarePenIcon } from 'lucide-react';
 
@@ -25,6 +25,10 @@ export default async function Layout({
 
   if (!session) {
     redirect('/login');
+  }
+
+  if (session.user.role !== 'admin') {
+    notFound();
   }
 
   return (

@@ -14,7 +14,7 @@ export async function createChapter(courseId: string, data: z.infer<typeof Chapt
       headers: await headers(),
     });
 
-    if (!session) {
+    if (!session || session.user.role !== 'admin') {
       throw new Error('Unauthorized!');
     }
 
@@ -51,7 +51,7 @@ export async function editChapter(chapterId: string, data: z.infer<typeof Chapte
       headers: await headers(),
     });
 
-    if (!session) {
+    if (!session || session.user.role !== 'admin') {
       throw new Error('Unauthorized!');
     }
 
@@ -87,7 +87,7 @@ export async function deleteChapter({
       headers: await headers(),
     });
 
-    if (!session) {
+    if (!session || session.user.role !== 'admin') {
       throw new Error('Unauthorized!');
     }
 
@@ -128,7 +128,7 @@ export async function createLesson(chapterId: string, data: z.infer<typeof Lesso
       headers: await headers(),
     });
 
-    if (!session) {
+    if (!session || session.user.role !== 'admin') {
       throw new Error('Unauthorized!');
     }
 
@@ -170,7 +170,7 @@ export async function deleteLesson({
       headers: await headers(),
     });
 
-    if (!session) {
+    if (!session || session.user.role !== 'admin') {
       throw new Error('Unauthorized!');
     }
 
@@ -213,7 +213,7 @@ export async function reorderChapters(courseId: string, data: ChapterPosition[])
       headers: await headers(),
     });
 
-    if (!session) {
+    if (!session || session.user.role !== 'admin') {
       throw new Error('Unauthorized!');
     }
 
@@ -238,7 +238,7 @@ export async function reorderLessons(courseId: string, data: LessonPosition[]) {
       headers: await headers(),
     });
 
-    if (!session) {
+    if (!session || session.user.role !== 'admin') {
       throw new Error('Unauthorized!');
     }
 

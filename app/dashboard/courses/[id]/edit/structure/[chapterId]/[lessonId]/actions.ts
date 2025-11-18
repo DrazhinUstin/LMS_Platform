@@ -13,7 +13,7 @@ export async function editLesson(lessonId: string, data: z.infer<typeof LessonSc
       headers: await headers(),
     });
 
-    if (!session) {
+    if (!session || session.user.role !== 'admin') {
       throw new Error('Unauthorized!');
     }
 

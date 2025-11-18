@@ -11,7 +11,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       headers: await headers(),
     });
 
-    if (!session) {
+    if (!session || session.user.role !== 'admin') {
       return new Response('Unauthorized!', {
         status: 401,
       });

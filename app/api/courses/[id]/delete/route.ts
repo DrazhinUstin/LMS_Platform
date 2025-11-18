@@ -10,7 +10,7 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
       headers: await headers(),
     });
 
-    if (!session) {
+    if (!session || session.user.role !== 'admin') {
       return new Response('Unauthorized!', {
         status: 401,
       });
