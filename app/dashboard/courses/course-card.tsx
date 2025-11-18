@@ -20,10 +20,11 @@ import {
 } from '@/app/components/ui/dropdown-menu';
 import { Button } from '@/app/components/ui/button';
 import Link from 'next/link';
+import { Skeleton } from '@/app/components/ui/skeleton';
 
 export default function CourseCard({ course }: { course: Course }) {
   return (
-    <article className="relative mx-auto max-w-[500px] rounded-lg shadow-md">
+    <article className="relative rounded-lg shadow-md">
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="absolute top-2 right-2">
           <Button variant="outline" size="icon">
@@ -57,12 +58,12 @@ export default function CourseCard({ course }: { course: Course }) {
         alt="course preview image"
         width={600}
         height={400}
-        className="w-full rounded-t-lg"
+        className="aspect-video w-full rounded-t-lg object-cover"
       />
       <div className="space-y-2 rounded-b-lg border border-t-0 p-2">
         <h4 className="line-clamp-1 font-semibold">{course.title}</h4>
         <p className="text-muted-foreground line-clamp-3 text-sm">{course.briefDescription}</p>
-        <p className="font-medium">{formatPrice(course.price)}</p>
+        <p className="font-medium">{formatPrice(course.price / 100)}</p>
         <div className="flex flex-wrap items-center gap-2">
           <Badge>
             <BadgeCheckIcon />
@@ -76,6 +77,24 @@ export default function CourseCard({ course }: { course: Course }) {
             <ClockIcon />
             {course.duration} min
           </Badge>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+export function CourseCardSkeleton() {
+  return (
+    <article className="relative rounded-lg shadow-md">
+      <Skeleton className="aspect-video w-full rounded-none rounded-t-lg" />
+      <div className="space-y-2 rounded-b-lg border border-t-0 p-2">
+        <Skeleton className="h-6 w-3/4" />
+        <Skeleton className="h-8 w-full" />
+        <Skeleton className="h-6 w-20" />
+        <div className="flex flex-wrap items-center gap-2">
+          <Skeleton className="h-5 w-16" />
+          <Skeleton className="h-5 w-16" />
+          <Skeleton className="h-5 w-16" />
         </div>
       </div>
     </article>

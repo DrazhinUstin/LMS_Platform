@@ -46,15 +46,15 @@ export default function CourseCard({ course }: { course: Course }) {
 export function CourseCardSkeleton() {
   return (
     <article className="relative rounded-lg shadow-md">
-      <Skeleton className="aspect-video w-full rounded-t-lg" />
+      <Skeleton className="aspect-video w-full rounded-none rounded-t-lg" />
       <div className="space-y-2 rounded-b-lg border border-t-0 p-2">
-        <Skeleton className="h-4 w-3/4" />
+        <Skeleton className="h-6 w-3/4" />
         <Skeleton className="h-8 w-full" />
-        <Skeleton className="h-4 w-20" />
+        <Skeleton className="h-6 w-20" />
         <div className="flex flex-wrap items-center gap-2">
-          <Skeleton className="h-4 w-16" />
-          <Skeleton className="h-4 w-16" />
-          <Skeleton className="h-4 w-16" />
+          <Skeleton className="h-5 w-16" />
+          <Skeleton className="h-5 w-16" />
+          <Skeleton className="h-5 w-16" />
         </div>
       </div>
     </article>
