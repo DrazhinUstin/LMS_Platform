@@ -204,7 +204,7 @@ export default function EditCourseStructure({ courseId, data }: Props) {
                             <div>
                               <Button variant="ghost" size="icon" asChild>
                                 <Link
-                                  href={`/dashboard/courses/${courseId}/edit/structure/${chapter.id}/${lesson.id}`}
+                                  href={`/admin/courses/${courseId}/edit/structure/${chapter.id}/${lesson.id}`}
                                   title="Edit lesson"
                                 >
                                   <SquarePenIcon />

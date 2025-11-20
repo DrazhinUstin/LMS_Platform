@@ -6,8 +6,8 @@ import { useParams, usePathname } from 'next/navigation';
 
 function getLinks(courseId: string): Array<{ label: string; href: string }> {
   return [
-    { label: 'Edit details', href: `/dashboard/courses/${courseId}/edit` },
-    { label: 'Edit structure', href: `/dashboard/courses/${courseId}/edit/structure` },
+    { label: 'Edit details', href: `/admin/courses/${courseId}/edit` },
+    { label: 'Edit structure', href: `/admin/courses/${courseId}/edit/structure` },
   ];
 }
 

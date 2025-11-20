@@ -27,7 +27,7 @@ export default function DeleteCourseForm({ course }: { course: Course }) {
           throw new Error();
         }
 
-        router.push('/dashboard/courses');
+        router.push('/admin/courses');
 
         toast.success('Course was deleted successfully!');
       } catch {
@@ -44,10 +44,7 @@ export default function DeleteCourseForm({ course }: { course: Course }) {
       <div className="space-y-2">
         <h4 className="text-lg font-semibold">
           Delete the course{' '}
-          <Link
-            href={`/dashboard/courses/${course.id}/edit`}
-            className="text-primary hover:underline"
-          >
+          <Link href={`/admin/courses/${course.id}/edit`} className="text-primary hover:underline">
             &quot;{course.title}&quot;
           </Link>
           ?
@@ -60,7 +57,7 @@ export default function DeleteCourseForm({ course }: { course: Course }) {
       </div>
       <div className="grid grid-cols-2 gap-x-4">
         <Button asChild>
-          <Link href="/dashboard/courses">Cancel</Link>
+          <Link href="/admin/courses">Cancel</Link>
         </Button>
         <ButtonLoading
           type="submit"

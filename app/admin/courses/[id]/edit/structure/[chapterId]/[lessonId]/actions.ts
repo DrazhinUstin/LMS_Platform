@@ -29,7 +29,7 @@ export async function editLesson(lessonId: string, data: z.infer<typeof LessonSc
       include: { chapter: { select: { courseId: true } } },
     });
 
-    revalidatePath(`/dashboard/courses/${chapter.courseId}/edit/structure`);
+    revalidatePath(`/admin/courses/${chapter.courseId}/edit/structure`);
 
     return updatedLesson;
   } catch (error) {

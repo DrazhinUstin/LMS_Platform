@@ -72,7 +72,7 @@ export default function EditCourseForm({
 
         toast('Course edited successfully!');
 
-        router.push('/dashboard/courses');
+        router.push('/admin/courses');
       } catch {
         toast.error('Failed to edit a course. Please try again.');
       }

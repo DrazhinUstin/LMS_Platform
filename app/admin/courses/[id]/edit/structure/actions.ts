@@ -36,7 +36,7 @@ export async function createChapter(courseId: string, data: z.infer<typeof Chapt
       data: { courseId, title, position: (courseLastChapter?.position ?? 0) + 1 },
     });
 
-    revalidatePath(`/dashboard/courses/${courseId}/edit/structure`);
+    revalidatePath(`/admin/courses/${courseId}/edit/structure`);
 
     return createdChapter;
   } catch (error) {
@@ -66,7 +66,7 @@ export async function editChapter(chapterId: string, data: z.infer<typeof Chapte
       data: validation.data,
     });
 
-    revalidatePath(`/dashboard/courses/${updatedChapter.courseId}/edit/structure`);
+    revalidatePath(`/admin/courses/${updatedChapter.courseId}/edit/structure`);
 
     return updatedChapter;
   } catch (error) {
@@ -113,7 +113,7 @@ export async function deleteChapter({
       ...chaptersToReorder,
     ]);
 
-    revalidatePath(`/dashboard/courses/${courseId}/edit/structure`);
+    revalidatePath(`/admin/courses/${courseId}/edit/structure`);
 
     return deletedChapter;
   } catch (error) {
@@ -149,7 +149,7 @@ export async function createLesson(chapterId: string, data: z.infer<typeof Lesso
       include: { chapter: { select: { courseId: true } } },
     });
 
-    revalidatePath(`/dashboard/courses/${chapter.courseId}/edit/structure`);
+    revalidatePath(`/admin/courses/${chapter.courseId}/edit/structure`);
 
     return createdLesson;
   } catch (error) {
@@ -196,7 +196,7 @@ export async function deleteLesson({
       ...lessonsToReorder,
     ]);
 
-    revalidatePath(`/dashboard/courses/${chapter.courseId}/edit/structure`);
+    revalidatePath(`/admin/courses/${chapter.courseId}/edit/structure`);
 
     return deletedLesson;
   } catch (error) {
@@ -221,7 +221,7 @@ export async function reorderChapters(courseId: string, data: ChapterPosition[])
       data.map(({ id, position }) => prisma.chapter.update({ where: { id }, data: { position } }))
     );
 
-    revalidatePath(`/dashboard/courses/${courseId}/edit/structure`);
+    revalidatePath(`/admin/courses/${courseId}/edit/structure`);
 
     return reorderedChapters;
   } catch (error) {
@@ -246,7 +246,7 @@ export async function reorderLessons(courseId: string, data: LessonPosition[]) {
       data.map(({ id, position }) => prisma.lesson.update({ where: { id }, data: { position } }))
     );
 
-    revalidatePath(`/dashboard/courses/${courseId}/edit/structure`);
+    revalidatePath(`/admin/courses/${courseId}/edit/structure`);
 
     return reorderedLessons;
   } catch (error) {

@@ -70,7 +70,7 @@ async function CoursesGrid({ filters, orderBy, page }: Parameters<typeof getCour
         <div className="space-y-4 text-center">
           <p>Unfortunately, no created courses were found 😞</p>
           <Button asChild>
-            <Link href="/dashboard/courses/create">
+            <Link href="/admin/courses/create">
               <SquarePenIcon />
               Quick create
             </Link>

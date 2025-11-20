@@ -27,7 +27,7 @@ export default function NavbarMenu({ user }: { user: Session['user'] | null }) {
         <Link href="/">Home</Link>
         <Link href="/courses">Courses</Link>
         {user && user.role === 'user' && <Link href="/customer">Dashboard</Link>}
-        {user && user.role === 'admin' && <Link href="/dashboard">Dashboard</Link>}
+        {user && user.role === 'admin' && <Link href="/admin">Dashboard</Link>}
       </nav>
       <button
         onClick={() => setIsMenuOpen(!isMenuOpen)}

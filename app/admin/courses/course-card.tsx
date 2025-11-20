@@ -39,14 +39,14 @@ export default function CourseCard({ course }: { course: Course }) {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href={`/dashboard/courses/${course.id}/edit`}>
+            <Link href={`/admin/courses/${course.id}/edit`}>
               <SquarePenIcon />
               Edit
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
-            <Link href={`/dashboard/courses/${course.id}/delete`}>
+            <Link href={`/admin/courses/${course.id}/delete`}>
               <Trash2Icon className="text-destructive" />
               Delete
             </Link>

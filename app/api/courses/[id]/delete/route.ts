@@ -43,7 +43,7 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
 
     const deletedCourse = await prisma.course.delete({ where: { id: course.id } });
 
-    revalidatePath('/dashboard/courses');
+    revalidatePath('/admin/courses');
 
     return Response.json(deletedCourse);
   } catch (error) {
