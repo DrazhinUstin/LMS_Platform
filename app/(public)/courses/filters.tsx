@@ -15,7 +15,7 @@ import { CourseLevel, type Category } from '@/generated/prisma';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
-type FiltersType = Record<Exclude<keyof CourseFilters, 'authorId'>, string>;
+type FiltersType = Record<Exclude<keyof CourseFilters, 'authorId' | 'notEnrolledByUserId'>, string>;
 
 export default function Filters({ categories }: { categories: Category[] }) {
   const router = useRouter();

@@ -5,9 +5,9 @@ import {
   enrollmentSortingOrderData,
   enrollmentsPerPage,
   getEnrollments,
-} from '@/app/data/enrollments/get-enrollments';
+} from '@/app/data/enrollment/get-enrollments';
 import { Suspense } from 'react';
-import { getEnrollmentsCount } from '@/app/data/enrollments/get-enrollments-count';
+import { getEnrollmentsCount } from '@/app/data/enrollment/get-enrollments-count';
 import PaginationBar from '@/app/components/pagination-bar';
 import SortOrder from '@/app/components/sort-order';
 import CourseCard, { CourseCardSkeleton } from './course-card';

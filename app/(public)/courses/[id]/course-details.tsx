@@ -22,13 +22,16 @@ export default function CourseDetails({ course }: { course: CourseTypeWithInclud
   return (
     <div className="grid items-start gap-8 lg:grid-cols-3">
       <div className="space-y-8 lg:col-span-2">
-        <Image
-          src={getS3ObjectUrl(course.previewImageKey)}
-          alt={course.title}
-          width={1000}
-          height={1000}
-          priority
-        />
+        <div className="relative aspect-video w-full">
+          <Image
+            src={getS3ObjectUrl(course.previewImageKey)}
+            alt={course.title}
+            fill
+            sizes="100vw"
+            className="object-cover"
+            priority
+          />
+        </div>
         <h2 className="text-2xl font-bold">{course.title}</h2>
         <p>{course.briefDescription}</p>
         <hr />

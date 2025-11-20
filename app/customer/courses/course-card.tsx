@@ -1,4 +1,4 @@
-import type { EnrollmentTypeWithSelect } from '@/app/data/enrollments/get-enrollments';
+import type { EnrollmentTypeWithSelect } from '@/app/data/enrollment/get-enrollments';
 import { Badge } from '@/app/components/ui/badge';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { getS3ObjectUrl } from '@/app/lib/utils';

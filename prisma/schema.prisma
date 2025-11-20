@@ -20,7 +20,7 @@ model User {
   updatedAt        DateTime
   sessions         Session[]
   accounts         Account[]
-  courses          Course[]
+  authoredCourses  Course[]
   enrollments      Enrollment[]
   lessonProgresses LessonProgress[]
 
