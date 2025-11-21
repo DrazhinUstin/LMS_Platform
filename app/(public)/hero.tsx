@@ -49,7 +49,7 @@ export default function Hero() {
                 className="object-cover"
                 priority
               />
-              <div className="absolute top-1/2 left-1/2 z-20 max-w-md -translate-x-1/2 -translate-y-1/2 p-2 lg:top-auto lg:bottom-8 lg:left-8 lg:translate-x-0 lg:translate-y-0">
+              <div className="absolute top-1/2 left-1/2 z-20 max-w-md -translate-x-1/2 -translate-y-1/2 p-2 text-center lg:top-auto lg:bottom-8 lg:left-8 lg:translate-x-0 lg:translate-y-0 lg:text-left">
                 <h2 className="text-2xl font-bold text-white lg:text-4xl">{title}</h2>
                 <p className="mt-2 text-white lg:text-lg">{description}</p>
                 <Button variant="outline" className="mt-4" asChild>
