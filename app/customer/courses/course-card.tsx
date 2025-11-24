@@ -2,10 +2,12 @@ import type { EnrollmentTypeWithSelect } from '@/app/data/enrollment/get-enrollm
 import { Badge } from '@/app/components/ui/badge';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { getS3ObjectUrl } from '@/app/lib/utils';
-import { BadgeCheckIcon, BookOpenIcon, ClockIcon } from 'lucide-react';
+import { ClockIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Progress } from '@/app/components/ui/progress';
+import CategoryIcon from '@/app/components/category-icon';
+import LevelIcon from '@/app/components/level-icon';
 
 export default function CourseCard({ course }: { course: EnrollmentTypeWithSelect['course'] }) {
   const totalLessons = course.chapters.reduce((acc, chapter) => acc + chapter._count.lessons, 0);
@@ -41,11 +43,11 @@ export default function CourseCard({ course }: { course: EnrollmentTypeWithSelec
         <p className="text-muted-foreground line-clamp-3 text-sm">{course.briefDescription}</p>
         <div className="flex flex-wrap items-center gap-2">
           <Badge>
-            <BadgeCheckIcon />
+            <CategoryIcon categoryName={course.categoryName} />
             {course.categoryName}
           </Badge>
           <Badge variant="secondary">
-            <BookOpenIcon />
+            <LevelIcon level={course.level} />
             {course.level}
           </Badge>
           <Badge variant="outline">

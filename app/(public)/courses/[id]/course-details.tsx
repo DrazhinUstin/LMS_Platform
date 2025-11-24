@@ -3,9 +3,7 @@ import { formatPrice, getS3ObjectUrl } from '@/app/lib/utils';
 import {
   ChevronsUpDownIcon,
   ClockIcon,
-  GraduationCapIcon,
   InfinityIcon,
-  LayoutGridIcon,
   MonitorSmartphoneIcon,
   TableOfContentsIcon,
 } from 'lucide-react';
@@ -17,6 +15,8 @@ import {
 } from '@/app/components/ui/collapsible';
 import { Button } from '@/app/components/ui/button';
 import EnrollButton from './enroll-button';
+import CategoryIcon from '@/app/components/category-icon';
+import LevelIcon from '@/app/components/level-icon';
 
 export default function CourseDetails({ course }: { course: CourseTypeWithInclude }) {
   return (
@@ -28,7 +28,7 @@ export default function CourseDetails({ course }: { course: CourseTypeWithInclud
             alt={course.title}
             fill
             sizes="100vw"
-            className="object-cover"
+            className="rounded-lg object-cover"
             priority
           />
         </div>
@@ -38,7 +38,7 @@ export default function CourseDetails({ course }: { course: CourseTypeWithInclud
         <ul className="flex flex-wrap gap-x-4 gap-y-2">
           <li className="flex items-center gap-x-2">
             <span className="bg-primary/20 text-primary grid size-10 place-items-center rounded-full">
-              <LayoutGridIcon className="size-5" />
+              <CategoryIcon categoryName={course.categoryName} className="size-5" />
             </span>
             <div>
               <h4 className="text-sm font-medium">Category</h4>
@@ -47,7 +47,7 @@ export default function CourseDetails({ course }: { course: CourseTypeWithInclud
           </li>
           <li className="flex items-center gap-x-2">
             <span className="bg-primary/20 text-primary grid size-10 place-items-center rounded-full">
-              <GraduationCapIcon className="size-5" />
+              <LevelIcon level={course.level} className="size-5" />
             </span>
             <div>
               <h4 className="text-sm font-medium">Level</h4>

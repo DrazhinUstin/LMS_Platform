@@ -1,10 +1,12 @@
 import { getUserCourse } from '@/app/data/course/get-user-course';
 import { notFound, redirect } from 'next/navigation';
 import { getS3ObjectUrl } from '@/app/lib/utils';
-import { ClockIcon, GraduationCapIcon, LayoutGridIcon } from 'lucide-react';
+import { ClockIcon } from 'lucide-react';
 import Image from 'next/image';
 import { auth } from '@/app/lib/auth';
 import { headers } from 'next/headers';
+import CategoryIcon from '@/app/components/category-icon';
+import LevelIcon from '@/app/components/level-icon';
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -29,7 +31,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           alt={course.title}
           fill
           sizes="100vw"
-          className="object-cover"
+          className="rounded-lg object-cover"
           priority
         />
       </div>
@@ -39,7 +41,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
       <ul className="flex flex-wrap gap-x-4 gap-y-2">
         <li className="flex items-center gap-x-2">
           <span className="bg-primary/20 text-primary grid size-10 place-items-center rounded-full">
-            <LayoutGridIcon className="size-5" />
+            <CategoryIcon categoryName={course.categoryName} className="size-5" />
           </span>
           <div>
             <h4 className="text-sm font-medium">Category</h4>
@@ -48,7 +50,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         </li>
         <li className="flex items-center gap-x-2">
           <span className="bg-primary/20 text-primary grid size-10 place-items-center rounded-full">
-            <GraduationCapIcon className="size-5" />
+            <LevelIcon level={course.level} className="size-5" />
           </span>
           <div>
             <h4 className="text-sm font-medium">Level</h4>

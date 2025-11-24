@@ -1,15 +1,7 @@
 import { Badge } from '@/app/components/ui/badge';
 import { formatPrice, getS3ObjectUrl } from '@/app/lib/utils';
 import { Course } from '@/generated/prisma';
-import {
-  BadgeCheckIcon,
-  BookOpenIcon,
-  ClockIcon,
-  EllipsisIcon,
-  EyeIcon,
-  SquarePenIcon,
-  Trash2Icon,
-} from 'lucide-react';
+import { ClockIcon, EllipsisIcon, EyeIcon, SquarePenIcon, Trash2Icon } from 'lucide-react';
 import Image from 'next/image';
 import {
   DropdownMenu,
@@ -21,6 +13,8 @@ import {
 import { Button } from '@/app/components/ui/button';
 import Link from 'next/link';
 import { Skeleton } from '@/app/components/ui/skeleton';
+import CategoryIcon from '@/app/components/category-icon';
+import LevelIcon from '@/app/components/level-icon';
 
 export default function CourseCard({ course }: { course: Course }) {
   return (
@@ -66,11 +60,11 @@ export default function CourseCard({ course }: { course: Course }) {
         <p className="font-medium">{formatPrice(course.price / 100)}</p>
         <div className="flex flex-wrap items-center gap-2">
           <Badge>
-            <BadgeCheckIcon />
+            <CategoryIcon categoryName={course.categoryName} />
             {course.categoryName}
           </Badge>
           <Badge variant="secondary">
-            <BookOpenIcon />
+            <LevelIcon level={course.level} />
             {course.level}
           </Badge>
           <Badge variant="outline">

@@ -1,8 +1,10 @@
+import CategoryIcon from '@/app/components/category-icon';
+import LevelIcon from '@/app/components/level-icon';
 import { Badge } from '@/app/components/ui/badge';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { formatPrice, getS3ObjectUrl } from '@/app/lib/utils';
 import type { Course } from '@/generated/prisma';
-import { BadgeCheckIcon, BookOpenIcon, ClockIcon } from 'lucide-react';
+import { ClockIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -26,11 +28,11 @@ export default function CourseCard({ course }: { course: Course }) {
         <p className="font-medium">{formatPrice(course.price / 100)}</p>
         <div className="flex flex-wrap items-center gap-2">
           <Badge>
-            <BadgeCheckIcon />
+            <CategoryIcon categoryName={course.categoryName} />
             {course.categoryName}
           </Badge>
           <Badge variant="secondary">
-            <BookOpenIcon />
+            <LevelIcon level={course.level} />
             {course.level}
           </Badge>
           <Badge variant="outline">

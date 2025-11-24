@@ -2,27 +2,7 @@ import { getCategories } from '@/app/data/category/get-categories';
 import { Button } from '@/app/components/ui/button';
 import Link from 'next/link';
 import { Skeleton } from '@/app/components/ui/skeleton';
-import {
-  BrainIcon,
-  BriefcaseBusinessIcon,
-  CameraIcon,
-  HeartPulseIcon,
-  HouseIcon,
-  LanguagesIcon,
-  MonitorIcon,
-  SchoolIcon,
-} from 'lucide-react';
-
-const data: Record<string, React.ReactElement> = {
-  'IT & Software': <MonitorIcon />,
-  'Art & Design': <CameraIcon />,
-  'Health & Fitness': <HeartPulseIcon />,
-  'Business & Marketing': <BriefcaseBusinessIcon />,
-  'Personal Development': <BrainIcon />,
-  Languages: <LanguagesIcon />,
-  Academia: <SchoolIcon />,
-  'Home & Lifestyle': <HouseIcon />,
-};
+import CategoryIcon from '@/app/components/category-icon';
 
 export default async function Categories() {
   const categories = await getCategories();
@@ -33,7 +13,7 @@ export default async function Categories() {
         {categories.map((category) => (
           <Button key={category.id} variant="outline" size="lg" asChild>
             <Link href={`/courses?categoryName=${encodeURIComponent(category.name)}`}>
-              {data[category.name]}
+              <CategoryIcon categoryName={category.name} />
               {category.name}
             </Link>
           </Button>
