@@ -20,7 +20,7 @@ export default function CourseCard({ course }: { course: Course }) {
   return (
     <article className="relative rounded-lg shadow-md">
       <DropdownMenu>
-        <DropdownMenuTrigger asChild className="absolute top-2 right-2">
+        <DropdownMenuTrigger asChild className="absolute top-2 right-2 z-50">
           <Button variant="outline" size="icon">
             <EllipsisIcon />
           </Button>
@@ -47,13 +47,15 @@ export default function CourseCard({ course }: { course: Course }) {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <Image
-        src={getS3ObjectUrl(course.previewImageKey)}
-        alt="course preview image"
-        width={600}
-        height={400}
-        className="aspect-video w-full rounded-t-lg object-cover"
-      />
+      <div className="relative aspect-video w-full overflow-hidden rounded-t-lg">
+        <Image
+          src={getS3ObjectUrl(course.previewImageKey)}
+          alt="course preview image"
+          fill
+          sizes="(min-width: 808px) 50vw, 100vw"
+          className="object-cover"
+        />
+      </div>
       <div className="space-y-2 rounded-b-lg border border-t-0 p-2">
         <h4 className="line-clamp-1 font-semibold">{course.title}</h4>
         <p className="text-muted-foreground line-clamp-3 text-sm">{course.briefDescription}</p>

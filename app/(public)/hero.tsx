@@ -10,6 +10,7 @@ import Link from 'next/link';
 import Image, { ImageProps } from 'next/image';
 import work_table from '@/public/work_table.jpg';
 import girl_studying from '@/public/girl_studying.jpg';
+import { ArrowLeftIcon } from 'lucide-react';
 
 const data: {
   title: string;
@@ -30,7 +31,7 @@ const data: {
     description: 'Buy courses at the best prices!',
     imageSrc: girl_studying,
     linkHref: '/courses',
-    linkLabel: 'Check now!',
+    linkLabel: 'Check now',
   },
 ];
 
@@ -53,7 +54,10 @@ export default function Hero() {
                 <h2 className="text-2xl font-bold text-white lg:text-4xl">{title}</h2>
                 <p className="mt-2 text-white lg:text-lg">{description}</p>
                 <Button variant="outline" className="mt-4" asChild>
-                  <Link href={linkHref}>{linkLabel}</Link>
+                  <Link href={linkHref}>
+                    <ArrowLeftIcon />
+                    {linkLabel}
+                  </Link>
                 </Button>
               </div>
               <div className="absolute inset-0 z-10 bg-black/40 lg:bg-transparent lg:bg-gradient-to-r lg:from-black/80 lg:to-black/10" />
