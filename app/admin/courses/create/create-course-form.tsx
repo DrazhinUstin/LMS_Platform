@@ -66,7 +66,7 @@ export default function CreateCourseForm({ categories }: { categories: Category[
 
         toast('Course created successfully!');
 
-        router.push('/dashboard/courses');
+        router.push('/admin/courses');
       } catch {
         toast.error('Failed to create a course. Please try again.');
       }
