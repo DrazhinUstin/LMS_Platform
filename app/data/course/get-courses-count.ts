@@ -25,8 +25,8 @@ export default async function getCoursesCount({ filters = {} }: { filters?: Cour
       ...(level && { level }),
       ...((minPrice || maxPrice) && {
         price: {
-          ...(minPrice && { gte: +minPrice * 100 }),
-          ...(maxPrice && { lte: +maxPrice * 100 }),
+          ...(minPrice && { gte: Math.round(+minPrice * 100) }),
+          ...(maxPrice && { lte: Math.round(+maxPrice * 100) }),
         },
       }),
       ...(authorId && { authorId }),

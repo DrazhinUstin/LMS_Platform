@@ -78,6 +78,7 @@ export default function CreateCourseForm({ categories }: { categories: Category[
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="mx-auto w-full max-w-[820px] space-y-8 rounded-md border p-8 shadow-md"
+        noValidate
       >
         <FormField
           control={form.control}
@@ -173,9 +174,15 @@ export default function CreateCourseForm({ categories }: { categories: Category[
           name="price"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Price (in cents)</FormLabel>
+              <FormLabel>Price (in $)</FormLabel>
               <FormControl>
-                <Input type="number" placeholder="The price of your course (in cents)" {...field} />
+                <Input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  placeholder="The price of your course (in $)"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

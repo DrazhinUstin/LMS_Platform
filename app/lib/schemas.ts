@@ -18,7 +18,14 @@ export const CourseSchema = z.object({
   price: z.coerce
     .number<string>()
     .positive({ error: 'Only positive numbers are allowed!' })
-    .int({ error: 'Only integers are allowed!' }),
+    .refine(
+      (number) => {
+        const stringVal = number.toString();
+        const decimalPart = stringVal.split('.')[1];
+        return !decimalPart || decimalPart.length <= 2;
+      },
+      { error: 'Must be an integer or have no more than 2 decimal places' }
+    ),
   level: z.enum(Object.values(CourseLevel)),
   status: z.enum(Object.values(CourseStatus)),
 });

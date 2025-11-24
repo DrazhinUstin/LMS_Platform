@@ -40,19 +40,24 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       });
     }
 
+    const data: typeof validation.data = {
+      ...validation.data,
+      price: Math.round(validation.data.price * 100),
+    };
+
     let newStripePrice: Stripe.Price | null = null;
 
-    if (course.price !== validation.data.price) {
+    if (course.price !== data.price) {
       newStripePrice = await stripe.prices.create({
         product: course.stripeProductId,
         currency: 'usd',
-        unit_amount: validation.data.price,
+        unit_amount: data.price,
       });
     }
 
     await stripe.products.update(course.stripeProductId, {
-      name: validation.data.title,
-      description: validation.data.briefDescription,
+      name: data.title,
+      description: data.briefDescription,
       ...(newStripePrice && { default_price: newStripePrice.id }),
     });
 
@@ -62,7 +67,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
 
     const updatedCourse = await prisma.course.update({
       where: { id: course.id },
-      data: { ...validation.data, ...(newStripePrice && { stripePriceId: newStripePrice.id }) },
+      data: { ...data, ...(newStripePrice && { stripePriceId: newStripePrice.id }) },
     });
 
     return Response.json(updatedCourse);

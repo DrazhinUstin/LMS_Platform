@@ -48,7 +48,7 @@ export default function EditCourseForm({
       briefDescription: course.briefDescription,
       description: course.description,
       duration: course.duration.toString(),
-      price: course.price.toString(),
+      price: (course.price / 100).toString(),
       categoryName: course.categoryName,
       level: course.level,
       status: course.status,
@@ -84,6 +84,7 @@ export default function EditCourseForm({
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="mx-auto w-full max-w-[820px] space-y-8 rounded-md border p-8 shadow-md"
+        noValidate
       >
         <FormField
           control={form.control}
@@ -179,9 +180,15 @@ export default function EditCourseForm({
           name="price"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Price (in cents)</FormLabel>
+              <FormLabel>Price (in $)</FormLabel>
               <FormControl>
-                <Input type="number" placeholder="The price of your course (in cents)" {...field} />
+                <Input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  placeholder="The price of your course (in $)"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

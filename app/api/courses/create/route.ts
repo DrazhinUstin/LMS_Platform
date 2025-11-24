@@ -26,15 +26,20 @@ export async function POST(request: Request) {
       });
     }
 
+    const data: typeof validation.data = {
+      ...validation.data,
+      price: Math.round(validation.data.price * 100),
+    };
+
     const createdStripeProduct = await stripe.products.create({
-      name: validation.data.title,
-      description: validation.data.briefDescription,
-      default_price_data: { currency: 'usd', unit_amount: validation.data.price },
+      name: data.title,
+      description: data.briefDescription,
+      default_price_data: { currency: 'usd', unit_amount: data.price },
     });
 
     const createdCourse = await prisma.course.create({
       data: {
-        ...validation.data,
+        ...data,
         stripeProductId: createdStripeProduct.id,
         stripePriceId: createdStripeProduct.default_price as string,
         authorId: session.user.id,
