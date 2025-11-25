@@ -1,8 +1,5 @@
 'use client';
 
-import Image from 'next/image';
-import githubMark from '@/public/github-mark-white.svg';
-import googleMark from '@/public/google-mark.svg';
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
 import ButtonLoading from '@/app/components/button-loading';
@@ -11,6 +8,8 @@ import { authClient } from '@/app/lib/auth-client';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { SendIcon } from 'lucide-react';
+import GithubMark from '@/app/components/github-mark';
+import GoogleMark from '@/app/components/google-mark';
 
 export default function LoginForm() {
   return (
@@ -100,10 +99,11 @@ function SocialProviders() {
       <ButtonLoading
         type="button"
         className="w-full"
+        variant="outline"
         loading={isGithubLoginPending}
         onClick={loginWithGithub}
       >
-        <Image src={githubMark} alt="github mark" className="size-5" />
+        <GithubMark />
         Github
       </ButtonLoading>
       <ButtonLoading
@@ -113,7 +113,7 @@ function SocialProviders() {
         loading={isGoogleLoginPending}
         onClick={loginWithGoogle}
       >
-        <Image src={googleMark} alt="google mark" className="size-5" />
+        <GoogleMark />
         Google
       </ButtonLoading>
     </div>
