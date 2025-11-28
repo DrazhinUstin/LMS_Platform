@@ -46,7 +46,7 @@ export default async function CourseEnrollment({ courseId }: { courseId: string 
 
 export function CourseEnrollmentFallback() {
   return (
-    <Button className="w-full">
+    <Button type="button" className="w-full">
       <Loader2Icon className="animate-spin" />
     </Button>
   );

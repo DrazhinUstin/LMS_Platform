@@ -35,9 +35,9 @@ export default function NavbarMenu({ user }: { user: Session['user'] | null }) {
       >
         <span
           className={cn(
-            'bg-muted-foreground before:bg-muted-foreground after:bg-muted-foreground h-[1px] w-full transition-colors before:absolute before:top-0 before:left-0 before:h-[1px] before:w-full before:transition-transform after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:transition-transform',
+            'border-muted-foreground before:border-muted-foreground after:border-muted-foreground w-full border-b transition-colors before:absolute before:top-0 before:left-0 before:w-full before:border-b before:transition-transform after:absolute after:bottom-0 after:left-0 after:w-full after:border-b after:transition-transform',
             isMenuOpen &&
-              'bg-transparent before:top-auto before:rotate-[135deg] after:bottom-auto after:-rotate-[135deg]'
+              'border-b-transparent before:top-auto before:rotate-[135deg] after:bottom-auto after:-rotate-[135deg]'
           )}
         />
       </button>

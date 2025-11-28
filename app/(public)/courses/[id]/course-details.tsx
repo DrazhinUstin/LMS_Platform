@@ -28,7 +28,7 @@ export default function CourseDetails({ course }: { course: CourseTypeWithInclud
             src={getS3ObjectUrl(course.previewImageKey)}
             alt={course.title}
             fill
-            sizes="100vw"
+            sizes="(min-width: 1024px) 75vw, 100vw"
             className="rounded-lg object-cover"
             priority
           />
@@ -66,6 +66,7 @@ export default function CourseDetails({ course }: { course: CourseTypeWithInclud
           </li>
         </ul>
         <hr />
+        <h2 className="text-2xl font-bold">Course description</h2>
         <div
           className="prose prose-neutral prose-sm sm:prose-base dark:prose-invert"
           dangerouslySetInnerHTML={{ __html: course.description }}
