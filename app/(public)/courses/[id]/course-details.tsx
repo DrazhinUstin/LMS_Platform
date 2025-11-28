@@ -14,9 +14,10 @@ import {
   CollapsibleTrigger,
 } from '@/app/components/ui/collapsible';
 import { Button } from '@/app/components/ui/button';
-import EnrollButton from './enroll-button';
 import CategoryIcon from '@/app/components/category-icon';
 import LevelIcon from '@/app/components/level-icon';
+import { Suspense } from 'react';
+import CourseEnrollment, { CourseEnrollmentFallback } from './course-enrollment';
 
 export default function CourseDetails({ course }: { course: CourseTypeWithInclude }) {
   return (
@@ -144,7 +145,9 @@ export default function CourseDetails({ course }: { course: CourseTypeWithInclud
               <p>Available on mobile / desktop devices</p>
             </li>
           </ul>
-          <EnrollButton courseId={course.id} />
+          <Suspense fallback={<CourseEnrollmentFallback />}>
+            <CourseEnrollment courseId={course.id} />
+          </Suspense>
         </div>
       </div>
     </div>
