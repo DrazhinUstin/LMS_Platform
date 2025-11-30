@@ -7,8 +7,35 @@ import { auth } from '@/app/lib/auth';
 import { headers } from 'next/headers';
 import CategoryIcon from '@/app/components/category-icon';
 import LevelIcon from '@/app/components/level-icon';
+import type { Metadata } from 'next';
 
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+interface Props {
+  params: Promise<{ id: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    redirect('/login');
+  }
+
+  const course = await getUserCourse({ courseId: id, userId: session.user.id });
+
+  if (!course) notFound();
+
+  return {
+    title: {
+      absolute: `Course: ${course.title}`,
+    },
+  };
+}
+
+export default async function Page({ params }: Props) {
   const { id } = await params;
 
   const session = await auth.api.getSession({

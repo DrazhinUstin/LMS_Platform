@@ -10,6 +10,11 @@ import PaginationBar from '@/app/components/pagination-bar';
 import { Button } from '@/app/components/ui/button';
 import Link from 'next/link';
 import { SquarePenIcon } from 'lucide-react';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Courses',
+};
 
 interface Props {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;

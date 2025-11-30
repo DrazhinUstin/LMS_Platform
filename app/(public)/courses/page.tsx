@@ -6,6 +6,11 @@ import CourseCard, { CourseCardSkeleton } from './course-card';
 import { getCategories } from '@/app/data/category/get-categories';
 import getCoursesCount from '@/app/data/course/get-courses-count';
 import PaginationBar from '@/app/components/pagination-bar';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Courses',
+};
 
 interface Props {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;

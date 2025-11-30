@@ -2,6 +2,11 @@ import { prisma } from '@/app/lib/prisma';
 import { notFound } from 'next/navigation';
 import EditCourseStructure from './edit-course-structure';
 import CreateChapterDialog from './create-chapter-dialog';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Edit course structure',
+};
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

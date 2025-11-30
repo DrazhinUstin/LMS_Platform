@@ -1,5 +1,10 @@
 import { prisma } from '@/app/lib/prisma';
 import CreateCourseForm from './create-course-form';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Create course',
+};
 
 export default async function Page() {
   const categories = await prisma.category.findMany();

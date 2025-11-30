@@ -3,6 +3,15 @@ import { headers } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 import Sidebar from '@/app/components/sidebar';
 import { HouseIcon, LayoutGridIcon, SquarePenIcon } from 'lucide-react';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: {
+    template: '%s | Admin',
+    default: 'Admin',
+    absolute: 'Admin',
+  },
+};
 
 const sidebarNavLinks: React.ComponentProps<typeof Sidebar>['navLinks'] = [
   { title: 'Home', icon: <HouseIcon className="size-5" />, href: '/admin' },

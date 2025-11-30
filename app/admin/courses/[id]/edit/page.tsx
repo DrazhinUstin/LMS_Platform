@@ -1,6 +1,11 @@
 import { prisma } from '@/app/lib/prisma';
 import EditCourseForm from './edit-course-form';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Edit course details',
+};
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

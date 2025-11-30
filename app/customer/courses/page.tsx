@@ -11,6 +11,11 @@ import { getEnrollmentsCount } from '@/app/data/enrollment/get-enrollments-count
 import PaginationBar from '@/app/components/pagination-bar';
 import SortOrder from '@/app/components/sort-order';
 import CourseCard, { CourseCardSkeleton } from './course-card';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Courses',
+};
 
 interface Props {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;

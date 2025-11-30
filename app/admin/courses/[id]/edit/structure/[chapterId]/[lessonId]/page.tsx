@@ -1,6 +1,11 @@
 import { prisma } from '@/app/lib/prisma';
 import { notFound } from 'next/navigation';
 import EditLessonForm from './edit-lesson-form';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Edit lesson',
+};
 
 export default async function Page({
   params,
