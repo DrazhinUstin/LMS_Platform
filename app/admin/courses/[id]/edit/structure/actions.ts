@@ -2,17 +2,14 @@
 
 import { prisma } from '@/app/lib/prisma';
 import { Prisma } from '@/generated/prisma';
-import { auth } from '@/app/lib/auth';
-import { headers } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import z from 'zod';
 import { ChapterSchema, LessonSchema } from '@/app/lib/schemas';
+import { getSession } from '@/app/lib/auth.get-session';
 
 export async function createChapter(courseId: string, data: z.infer<typeof ChapterSchema>) {
   try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
+    const session = await getSession();
 
     if (!session || session.user.role !== 'admin') {
       throw new Error('Unauthorized!');
@@ -47,9 +44,7 @@ export async function createChapter(courseId: string, data: z.infer<typeof Chapt
 
 export async function editChapter(chapterId: string, data: z.infer<typeof ChapterSchema>) {
   try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
+    const session = await getSession();
 
     if (!session || session.user.role !== 'admin') {
       throw new Error('Unauthorized!');
@@ -83,9 +78,7 @@ export async function deleteChapter({
   chapterId: string;
 }) {
   try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
+    const session = await getSession();
 
     if (!session || session.user.role !== 'admin') {
       throw new Error('Unauthorized!');
@@ -124,9 +117,7 @@ export async function deleteChapter({
 
 export async function createLesson(chapterId: string, data: z.infer<typeof LessonSchema>) {
   try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
+    const session = await getSession();
 
     if (!session || session.user.role !== 'admin') {
       throw new Error('Unauthorized!');
@@ -166,9 +157,7 @@ export async function deleteLesson({
   lessonId: string;
 }) {
   try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
+    const session = await getSession();
 
     if (!session || session.user.role !== 'admin') {
       throw new Error('Unauthorized!');
@@ -209,9 +198,7 @@ type ChapterPosition = Prisma.ChapterGetPayload<{ select: { id: true; position: 
 
 export async function reorderChapters(courseId: string, data: ChapterPosition[]) {
   try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
+    const session = await getSession();
 
     if (!session || session.user.role !== 'admin') {
       throw new Error('Unauthorized!');
@@ -234,9 +221,7 @@ type LessonPosition = Prisma.LessonGetPayload<{ select: { id: true; position: tr
 
 export async function reorderLessons(courseId: string, data: LessonPosition[]) {
   try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
+    const session = await getSession();
 
     if (!session || session.user.role !== 'admin') {
       throw new Error('Unauthorized!');

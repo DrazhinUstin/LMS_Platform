@@ -1,6 +1,4 @@
 import CourseCard, { CourseCardSkeleton } from './course-card';
-import { auth } from '@/app/lib/auth';
-import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import SortOrder from '@/app/components/sort-order';
 import { courseSortingOrderData, coursesPerPage, getCourses } from '@/app/data/course/get-courses';
@@ -11,6 +9,7 @@ import { Button } from '@/app/components/ui/button';
 import Link from 'next/link';
 import { SquarePenIcon } from 'lucide-react';
 import type { Metadata } from 'next';
+import { getSession } from '@/app/lib/auth.get-session';
 
 export const metadata: Metadata = {
   title: 'Courses',
@@ -29,9 +28,7 @@ export default async function Page(props: Props) {
 
   const currentPage = Number(page) || 1;
 
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getSession();
 
   if (!session) {
     redirect('/login');

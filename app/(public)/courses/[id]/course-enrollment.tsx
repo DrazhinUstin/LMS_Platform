@@ -1,15 +1,12 @@
 import { Button } from '@/app/components/ui/button';
-import { auth } from '@/app/lib/auth';
 import { CirclePlayIcon, Loader2Icon, LogInIcon } from 'lucide-react';
-import { headers } from 'next/headers';
 import Link from 'next/link';
 import EnrollButton from './enroll-button';
 import { getEnrollment } from '@/app/data/enrollment/get-enrollment';
+import { getSession } from '@/app/lib/auth.get-session';
 
 export default async function CourseEnrollment({ courseId }: { courseId: string }) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getSession();
 
   if (!session) {
     return (

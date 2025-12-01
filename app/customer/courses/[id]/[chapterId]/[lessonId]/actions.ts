@@ -1,15 +1,12 @@
 'use server';
 
-import { auth } from '@/app/lib/auth';
+import { getSession } from '@/app/lib/auth.get-session';
 import { prisma } from '@/app/lib/prisma';
 import { revalidatePath } from 'next/cache';
-import { headers } from 'next/headers';
 
 export async function toggleLessonCompletion(lessonId: string) {
   try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
+    const session = await getSession();
 
     if (!session) {
       throw new Error('Unauthorized!');

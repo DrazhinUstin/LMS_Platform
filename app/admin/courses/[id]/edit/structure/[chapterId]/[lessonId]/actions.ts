@@ -1,17 +1,14 @@
 'use server';
 
 import { prisma } from '@/app/lib/prisma';
-import { auth } from '@/app/lib/auth';
-import { headers } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import z from 'zod';
 import { LessonSchema } from '@/app/lib/schemas';
+import { getSession } from '@/app/lib/auth.get-session';
 
 export async function editLesson(lessonId: string, data: z.infer<typeof LessonSchema>) {
   try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
+    const session = await getSession();
 
     if (!session || session.user.role !== 'admin') {
       throw new Error('Unauthorized!');

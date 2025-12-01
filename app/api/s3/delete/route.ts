@@ -1,8 +1,7 @@
-import { auth } from '@/app/lib/auth';
+import { getSession } from '@/app/lib/auth.get-session';
 import { s3Client } from '@/app/lib/s3-client';
 import { env } from '@/env';
 import { DeleteObjectCommand } from '@aws-sdk/client-s3';
-import { headers } from 'next/headers';
 import z from 'zod';
 
 const schema = z.object({
@@ -11,9 +10,7 @@ const schema = z.object({
 
 export async function DELETE(request: Request) {
   try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
+    const session = await getSession();
 
     if (!session || session.user.role !== 'admin') {
       return new Response('Unauthorized!', {

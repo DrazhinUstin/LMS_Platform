@@ -1,13 +1,10 @@
-import { headers } from 'next/headers';
-import { auth } from '@/app/lib/auth';
 import { prisma } from '@/app/lib/prisma';
 import { LibraryBigIcon, NotebookPenIcon, UserRoundCheck, UsersRoundIcon } from 'lucide-react';
 import { Skeleton } from '@/app/components/ui/skeleton';
+import { getSession } from '@/app/lib/auth.get-session';
 
 export default async function Totals() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getSession();
 
   if (!session) {
     return null;

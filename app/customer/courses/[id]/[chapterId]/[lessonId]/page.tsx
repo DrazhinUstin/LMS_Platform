@@ -1,10 +1,9 @@
 import { notFound, redirect } from 'next/navigation';
 import LessonDetails from './lesson-details';
-import { auth } from '@/app/lib/auth';
-import { headers } from 'next/headers';
 import CompletionButton from './completion-button';
 import { getUserLesson } from '@/app/data/lesson/get-user-lesson';
 import type { Metadata } from 'next';
+import { getSession } from '@/app/lib/auth.get-session';
 
 interface Props {
   params: Promise<{ lessonId: string }>;
@@ -13,9 +12,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lessonId } = await params;
 
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getSession();
 
   if (!session) {
     redirect('/login');
@@ -35,9 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { lessonId } = await params;
 
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getSession();
 
   if (!session) {
     redirect('/login');

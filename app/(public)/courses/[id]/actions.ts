@@ -1,21 +1,16 @@
 'use server';
 
-import { auth } from '@/app/lib/auth';
+import { getSession } from '@/app/lib/auth.get-session';
 import { prisma } from '@/app/lib/prisma';
 import { stripe } from '@/app/lib/stripe';
 import { env } from '@/env';
-import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export async function enrollInCourse(courseId: string) {
   let checkoutUrl: string;
 
   try {
-    const user = (
-      await auth.api.getSession({
-        headers: await headers(),
-      })
-    )?.user;
+    const user = (await getSession())?.user;
 
     if (!user) {
       throw new Error('Unauthorized!');

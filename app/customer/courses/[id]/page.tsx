@@ -3,11 +3,10 @@ import { notFound, redirect } from 'next/navigation';
 import { getS3ObjectUrl } from '@/app/lib/utils';
 import { ClockIcon } from 'lucide-react';
 import Image from 'next/image';
-import { auth } from '@/app/lib/auth';
-import { headers } from 'next/headers';
 import CategoryIcon from '@/app/components/category-icon';
 import LevelIcon from '@/app/components/level-icon';
 import type { Metadata } from 'next';
+import { getSession } from '@/app/lib/auth.get-session';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -16,9 +15,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
 
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getSession();
 
   if (!session) {
     redirect('/login');
@@ -38,9 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { id } = await params;
 
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getSession();
 
   if (!session) {
     redirect('/login');

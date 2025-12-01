@@ -1,8 +1,7 @@
-import { auth } from '@/app/lib/auth';
-import { headers } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 import VerifyOtpForm from './verify-otp-form';
 import type { Metadata } from 'next';
+import { getSession } from '@/app/lib/auth.get-session';
 
 export const metadata: Metadata = {
   title: 'Verify OTP',
@@ -13,9 +12,7 @@ export default async function Page({
 }: {
   searchParams: Promise<{ email?: string }>;
 }) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getSession();
 
   if (session) {
     redirect('/');

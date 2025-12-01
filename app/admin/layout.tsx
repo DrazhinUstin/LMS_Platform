@@ -1,9 +1,8 @@
-import { auth } from '@/app/lib/auth';
-import { headers } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 import Sidebar from '@/app/components/sidebar';
 import { HouseIcon, LayoutGridIcon, SquarePenIcon } from 'lucide-react';
 import type { Metadata } from 'next';
+import { getSession } from '@/app/lib/auth.get-session';
 
 export const metadata: Metadata = {
   title: {
@@ -28,9 +27,7 @@ export default async function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getSession();
 
   if (!session) {
     redirect('/login');

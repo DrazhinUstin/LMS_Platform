@@ -1,15 +1,12 @@
-import { auth } from '@/app/lib/auth';
+import { getSession } from '@/app/lib/auth.get-session';
 import { prisma } from '@/app/lib/prisma';
 import { CourseSchema } from '@/app/lib/schemas';
 import { stripe } from '@/app/lib/stripe';
-import { headers } from 'next/headers';
 import Stripe from 'stripe';
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
+    const session = await getSession();
 
     if (!session || session.user.role !== 'admin') {
       return new Response('Unauthorized!', {
