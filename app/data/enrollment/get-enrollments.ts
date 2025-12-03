@@ -23,6 +23,7 @@ const getEnrollmentSelect = (userId: string) => {
   return {
     amount: true,
     status: true,
+    createdAt: true,
     course: {
       select: {
         id: true,

@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import Sidebar from '@/app/components/sidebar';
-import { HouseIcon, LayoutGridIcon } from 'lucide-react';
+import { CreditCardIcon, HouseIcon, LayoutGridIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import { getSession } from '@/app/lib/auth.get-session';
 
@@ -15,6 +15,11 @@ export const metadata: Metadata = {
 const sidebarNavLinks: React.ComponentProps<typeof Sidebar>['navLinks'] = [
   { title: 'Home', icon: <HouseIcon className="size-5" />, href: '/customer' },
   { title: 'My courses', icon: <LayoutGridIcon className="size-5" />, href: '/customer/courses' },
+  {
+    title: 'Enrollments',
+    icon: <CreditCardIcon className="size-5" />,
+    href: '/customer/enrollments',
+  },
 ];
 
 export default async function Layout({

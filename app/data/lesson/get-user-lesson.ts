@@ -23,7 +23,10 @@ export const getUserLesson = cache(
   }): Promise<UserLessonTypeWithInclude | null> => {
     try {
       const course = await prisma.lesson.findUnique({
-        where: { id: lessonId },
+        where: {
+          id: lessonId,
+          chapter: { course: { enrollments: { some: { userId, status: 'ACTIVE' } } } },
+        },
         include: getUserLessonInclude(userId),
       });
       return course;

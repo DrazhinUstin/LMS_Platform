@@ -22,7 +22,7 @@ export default function Sidebar({
   return (
     <aside
       className={cn(
-        'bg-background fixed top-0 grid h-screen w-60 grid-rows-[auto_1fr_auto] gap-y-8 border-r transition-[margin] md:sticky',
+        'bg-background fixed top-0 z-50 grid h-screen w-60 grid-rows-[auto_1fr_auto] gap-y-8 border-r transition-[margin] md:sticky',
         !isSidebarOpen && '-ml-52'
       )}
     >

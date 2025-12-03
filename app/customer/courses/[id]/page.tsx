@@ -52,7 +52,7 @@ export default async function Page({ params }: Props) {
           src={getS3ObjectUrl(course.previewImageKey)}
           alt={course.title}
           fill
-          sizes="100vw"
+          sizes="(min-width: 1024px) 75vw, 100vw"
           className="rounded-lg object-cover"
           priority
         />

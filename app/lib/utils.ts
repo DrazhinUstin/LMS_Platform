@@ -9,6 +9,14 @@ export function formatPrice(amount: number, locale = 'en-US', currency = 'USD') 
   return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(amount);
 }
 
+export function formatDate(date: Date | number | string, locale = 'en-US') {
+  return new Intl.DateTimeFormat(locale, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  }).format(typeof date === 'string' ? new Date(date) : date);
+}
+
 export function getS3ObjectUrl(s3Key: string) {
   return `https://lms-platform-by-ustin.t3.storage.dev/${s3Key}`;
 }
