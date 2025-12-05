@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import Sidebar from '@/app/components/sidebar';
-import { CreditCardIcon, HouseIcon, LayoutGridIcon } from 'lucide-react';
+import { HistoryIcon, HouseIcon, LayoutGridIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import { getSession } from '@/app/lib/auth.get-session';
 
@@ -17,7 +17,7 @@ const sidebarNavLinks: React.ComponentProps<typeof Sidebar>['navLinks'] = [
   { title: 'My courses', icon: <LayoutGridIcon className="size-5" />, href: '/customer/courses' },
   {
     title: 'Enrollments',
-    icon: <CreditCardIcon className="size-5" />,
+    icon: <HistoryIcon className="size-5" />,
     href: '/customer/enrollments',
   },
 ];

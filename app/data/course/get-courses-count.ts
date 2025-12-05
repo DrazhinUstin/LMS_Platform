@@ -30,7 +30,9 @@ export default async function getCoursesCount({ filters = {} }: { filters?: Cour
         },
       }),
       ...(authorId && { authorId }),
-      ...(notEnrolledByUserId && { enrollments: { none: { userId: notEnrolledByUserId } } }),
+      ...(notEnrolledByUserId && {
+        enrollments: { none: { userId: notEnrolledByUserId, status: 'ACTIVE' } },
+      }),
     };
 
     const count = await prisma.course.count({ where });

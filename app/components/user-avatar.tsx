@@ -19,7 +19,7 @@ export default function UserAvatar({
     <Image
       src={src || default_avatar}
       alt={alt || 'user avatar'}
-      className={cn('rounded-full', className)}
+      className={cn('shrink-0 rounded-full', className)}
       width={src ? width : undefined}
       height={src ? height : undefined}
       {...props}

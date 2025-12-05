@@ -62,7 +62,9 @@ export async function getCourses({
         },
       }),
       ...(authorId && { authorId }),
-      ...(notEnrolledByUserId && { enrollments: { none: { userId: notEnrolledByUserId } } }),
+      ...(notEnrolledByUserId && {
+        enrollments: { none: { userId: notEnrolledByUserId, status: 'ACTIVE' } },
+      }),
     };
 
     const courses = await prisma.course.findMany({
