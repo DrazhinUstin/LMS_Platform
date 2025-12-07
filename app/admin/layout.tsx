@@ -1,6 +1,6 @@
 import { notFound, redirect } from 'next/navigation';
 import Sidebar from '@/app/components/sidebar';
-import { HouseIcon, LayoutGridIcon, SquarePenIcon } from 'lucide-react';
+import { CircleDollarSign, HouseIcon, LayoutGridIcon, SquarePenIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import { getSession } from '@/app/lib/auth.get-session';
 
@@ -19,6 +19,11 @@ const sidebarNavLinks: React.ComponentProps<typeof Sidebar>['navLinks'] = [
     title: 'Quick create',
     icon: <SquarePenIcon className="size-5" />,
     href: '/admin/courses/create',
+  },
+  {
+    title: 'Enrollments',
+    icon: <CircleDollarSign className="size-5" />,
+    href: '/admin/enrollments',
   },
 ];
 
