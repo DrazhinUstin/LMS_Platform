@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import Totals, { TotalsSkeleton } from './totals';
 import EnrollmentsPerDay, { EnrollmentsPerDaySkeleton } from './enrollments-per-day';
+import LatestEnrollments, { LatestEnrollmentsSkeleton } from './latest-enrollments';
 
 export default function Page() {
   return (
@@ -10,6 +11,9 @@ export default function Page() {
       </Suspense>
       <Suspense fallback={<EnrollmentsPerDaySkeleton />}>
         <EnrollmentsPerDay />
+      </Suspense>
+      <Suspense fallback={<LatestEnrollmentsSkeleton />}>
+        <LatestEnrollments />
       </Suspense>
     </main>
   );

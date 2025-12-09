@@ -45,11 +45,11 @@ export type EnrollmentTypeWithSelect = Prisma.EnrollmentGetPayload<{
 }>;
 
 export async function getEnrollments({
-  filters,
+  filters = {},
   orderBy = enrollmentSortingOrderData[0].value,
   page = 1,
 }: {
-  filters: EnrollmentFilters;
+  filters?: EnrollmentFilters;
   orderBy?: EnrollmentSortingOrder;
   page?: number;
 }): Promise<EnrollmentTypeWithSelect[]> {

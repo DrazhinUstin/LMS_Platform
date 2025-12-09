@@ -19,7 +19,7 @@ export default function EnrollmentsList({
       </li>
       {enrollments.map((enrollment, index) => (
         <li
-          key={enrollment.course.id}
+          key={enrollment.user.id + enrollment.course.id}
           className={cn(
             'grid gap-2 border-b py-4 lg:grid-cols-[2fr_2fr_1fr_1fr] lg:items-center',
             index === 0 && 'border-t lg:border-t-0'
