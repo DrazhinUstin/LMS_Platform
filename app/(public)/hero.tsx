@@ -24,7 +24,7 @@ const data: {
     description: 'Choose your desired course from a wide range!',
     imageSrc: work_table,
     linkHref: '/courses',
-    linkLabel: 'View courses',
+    linkLabel: 'Explore courses',
   },
   {
     title: 'Learn more, spend less!',

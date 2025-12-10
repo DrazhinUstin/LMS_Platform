@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import Categories, { CategoriesSkeleton } from './categories';
 import Hero from './hero';
 import Featured from './featured';
+import MotivationCards from './motivation-cards';
 
 export default async function Page({
   searchParams,
@@ -12,6 +13,7 @@ export default async function Page({
   return (
     <main className="mx-auto w-[90vw] max-w-7xl space-y-8 py-8">
       <Hero />
+      <MotivationCards />
       <Suspense fallback={<CategoriesSkeleton />}>
         <Categories />
       </Suspense>
