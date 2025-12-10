@@ -3,6 +3,7 @@ import Categories, { CategoriesSkeleton } from './categories';
 import Hero from './hero';
 import Featured from './featured';
 import MotivationCards from './motivation-cards';
+import FAQ from './faq';
 
 export default async function Page({
   searchParams,
@@ -18,6 +19,7 @@ export default async function Page({
         <Categories />
       </Suspense>
       <Featured order={featured_order as React.ComponentProps<typeof Featured>['order']} />
+      <FAQ />
     </main>
   );
 }
