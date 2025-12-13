@@ -29,7 +29,7 @@ export default async function CourseEnrollment({ courseId }: { courseId: string 
       <div className="space-y-2">
         <p className="text-muted-foreground text-center text-sm">You already own this course</p>
         <Button className="w-full" asChild>
-          <Link href={`/customer/courses/${courseId}`}>
+          <Link href={`/dashboard/courses/${courseId}`}>
             <CirclePlayIcon />
             Watch course
           </Link>

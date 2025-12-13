@@ -29,7 +29,7 @@ export default function EnrollmentsList({
             <ShoppingCartIcon className="size-5 shrink-0" />
             <h4 className="line-clamp-1">
               <Link
-                href={`/customer/courses/${enrollment.course.id}`}
+                href={`/dashboard/courses/${enrollment.course.id}`}
                 className="text-primary hover:underline"
               >
                 {enrollment.course.title}

@@ -23,7 +23,7 @@ export default function CourseCard({ course }: { course: EnrollmentTypeWithSelec
   }, 0);
 
   return (
-    <Link href={`/customer/courses/${course.id}`}>
+    <Link href={`/dashboard/courses/${course.id}`}>
       <article className="group relative rounded-lg shadow-md">
         <div className="relative aspect-video w-full overflow-hidden rounded-t-lg">
           <Image

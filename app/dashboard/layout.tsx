@@ -13,12 +13,12 @@ export const metadata: Metadata = {
 };
 
 const sidebarNavLinks: React.ComponentProps<typeof Sidebar>['navLinks'] = [
-  { title: 'Home', icon: <HouseIcon className="size-5" />, href: '/customer' },
-  { title: 'My courses', icon: <LayoutGridIcon className="size-5" />, href: '/customer/courses' },
+  { title: 'Home', icon: <HouseIcon className="size-5" />, href: '/dashboard' },
+  { title: 'My courses', icon: <LayoutGridIcon className="size-5" />, href: '/dashboard/courses' },
   {
     title: 'Enrollments',
     icon: <HistoryIcon className="size-5" />,
-    href: '/customer/enrollments',
+    href: '/dashboard/enrollments',
   },
 ];
 

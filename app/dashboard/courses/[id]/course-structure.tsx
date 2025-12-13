@@ -54,7 +54,7 @@ export default function CourseStructure({ course }: { course: UserCourseTypeWith
                 )}
                 asChild
               >
-                <Link href={`/customer/courses/${course.id}/${chapter.id}/${lesson.id}`}>
+                <Link href={`/dashboard/courses/${course.id}/${chapter.id}/${lesson.id}`}>
                   <span className="bg-primary/10 grid size-6 shrink-0 place-items-center rounded-full">
                     <PlayIcon />
                   </span>

@@ -49,7 +49,7 @@ export async function toggleLessonCompletion(lessonId: string) {
       create: { lessonId, userId: session.user.id, isCompleted: true },
     });
 
-    revalidatePath(`/customer/courses/${lesson.chapter.courseId}`);
+    revalidatePath(`/dashboard/courses/${lesson.chapter.courseId}`);
   } catch (error) {
     console.error(error);
     throw error;
