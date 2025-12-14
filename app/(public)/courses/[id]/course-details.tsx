@@ -18,6 +18,8 @@ import CategoryIcon from '@/app/components/category-icon';
 import LevelIcon from '@/app/components/level-icon';
 import { Suspense } from 'react';
 import CourseEnrollment, { CourseEnrollmentFallback } from './course-enrollment';
+import StarRating from '@/app/components/star-rating';
+import Link from 'next/link';
 
 export default function CourseDetails({ course }: { course: CourseTypeWithInclude }) {
   return (
@@ -34,6 +36,17 @@ export default function CourseDetails({ course }: { course: CourseTypeWithInclud
           />
         </div>
         <h2 className="text-2xl font-bold">{course.title}</h2>
+        <div className="flex items-center gap-x-2">
+          <Link href={`/courses/${course.id}/reviews`}>
+            <StarRating rating={course.avgRating ?? 0} size="lg" />
+          </Link>
+          <Link
+            href={`/courses/${course.id}/reviews`}
+            className="text-muted-foreground text-sm hover:underline"
+          >
+            ({course._count.reviews} reviews)
+          </Link>
+        </div>
         <p>{course.briefDescription}</p>
         <hr />
         <ul className="flex flex-wrap gap-x-4 gap-y-2">

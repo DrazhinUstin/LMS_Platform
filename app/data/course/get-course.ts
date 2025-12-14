@@ -13,7 +13,7 @@ const courseInclude = {
     },
     orderBy: { position: 'asc' },
   },
-  _count: { select: { chapters: true } },
+  _count: { select: { chapters: true, reviews: true } },
 } satisfies Prisma.CourseInclude;
 
 export type CourseTypeWithInclude = Prisma.CourseGetPayload<{

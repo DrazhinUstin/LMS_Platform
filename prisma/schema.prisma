@@ -23,6 +23,7 @@ model User {
   authoredCourses  Course[]
   enrollments      Enrollment[]
   lessonProgresses LessonProgress[]
+  reviews          Review[]
 
   role       String?
   banned     Boolean?  @default(false)
@@ -98,6 +99,7 @@ model Course {
   duration         Int
   price            Int
   stripePriceId    String       @unique
+  avgRating        Float?
   level            CourseLevel  @default(BEGINNER)
   status           CourseStatus @default(DRAFT)
   category         Category     @relation(fields: [categoryName], references: [name], onDelete: Cascade)
@@ -108,6 +110,7 @@ model Course {
   updatedAt        DateTime     @updatedAt
   chapters         Chapter[]
   enrollments      Enrollment[]
+  reviews          Review[]
 
   @@map("courses")
 }
@@ -184,4 +187,20 @@ model LessonProgress {
 
   @@id([lessonId, userId])
   @@map("lesson_progresses")
+}
+
+model Review {
+  id          String   @id @default(uuid())
+  title       String?
+  description String?
+  rating      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId    String
+
+  @@unique([userId, courseId])
+  @@map("reviews")
 }
