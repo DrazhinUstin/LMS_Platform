@@ -40,3 +40,16 @@ export const LessonSchema = z.object({
   posterKey: requiredString.optional(),
   videoKey: requiredString.optional(),
 });
+
+export const ReviewSchema = z.object({
+  title: z.string().max(100, 'The title must not be longer than 100 characters!').optional(),
+  description: z
+    .string()
+    .max(500, 'The description must not be longer than 500 characters!')
+    .optional(),
+  rating: z
+    .number()
+    .int()
+    .min(1, { error: 'Rating must be bigger than 1' })
+    .max(5, { error: 'Rating must be smaller than 5' }),
+});

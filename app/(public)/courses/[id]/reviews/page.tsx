@@ -11,6 +11,7 @@ import { ArrowLeftIcon } from 'lucide-react';
 import Image from 'next/image';
 import { getS3ObjectUrl } from '@/app/lib/utils';
 import Link from 'next/link';
+import CreateReviewDialog from './create-review-dialog';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -63,6 +64,9 @@ export default async function Page(props: Props) {
         </div>
         <h4 className="font-semibold">{course.title}</h4>
       </Link>
+      <div>
+        <CreateReviewDialog courseId={course.id} />
+      </div>
       <h2 className="text-center text-2xl font-bold">Reviews</h2>
       <div className="space-y-8">
         <div className="flex justify-end">
