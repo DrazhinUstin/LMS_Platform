@@ -31,9 +31,9 @@ import { editReview } from './actions';
 import { FeatherIcon } from 'lucide-react';
 import { Textarea } from '@/app/components/ui/textarea';
 import StarRating from '@/app/components/star-rating';
-import { ReviewTypeWithSelect } from '@/app/data/review/get-reviews';
+import type { ReviewSummary } from '@/app/lib/definitions';
 
-export default function EditReviewDialog({ review }: { review: ReviewTypeWithSelect }) {
+export default function EditReviewDialog({ review }: { review: ReviewSummary }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [isPending, startTransition] = useTransition();

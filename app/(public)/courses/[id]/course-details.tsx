@@ -1,4 +1,3 @@
-import type { CourseTypeWithInclude } from '@/app/data/course/get-course';
 import { formatPrice, getS3ObjectUrl } from '@/app/lib/utils';
 import {
   ChevronsUpDownIcon,
@@ -20,8 +19,9 @@ import { Suspense } from 'react';
 import CourseEnrollment, { CourseEnrollmentFallback } from './course-enrollment';
 import StarRating from '@/app/components/star-rating';
 import Link from 'next/link';
+import type { CourseDetail } from '@/app/lib/definitions';
 
-export default function CourseDetails({ course }: { course: CourseTypeWithInclude }) {
+export default function CourseDetails({ course }: { course: CourseDetail }) {
   return (
     <div className="grid items-start gap-8 lg:grid-cols-3">
       <div className="space-y-8 lg:col-span-2">

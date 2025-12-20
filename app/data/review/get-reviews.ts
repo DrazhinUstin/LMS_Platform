@@ -1,38 +1,14 @@
 import 'server-only';
 import { prisma } from '@/app/lib/prisma';
-import type { Prisma, Review } from '@/generated/prisma';
-
-export interface ReviewFilters {
-  userId?: string;
-  courseId?: string;
-}
-
-export type ReviewSortingOrder = { [key in keyof Review]?: Prisma.SortOrder };
-
-export const reviewSortingOrderData: {
-  id: number;
-  name: string;
-  value: ReviewSortingOrder;
-}[] = [
-  { id: 1, name: 'Newest first', value: { createdAt: 'desc' } },
-  { id: 2, name: 'Oldest first', value: { createdAt: 'asc' } },
-];
+import { reviewSortingOrderData } from '@/app/lib/sorting-order-data';
+import {
+  type ReviewFilters,
+  type ReviewSortingOrder,
+  type ReviewSummary,
+  reviewSummarySelect,
+} from '@/app/lib/definitions';
 
 export const reviewsPerPage = 8;
-
-export const reviewSelect = {
-  id: true,
-  title: true,
-  description: true,
-  rating: true,
-  createdAt: true,
-  user: {
-    select: { id: true, name: true, image: true },
-  },
-  course: { select: { id: true, title: true } },
-} satisfies Prisma.ReviewSelect;
-
-export type ReviewTypeWithSelect = Prisma.ReviewGetPayload<{ select: typeof reviewSelect }>;
 
 export async function getReviews({
   filters = {},
@@ -42,7 +18,7 @@ export async function getReviews({
   filters?: ReviewFilters;
   orderBy?: ReviewSortingOrder;
   page?: number;
-}): Promise<ReviewTypeWithSelect[]> {
+}): Promise<ReviewSummary[]> {
   try {
     const { userId, courseId } = filters;
 
@@ -54,7 +30,7 @@ export async function getReviews({
       orderBy,
       skip: (page - 1) * reviewsPerPage,
       take: reviewsPerPage,
-      select: reviewSelect,
+      select: reviewSummarySelect,
     });
 
     return reviews;

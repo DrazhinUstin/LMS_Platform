@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/app/components/ui/select';
-import type { CourseFilters } from '@/app/data/course/get-courses';
+import type { CourseFilters } from '@/app/lib/definitions';
 import { CourseLevel, type Category } from '@/generated/prisma';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';

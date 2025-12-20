@@ -16,9 +16,9 @@ import { useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import { deleteReview } from './actions';
 import { Trash2Icon } from 'lucide-react';
-import { ReviewTypeWithSelect } from '@/app/data/review/get-reviews';
+import type { ReviewSummary } from '@/app/lib/definitions';
 
-export default function DeleteReviewDialog({ review }: { review: ReviewTypeWithSelect }) {
+export default function DeleteReviewDialog({ review }: { review: ReviewSummary }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [isPending, startTransition] = useTransition();

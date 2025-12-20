@@ -1,12 +1,13 @@
 import PaginationBar from '@/app/components/pagination-bar';
 import SortOrder from '@/app/components/sort-order';
 import { getCourse } from '@/app/data/course/get-course';
-import { getReviews, reviewSortingOrderData, reviewsPerPage } from '@/app/data/review/get-reviews';
+import { getReviews, reviewsPerPage } from '@/app/data/review/get-reviews';
 import { getReviewsCount } from '@/app/data/review/get-reviews-count';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import ReviewCard, { ReviewCardSkeleton } from './review-card';
+import { reviewSortingOrderData } from '@/app/lib/sorting-order-data';
 
 type Props = {
   params: Promise<{ id: string }>;

@@ -1,7 +1,7 @@
 import 'server-only';
 import { prisma } from '@/app/lib/prisma';
 import { cache } from 'react';
-import { reviewSelect, ReviewTypeWithSelect } from '@/app/data/review/get-reviews';
+import { type ReviewSummary, reviewSummarySelect } from '@/app/lib/definitions';
 
 export const getReview = cache(
   async ({
@@ -10,11 +10,11 @@ export const getReview = cache(
   }: {
     userId: string;
     courseId: string;
-  }): Promise<ReviewTypeWithSelect | null> => {
+  }): Promise<ReviewSummary | null> => {
     try {
       const review = await prisma.review.findUnique({
         where: { userId_courseId: { userId, courseId } },
-        select: reviewSelect,
+        select: reviewSummarySelect,
       });
       return review;
     } catch (error) {

@@ -1,7 +1,7 @@
 import CourseCard, { CourseCardSkeleton } from './course-card';
 import { redirect } from 'next/navigation';
 import SortOrder from '@/app/components/sort-order';
-import { courseSortingOrderData, coursesPerPage, getCourses } from '@/app/data/course/get-courses';
+import { coursesPerPage, getCourses } from '@/app/data/course/get-courses';
 import { Suspense } from 'react';
 import getCoursesCount from '@/app/data/course/get-courses-count';
 import PaginationBar from '@/app/components/pagination-bar';
@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { SquarePenIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import { getSession } from '@/app/lib/auth.get-session';
+import { courseSortingOrderData } from '@/app/lib/sorting-order-data';
 
 export const metadata: Metadata = {
   title: 'Courses',

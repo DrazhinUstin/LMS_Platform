@@ -1,29 +1,13 @@
 import 'server-only';
 import { prisma } from '@/app/lib/prisma';
-import type { Course, CourseLevel, Prisma } from '@/generated/prisma';
-
-export interface CourseFilters {
-  query?: string;
-  categoryName?: string;
-  level?: CourseLevel;
-  minPrice?: string;
-  maxPrice?: string;
-  authorId?: string;
-  notEnrolledByUserId?: string;
-}
-
-export type CourseSortingOrder = { [key in keyof Course]?: Prisma.SortOrder };
-
-export const courseSortingOrderData: {
-  id: number;
-  name: string;
-  value: CourseSortingOrder;
-}[] = [
-  { id: 1, name: 'Newest first', value: { createdAt: 'desc' } },
-  { id: 2, name: 'Oldest first', value: { createdAt: 'asc' } },
-  { id: 3, name: 'Most expensive first', value: { price: 'desc' } },
-  { id: 4, name: 'Less expensive first', value: { price: 'asc' } },
-];
+import type { Prisma } from '@/generated/prisma';
+import {
+  type CourseFilters,
+  type CourseSortingOrder,
+  type CourseSummary,
+  courseSummarySelect,
+} from '@/app/lib/definitions';
+import { courseSortingOrderData } from '@/app/lib/sorting-order-data';
 
 export const coursesPerPage = 8;
 
@@ -35,7 +19,7 @@ export async function getCourses({
   filters?: CourseFilters;
   orderBy?: CourseSortingOrder;
   page?: number;
-}) {
+}): Promise<CourseSummary[]> {
   try {
     const { query, categoryName, level, minPrice, maxPrice, authorId, notEnrolledByUserId } =
       filters;
@@ -72,6 +56,7 @@ export async function getCourses({
       orderBy,
       skip: (page - 1) * coursesPerPage,
       take: coursesPerPage,
+      select: courseSummarySelect,
     });
 
     return courses;

@@ -1,6 +1,6 @@
 import 'server-only';
 import type { Prisma } from '@/generated/prisma';
-import { CourseFilters } from './get-courses';
+import type { CourseFilters } from '@/app/lib/definitions';
 import { prisma } from '@/app/lib/prisma';
 
 export default async function getCoursesCount({ filters = {} }: { filters?: CourseFilters }) {

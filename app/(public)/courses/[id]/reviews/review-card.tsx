@@ -1,9 +1,9 @@
 import StarRating from '@/app/components/star-rating';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import UserAvatar from '@/app/components/user-avatar';
-import type { ReviewTypeWithSelect } from '@/app/data/review/get-reviews';
+import type { ReviewSummary } from '@/app/lib/definitions';
 
-export default function ReviewCard({ review }: { review: ReviewTypeWithSelect }) {
+export default function ReviewCard({ review }: { review: ReviewSummary }) {
   return (
     <article className="space-y-4 rounded-lg border p-4 shadow-md">
       <div className="flex items-center gap-x-2">

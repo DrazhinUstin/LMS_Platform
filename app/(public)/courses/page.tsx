@@ -1,12 +1,13 @@
 import Filters from './filters';
 import SortOrder from '@/app/components/sort-order';
-import { courseSortingOrderData, coursesPerPage, getCourses } from '@/app/data/course/get-courses';
+import { coursesPerPage, getCourses } from '@/app/data/course/get-courses';
 import { Suspense } from 'react';
 import CourseCard, { CourseCardSkeleton } from './course-card';
 import { getCategories } from '@/app/data/category/get-categories';
 import getCoursesCount from '@/app/data/course/get-courses-count';
 import PaginationBar from '@/app/components/pagination-bar';
 import type { Metadata } from 'next';
+import { courseSortingOrderData } from '@/app/lib/sorting-order-data';
 
 export const metadata: Metadata = {
   title: 'Courses',

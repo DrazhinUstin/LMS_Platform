@@ -1,14 +1,15 @@
 import CategoryIcon from '@/app/components/category-icon';
 import LevelIcon from '@/app/components/level-icon';
+import StarRating from '@/app/components/star-rating';
 import { Badge } from '@/app/components/ui/badge';
 import { Skeleton } from '@/app/components/ui/skeleton';
+import type { CourseSummary } from '@/app/lib/definitions';
 import { formatPrice, getS3ObjectUrl } from '@/app/lib/utils';
-import type { Course } from '@/generated/prisma';
 import { ClockIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function CourseCard({ course }: { course: Course }) {
+export default function CourseCard({ course }: { course: CourseSummary }) {
   return (
     <Link href={`/courses/${course.id}`}>
       <article className="group relative rounded-lg shadow-md">
@@ -23,6 +24,10 @@ export default function CourseCard({ course }: { course: Course }) {
         </div>
         <div className="space-y-2 rounded-b-lg border border-t-0 p-2">
           <h4 className="line-clamp-1 font-semibold">{course.title}</h4>
+          <div className="flex items-center gap-x-2">
+            <StarRating rating={course.avgRating ?? 0} />
+            <span className="text-muted-foreground text-sm">({course._count.reviews} reviews)</span>
+          </div>
           <p className="text-muted-foreground line-clamp-3 text-sm">{course.briefDescription}</p>
           <p className="font-medium">{formatPrice(course.price / 100)}</p>
           <div className="flex flex-wrap items-center gap-2">
@@ -51,6 +56,10 @@ export function CourseCardSkeleton() {
       <Skeleton className="aspect-video w-full rounded-none rounded-t-lg" />
       <div className="space-y-2 rounded-b-lg border border-t-0 p-2">
         <Skeleton className="h-6 w-3/4" />
+        <div className="flex items-center gap-x-2">
+          <StarRating rating={0} />
+          <Skeleton className="h-5 w-20" />
+        </div>
         <Skeleton className="h-8 w-full" />
         <Skeleton className="h-6 w-20" />
         <div className="flex flex-wrap items-center gap-2">

@@ -1,28 +1,11 @@
 import 'server-only';
 import { prisma } from '@/app/lib/prisma';
-import type { Prisma } from '@/generated/prisma';
 import { cache } from 'react';
+import { CourseDetail, courseDetailSelect } from '@/app/lib/definitions';
 
-const courseInclude = {
-  chapters: {
-    select: {
-      id: true,
-      title: true,
-      lessons: { select: { id: true, title: true }, orderBy: { position: 'asc' } },
-      _count: { select: { lessons: true } },
-    },
-    orderBy: { position: 'asc' },
-  },
-  _count: { select: { chapters: true, reviews: true } },
-} satisfies Prisma.CourseInclude;
-
-export type CourseTypeWithInclude = Prisma.CourseGetPayload<{
-  include: typeof courseInclude;
-}>;
-
-export const getCourse = cache(async (id: string): Promise<CourseTypeWithInclude | null> => {
+export const getCourse = cache(async (id: string): Promise<CourseDetail | null> => {
   try {
-    const course = await prisma.course.findUnique({ where: { id }, include: courseInclude });
+    const course = await prisma.course.findUnique({ where: { id }, select: courseDetailSelect });
     return course;
   } catch (error) {
     console.error(error);

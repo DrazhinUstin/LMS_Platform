@@ -11,6 +11,7 @@ import {
   CarouselPrevious,
 } from '@/app/components/ui/carousel';
 import CourseCard, { CourseCardSkeleton } from './courses/course-card';
+import { courseSummarySelect } from '@/app/lib/definitions';
 
 interface Props {
   order?: 'most_recent' | 'most_popular';
@@ -57,7 +58,12 @@ async function CoursesCarousel({ order }: Props) {
 
   if (order === 'most_popular') orderBy = { enrollments: { _count: 'desc' } };
 
-  const courses = await prisma.course.findMany({ orderBy, skip: 0, take: coursesCount });
+  const courses = await prisma.course.findMany({
+    orderBy,
+    skip: 0,
+    take: coursesCount,
+    select: courseSummarySelect,
+  });
 
   return (
     <Carousel className="w-full">

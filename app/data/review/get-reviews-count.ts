@@ -1,5 +1,5 @@
 import 'server-only';
-import { ReviewFilters } from '@/app/data/review/get-reviews';
+import { ReviewFilters } from '@/app/lib/definitions';
 import { prisma } from '@/app/lib/prisma';
 
 export async function getReviewsCount({ filters = {} }: { filters?: ReviewFilters }) {
