@@ -20,11 +20,12 @@ export const reviewSortingOrderData: {
 
 export const reviewsPerPage = 8;
 
-const reviewSelect = {
+export const reviewSelect = {
   id: true,
   title: true,
   description: true,
   rating: true,
+  createdAt: true,
   user: {
     select: { id: true, name: true, image: true },
   },

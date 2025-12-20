@@ -7,11 +7,6 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import ReviewCard, { ReviewCardSkeleton } from './review-card';
-import { ArrowLeftIcon } from 'lucide-react';
-import Image from 'next/image';
-import { getS3ObjectUrl } from '@/app/lib/utils';
-import Link from 'next/link';
-import CreateReviewDialog from './create-review-dialog';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -32,9 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page(props: Props) {
-  const { id } = await props.params;
-
-  const searchParams = await props.searchParams;
+  const [{ id }, searchParams] = await Promise.all([props.params, props.searchParams]);
 
   const course = await getCourse(id);
 
@@ -47,27 +40,8 @@ export default async function Page(props: Props) {
   const currentPage = Number(page) || 1;
 
   return (
-    <main className="mx-auto w-[90vw] max-w-7xl space-y-8 py-8">
-      <Link
-        href={`/courses/${course.id}`}
-        className="hover:text-primary flex w-max items-center gap-x-4 transition-colors"
-      >
-        <ArrowLeftIcon />
-        <div className="relative aspect-video w-20">
-          <Image
-            src={getS3ObjectUrl(course.previewImageKey)}
-            alt={course.title}
-            fill
-            sizes="80px"
-            className="shrink-0 object-cover"
-          />
-        </div>
-        <h4 className="font-semibold">{course.title}</h4>
-      </Link>
-      <div>
-        <CreateReviewDialog courseId={course.id} />
-      </div>
-      <h2 className="text-center text-2xl font-bold">Reviews</h2>
+    <main>
+      <h2 className="text-center text-2xl font-bold">All Reviews</h2>
       <div className="space-y-8">
         <div className="flex justify-end">
           <SortOrder options={reviewSortingOrderData} />
