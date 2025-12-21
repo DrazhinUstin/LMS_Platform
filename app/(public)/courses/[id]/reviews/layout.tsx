@@ -11,6 +11,7 @@ import ReviewCard from './review-card';
 import EditReviewDialog from './edit-review-dialog';
 import DeleteReviewDialog from './delete-review-dialog';
 import CreateReviewDialog from './create-review-dialog';
+import StarRating from '@/app/components/star-rating';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -46,9 +47,13 @@ export default async function Layout({ params, children }: Props) {
         </div>
         <h4 className="font-semibold">{course.title}</h4>
       </Link>
+      <div className="flex items-center gap-x-2">
+        <StarRating rating={course.avgRating ?? 0} size="lg" />
+        <span className="text-muted-foreground text-sm">({course._count.reviews} reviews)</span>
+      </div>
       {userReview ? (
         <div className="space-y-4">
-          <h4>You reviewed this course on {formatDate(userReview.createdAt)}</h4>
+          <p>You reviewed this course on {formatDate(userReview.createdAt)}</p>
           <div className="max-w-[600px]">
             <ReviewCard review={userReview} />
           </div>

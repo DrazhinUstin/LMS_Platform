@@ -18,7 +18,13 @@ import { deleteReview } from './actions';
 import { Trash2Icon } from 'lucide-react';
 import type { ReviewSummary } from '@/app/lib/definitions';
 
-export default function DeleteReviewDialog({ review }: { review: ReviewSummary }) {
+export default function DeleteReviewDialog({
+  review,
+  className,
+}: {
+  review: ReviewSummary;
+  className?: string;
+}) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [isPending, startTransition] = useTransition();
@@ -40,7 +46,7 @@ export default function DeleteReviewDialog({ review }: { review: ReviewSummary }
   return (
     <Dialog open={isDialogOpen} onOpenChange={(open) => !isPending && setIsDialogOpen(open)}>
       <DialogTrigger asChild>
-        <Button variant="destructive">
+        <Button variant="destructive" className={className}>
           <Trash2Icon />
           Delete Review
         </Button>

@@ -1,6 +1,5 @@
 'use client';
 
-import type { UserCourseTypeWithInclude } from '@/app/data/course/get-user-course';
 import { Button } from '@/app/components/ui/button';
 import {
   Collapsible,
@@ -11,8 +10,9 @@ import Link from 'next/link';
 import { ChevronsUpDownIcon, CircleCheckIcon, PlayIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/app/lib/utils';
+import type { UserCourseDetail } from '@/app/lib/definitions';
 
-export default function CourseStructure({ course }: { course: UserCourseTypeWithInclude }) {
+export default function CourseStructure({ course }: { course: UserCourseDetail }) {
   const pathname = usePathname();
   return (
     <div className="space-y-2">

@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import Sidebar from '@/app/components/sidebar';
-import { HistoryIcon, HouseIcon, LayoutGridIcon } from 'lucide-react';
+import { HistoryIcon, HouseIcon, LayoutGridIcon, SquarePenIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import { getSession } from '@/app/lib/auth.get-session';
 
@@ -15,6 +15,7 @@ export const metadata: Metadata = {
 const sidebarNavLinks: React.ComponentProps<typeof Sidebar>['navLinks'] = [
   { title: 'Home', icon: <HouseIcon className="size-5" />, href: '/dashboard' },
   { title: 'My courses', icon: <LayoutGridIcon className="size-5" />, href: '/dashboard/courses' },
+  { title: 'My reviews', icon: <SquarePenIcon className="size-5" />, href: '/dashboard/reviews' },
   {
     title: 'Enrollments',
     icon: <HistoryIcon className="size-5" />,

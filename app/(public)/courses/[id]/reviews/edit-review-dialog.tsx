@@ -33,7 +33,13 @@ import { Textarea } from '@/app/components/ui/textarea';
 import StarRating from '@/app/components/star-rating';
 import type { ReviewSummary } from '@/app/lib/definitions';
 
-export default function EditReviewDialog({ review }: { review: ReviewSummary }) {
+export default function EditReviewDialog({
+  review,
+  className,
+}: {
+  review: ReviewSummary;
+  className?: string;
+}) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [isPending, startTransition] = useTransition();
@@ -78,7 +84,7 @@ export default function EditReviewDialog({ review }: { review: ReviewSummary }) 
   return (
     <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="secondary">
+        <Button variant="secondary" className={className}>
           <FeatherIcon />
           Edit Review
         </Button>

@@ -1,8 +1,8 @@
 import { Progress } from '@/app/components/ui/progress';
-import { UserCourseTypeWithInclude } from '@/app/data/course/get-user-course';
+import type { UserCourseDetail } from '@/app/lib/definitions';
 import Link from 'next/link';
 
-export default function CourseProgress({ course }: { course: UserCourseTypeWithInclude }) {
+export default function CourseProgress({ course }: { course: UserCourseDetail }) {
   const totalLessons = course.chapters.reduce((acc, chapter) => acc + chapter._count.lessons, 0);
 
   const totalCompletedLessons = course.chapters.reduce((acc, chapter) => {
