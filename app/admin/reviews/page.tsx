@@ -34,14 +34,14 @@ export default async function Page(props: Props) {
 
   return (
     <main className="space-y-8">
-      <h2 className="text-center text-2xl font-bold">Your Reviews</h2>
+      <h2 className="text-center text-2xl font-bold">User reviews</h2>
       <div className="space-y-8">
         <div className="flex justify-end">
           <SortOrder options={reviewSortingOrderData} />
         </div>
         <Suspense key={JSON.stringify(searchParams)} fallback={<ReviewsGridSkeleton />}>
           <ReviewsGrid
-            filters={{ ...filters, userId: session.user.id }}
+            filters={{ ...filters, courseAuthorId: session.user.id }}
             orderBy={parsedOrderBy}
             page={currentPage}
           />
@@ -67,7 +67,7 @@ async function ReviewsGrid({ filters, orderBy, page }: Parameters<typeof getRevi
         ))}
       </div>
       {reviews.length === 0 && (
-        <p className="text-center">Unfortunately, you don&apos;t have any reviews yet 😞</p>
+        <p className="text-center">Unfortunately, there are no reviews of your courses yet 😞</p>
       )}
       <PaginationBar currentPage={page as number} totalPages={totalPages} className="mt-8" />
     </div>

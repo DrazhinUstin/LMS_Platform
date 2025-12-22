@@ -5,6 +5,7 @@ import {
   HouseIcon,
   LayoutGridIcon,
   SquarePenIcon,
+  StarIcon,
   Users2Icon,
 } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -35,6 +36,11 @@ const sidebarNavLinks: React.ComponentProps<typeof Sidebar>['navLinks'] = [
     title: 'Customers',
     icon: <Users2Icon className="size-5" />,
     href: '/admin/customers',
+  },
+  {
+    title: 'Reviews',
+    icon: <StarIcon className="size-5" />,
+    href: '/admin/reviews',
   },
 ];
 

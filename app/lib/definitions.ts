@@ -95,6 +95,7 @@ export type UserCourseDetail = Prisma.CourseGetPayload<{
 export interface ReviewFilters {
   userId?: string;
   courseId?: string;
+  courseAuthorId?: string;
 }
 
 export type ReviewSortingOrder = { [key in keyof Review]?: Prisma.SortOrder };
@@ -106,7 +107,7 @@ export const reviewSummarySelect = {
   rating: true,
   createdAt: true,
   user: {
-    select: { id: true, name: true, image: true },
+    select: { id: true, name: true, email: true, image: true },
   },
   course: { select: { id: true, title: true, previewImageKey: true } },
 } satisfies Prisma.ReviewSelect;

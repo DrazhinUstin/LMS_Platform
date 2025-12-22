@@ -1,4 +1,4 @@
-import StarRating from '@/app/components/star-rating';
+import StarRating, { StarRatingSkeleton } from '@/app/components/star-rating';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import type { ReviewSummary } from '@/app/lib/definitions';
 import Link from 'next/link';
@@ -71,7 +71,7 @@ export function ReviewCardSkeleton() {
         <Skeleton className="aspect-video w-20" />
         <Skeleton className="h-6 w-1/2" />
       </div>
-      <StarRating rating={0} />
+      <StarRatingSkeleton />
       <Skeleton className="h-6 w-1/2" />
       <Skeleton className="h-12 w-full" />
     </article>

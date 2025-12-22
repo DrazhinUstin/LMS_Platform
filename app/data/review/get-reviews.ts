@@ -20,12 +20,13 @@ export async function getReviews({
   page?: number;
 }): Promise<ReviewSummary[]> {
   try {
-    const { userId, courseId } = filters;
+    const { userId, courseId, courseAuthorId } = filters;
 
     const reviews = await prisma.review.findMany({
       where: {
         ...(userId && { userId }),
         ...(courseId && { courseId }),
+        ...(courseAuthorId && { course: { authorId: courseAuthorId } }),
       },
       orderBy,
       skip: (page - 1) * reviewsPerPage,

@@ -1,4 +1,4 @@
-import StarRating from '@/app/components/star-rating';
+import StarRating, { StarRatingSkeleton } from '@/app/components/star-rating';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import UserAvatar from '@/app/components/user-avatar';
 import type { ReviewSummary } from '@/app/lib/definitions';
@@ -24,7 +24,7 @@ export function ReviewCardSkeleton() {
         <Skeleton className="size-10 rounded-full" />
         <Skeleton className="h-6 w-24" />
       </div>
-      <StarRating rating={0} />
+      <StarRatingSkeleton />
       <Skeleton className="h-6 w-1/2" />
       <Skeleton className="h-12 w-full" />
     </article>

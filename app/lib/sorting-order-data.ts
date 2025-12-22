@@ -20,4 +20,6 @@ export const reviewSortingOrderData: {
 }[] = [
   { id: 1, name: 'Newest first', value: { createdAt: 'desc' } },
   { id: 2, name: 'Oldest first', value: { createdAt: 'asc' } },
+  { id: 3, name: 'Top rated first', value: { rating: 'desc' } },
+  { id: 4, name: 'Low rated first', value: { rating: 'asc' } },
 ];

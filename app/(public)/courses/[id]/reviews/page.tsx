@@ -41,7 +41,7 @@ export default async function Page(props: Props) {
   const currentPage = Number(page) || 1;
 
   return (
-    <main>
+    <main className="space-y-8">
       <h2 className="text-center text-2xl font-bold">All Reviews</h2>
       <div className="space-y-8">
         <div className="flex justify-end">
