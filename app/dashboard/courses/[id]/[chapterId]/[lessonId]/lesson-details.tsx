@@ -1,8 +1,8 @@
+import type { LessonDetail } from '@/app/lib/definitions';
 import { getS3ObjectUrl } from '@/app/lib/utils';
-import type { Lesson } from '@/generated/prisma';
 import Image from 'next/image';
 
-export default function LessonDetails({ lesson }: { lesson: Lesson }) {
+export default function LessonDetails({ lesson }: { lesson: LessonDetail }) {
   const { title, description, videoKey, posterKey } = lesson;
   return (
     <div className="space-y-8">

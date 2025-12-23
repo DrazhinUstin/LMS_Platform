@@ -1,17 +1,7 @@
 import 'server-only';
 import { prisma } from '@/app/lib/prisma';
-import type { Prisma } from '@/generated/prisma';
 import { cache } from 'react';
-
-const getUserLessonInclude = (userId: string) => {
-  return {
-    userProgresses: { where: { userId }, select: { isCompleted: true } },
-  } satisfies Prisma.LessonInclude;
-};
-
-export type UserLessonTypeWithInclude = Prisma.LessonGetPayload<{
-  include: ReturnType<typeof getUserLessonInclude>;
-}>;
+import { getUserLessonDetailSelect, type UserLessonDetail } from '@/app/lib/definitions';
 
 export const getUserLesson = cache(
   async ({
@@ -20,14 +10,14 @@ export const getUserLesson = cache(
   }: {
     lessonId: string;
     userId: string;
-  }): Promise<UserLessonTypeWithInclude | null> => {
+  }): Promise<UserLessonDetail | null> => {
     try {
       const course = await prisma.lesson.findUnique({
         where: {
           id: lessonId,
           chapter: { course: { enrollments: { some: { userId, status: 'ACTIVE' } } } },
         },
-        include: getUserLessonInclude(userId),
+        select: getUserLessonDetailSelect(userId),
       });
       return course;
     } catch (error) {

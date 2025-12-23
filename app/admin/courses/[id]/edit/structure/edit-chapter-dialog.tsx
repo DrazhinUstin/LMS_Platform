@@ -48,9 +48,11 @@ export default function EditChapterDialog({ chapter }: { chapter: ChapterData })
   function onSubmit(values: z.infer<typeof ChapterSchema>) {
     startTransition(async () => {
       try {
-        await editChapter(chapter.id, values);
+        const editedChapter = await editChapter(chapter.id, values);
 
         setIsDialogOpen(false);
+
+        form.reset({ title: editedChapter.title });
 
         toast('Chapter was edited successfully!');
       } catch {
@@ -100,7 +102,7 @@ export default function EditChapterDialog({ chapter }: { chapter: ChapterData })
                   Close
                 </Button>
               </DialogClose>
-              <ButtonLoading type="submit" loading={isPending}>
+              <ButtonLoading type="submit" loading={isPending} disabled={!form.formState.isDirty}>
                 Edit
               </ButtonLoading>
             </DialogFooter>

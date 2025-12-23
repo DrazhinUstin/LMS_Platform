@@ -1,7 +1,7 @@
-import { prisma } from '@/app/lib/prisma';
 import { notFound } from 'next/navigation';
 import EditLessonForm from './edit-lesson-form';
 import type { Metadata } from 'next';
+import { getLesson } from '@/app/data/lesson/get-lesson';
 
 export const metadata: Metadata = {
   title: 'Edit lesson',
@@ -14,7 +14,7 @@ export default async function Page({
 }) {
   const { lessonId } = await params;
 
-  const lesson = await prisma.lesson.findUnique({ where: { id: lessonId } });
+  const lesson = await getLesson(lessonId);
 
   if (!lesson) {
     notFound();

@@ -1,8 +1,8 @@
-import { prisma } from '@/app/lib/prisma';
 import { notFound } from 'next/navigation';
 import EditCourseStructure from './edit-course-structure';
 import CreateChapterDialog from './create-chapter-dialog';
 import type { Metadata } from 'next';
+import { getCourse } from '@/app/data/course/get-course';
 
 export const metadata: Metadata = {
   title: 'Edit course structure',
@@ -11,15 +11,7 @@ export const metadata: Metadata = {
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
-  const course = await prisma.course.findUnique({
-    where: { id },
-    include: {
-      chapters: {
-        include: { lessons: { orderBy: { position: 'asc' } } },
-        orderBy: { position: 'asc' },
-      },
-    },
-  });
+  const course = await getCourse(id);
 
   if (!course) {
     notFound();

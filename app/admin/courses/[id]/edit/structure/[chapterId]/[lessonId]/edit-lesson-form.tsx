@@ -1,7 +1,6 @@
 'use client';
 
 import { LessonSchema } from '@/app/lib/schemas';
-import type { Lesson } from '@/generated/prisma';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
@@ -20,8 +19,9 @@ import { Input } from '@/app/components/ui/input';
 import TextEditor from '@/app/components/text-editor';
 import FileUploader from '@/app/components/file-uploader';
 import ButtonLoading from '@/app/components/button-loading';
+import type { LessonDetail } from '@/app/lib/definitions';
 
-export default function EditLessonForm({ lesson }: { lesson: Lesson }) {
+export default function EditLessonForm({ lesson }: { lesson: LessonDetail }) {
   const [isPending, startTransition] = useTransition();
 
   const form = useForm({

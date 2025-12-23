@@ -18,13 +18,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     redirect('/login');
   }
 
-  const lessonWithProgresses = await getUserLesson({ lessonId, userId: session.user.id });
+  const userLesson = await getUserLesson({ lessonId, userId: session.user.id });
 
-  if (!lessonWithProgresses) notFound();
+  if (!userLesson) notFound();
 
   return {
     title: {
-      absolute: `Lesson: ${lessonWithProgresses.title}`,
+      absolute: `Lesson: ${userLesson.title}`,
     },
   };
 }
@@ -38,11 +38,11 @@ export default async function Page({ params }: Props) {
     redirect('/login');
   }
 
-  const lessonWithProgresses = await getUserLesson({ lessonId, userId: session.user.id });
+  const userLesson = await getUserLesson({ lessonId, userId: session.user.id });
 
-  if (!lessonWithProgresses) notFound();
+  if (!userLesson) notFound();
 
-  const { userProgresses, ...lesson } = lessonWithProgresses;
+  const { userProgresses, ...lesson } = userLesson;
 
   return (
     <main className="space-y-8">

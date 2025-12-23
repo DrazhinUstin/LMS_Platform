@@ -145,7 +145,7 @@ export default function EditReviewDialog({
                   Close
                 </Button>
               </DialogClose>
-              <ButtonLoading type="submit" loading={isPending}>
+              <ButtonLoading type="submit" loading={isPending} disabled={!form.formState.isDirty}>
                 Edit
               </ButtonLoading>
             </DialogFooter>

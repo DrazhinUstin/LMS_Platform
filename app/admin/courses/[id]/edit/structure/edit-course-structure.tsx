@@ -1,6 +1,5 @@
 'use client';
 
-import { Prisma } from '@/generated/prisma';
 import { useEffect, useState } from 'react';
 import {
   DndContext,
@@ -34,10 +33,11 @@ import DeleteChapterDialog from './delete-chapter-dialog';
 import CreateLessonDialog from './create-lesson-dialog';
 import DeleteLessonDialog from './delete-lesson-dialog';
 import Link from 'next/link';
+import type { CourseDetail } from '@/app/lib/definitions';
 
 interface Props {
   courseId: string;
-  data: Prisma.ChapterGetPayload<{ include: { lessons: true } }>[];
+  data: CourseDetail['chapters'];
 }
 
 type ChapterType = Props['data'][0] & { isOpen: boolean };
@@ -193,7 +193,7 @@ export default function EditCourseStructure({ courseId, data }: Props) {
                       <SortableItem
                         key={lesson.id}
                         id={lesson.id}
-                        data={{ type: 'lesson', chapterId: lesson.chapterId }}
+                        data={{ type: 'lesson', chapterId: chapter.id }}
                       >
                         {(lessonListeners) => (
                           <article className="grid grid-cols-[auto_1fr_auto] items-center gap-x-2">

@@ -92,6 +92,29 @@ export type UserCourseDetail = Prisma.CourseGetPayload<{
   select: ReturnType<typeof getUserCourseDetailSelect>;
 }>;
 
+export const lessonDetailSelect = {
+  id: true,
+  title: true,
+  description: true,
+  posterKey: true,
+  videoKey: true,
+  position: true,
+  chapterId: true,
+} satisfies Prisma.LessonSelect;
+
+export type LessonDetail = Prisma.LessonGetPayload<{ select: typeof lessonDetailSelect }>;
+
+export const getUserLessonDetailSelect = (userId: string) => {
+  return {
+    ...lessonDetailSelect,
+    userProgresses: { where: { userId }, select: { isCompleted: true } },
+  } satisfies Prisma.LessonSelect;
+};
+
+export type UserLessonDetail = Prisma.LessonGetPayload<{
+  select: ReturnType<typeof getUserLessonDetailSelect>;
+}>;
+
 export interface ReviewFilters {
   userId?: string;
   courseId?: string;
