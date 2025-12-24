@@ -7,7 +7,7 @@ import { getCategories } from '@/app/data/category/get-categories';
 import getCoursesCount from '@/app/data/course/get-courses-count';
 import PaginationBar from '@/app/components/pagination-bar';
 import type { Metadata } from 'next';
-import { courseSortingOrderData } from '@/app/lib/sorting-order-data';
+import { CourseSortingOrder } from '@/app/lib/definitions';
 
 export const metadata: Metadata = {
   title: 'Courses',
@@ -20,9 +20,7 @@ interface Props {
 export default async function Page({ searchParams }: Props) {
   const awaitedSearchParams = await searchParams;
 
-  const { orderBy, page, ...filters } = awaitedSearchParams;
-
-  const parsedOrderBy = orderBy && !Array.isArray(orderBy) ? JSON.parse(orderBy) : undefined;
+  const { order, page, ...filters } = awaitedSearchParams;
 
   const currentPage = Number(page) || 1;
 
@@ -37,10 +35,14 @@ export default async function Page({ searchParams }: Props) {
         </div>
         <div className="space-y-8">
           <div className="flex justify-end">
-            <SortOrder options={courseSortingOrderData} />
+            <SortOrder options={Object.entries(CourseSortingOrder)} />
           </div>
           <Suspense key={JSON.stringify(awaitedSearchParams)} fallback={<CoursesGridSkeleton />}>
-            <CoursesGrid filters={filters} orderBy={parsedOrderBy} page={currentPage} />
+            <CoursesGrid
+              filters={filters}
+              order={order as keyof typeof CourseSortingOrder}
+              page={currentPage}
+            />
           </Suspense>
         </div>
       </div>
@@ -48,9 +50,9 @@ export default async function Page({ searchParams }: Props) {
   );
 }
 
-async function CoursesGrid({ filters, orderBy, page }: Parameters<typeof getCourses>[0]) {
+async function CoursesGrid({ filters, order, page }: Parameters<typeof getCourses>[0]) {
   const [courses, count] = await Promise.all([
-    getCourses({ filters, orderBy, page }),
+    getCourses({ filters, order, page }),
     getCoursesCount({ filters }),
   ]);
 

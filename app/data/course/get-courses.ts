@@ -3,21 +3,20 @@ import { prisma } from '@/app/lib/prisma';
 import type { Prisma } from '@/generated/prisma';
 import {
   type CourseFilters,
-  type CourseSortingOrder,
+  CourseSortingOrder,
   type CourseSummary,
   courseSummarySelect,
 } from '@/app/lib/definitions';
-import { courseSortingOrderData } from '@/app/lib/sorting-order-data';
 
 export const coursesPerPage = 8;
 
 export async function getCourses({
   filters = {},
-  orderBy = courseSortingOrderData[0].value,
+  order = 'CREATED_DESC',
   page = 1,
 }: {
   filters?: CourseFilters;
-  orderBy?: CourseSortingOrder;
+  order?: keyof typeof CourseSortingOrder;
   page?: number;
 }): Promise<CourseSummary[]> {
   try {
@@ -50,6 +49,32 @@ export async function getCourses({
         enrollments: { none: { userId: notEnrolledByUserId, status: 'ACTIVE' } },
       }),
     };
+
+    let orderBy: Prisma.CourseOrderByWithRelationInput;
+
+    switch (order) {
+      case 'CREATED_DESC':
+        orderBy = { createdAt: 'desc' };
+        break;
+      case 'CREATED_ASC':
+        orderBy = { createdAt: 'asc' };
+        break;
+      case 'PRICE_DESC':
+        orderBy = { price: 'desc' };
+        break;
+      case 'PRICE_ASC':
+        orderBy = { price: 'asc' };
+        break;
+      case 'RATING_DESC':
+        orderBy = { avgRating: { sort: 'desc', nulls: 'last' } };
+        break;
+      case 'RATING_ASC':
+        orderBy = { avgRating: { sort: 'asc', nulls: 'first' } };
+        break;
+      default:
+        orderBy = { createdAt: 'desc' };
+        break;
+    }
 
     const courses = await prisma.course.findMany({
       where,

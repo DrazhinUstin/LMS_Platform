@@ -4,10 +4,10 @@ import { getReviews, reviewsPerPage } from '@/app/data/review/get-reviews';
 import { getReviewsCount } from '@/app/data/review/get-reviews-count';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { reviewSortingOrderData } from '@/app/lib/sorting-order-data';
 import { redirect } from 'next/navigation';
 import { getSession } from '@/app/lib/auth.get-session';
 import ReviewCard, { ReviewCardSkeleton } from './review-card';
+import { ReviewSortingOrder } from '@/app/lib/definitions';
 
 export const metadata: Metadata = {
   title: 'Reviews',
@@ -26,9 +26,7 @@ export default async function Page(props: Props) {
     redirect('/login');
   }
 
-  const { orderBy, page, ...filters } = searchParams;
-
-  const parsedOrderBy = orderBy && !Array.isArray(orderBy) ? JSON.parse(orderBy) : undefined;
+  const { order, page, ...filters } = searchParams;
 
   const currentPage = Number(page) || 1;
 
@@ -37,12 +35,12 @@ export default async function Page(props: Props) {
       <h2 className="text-center text-2xl font-bold">User reviews</h2>
       <div className="space-y-8">
         <div className="flex justify-end">
-          <SortOrder options={reviewSortingOrderData} />
+          <SortOrder options={Object.entries(ReviewSortingOrder)} />
         </div>
         <Suspense key={JSON.stringify(searchParams)} fallback={<ReviewsGridSkeleton />}>
           <ReviewsGrid
             filters={{ ...filters, courseAuthorId: session.user.id }}
-            orderBy={parsedOrderBy}
+            order={order as keyof typeof ReviewSortingOrder}
             page={currentPage}
           />
         </Suspense>
@@ -51,9 +49,9 @@ export default async function Page(props: Props) {
   );
 }
 
-async function ReviewsGrid({ filters, orderBy, page }: Parameters<typeof getReviews>[0]) {
+async function ReviewsGrid({ filters, order, page }: Parameters<typeof getReviews>[0]) {
   const [reviews, count] = await Promise.all([
-    getReviews({ filters, orderBy, page }),
+    getReviews({ filters, order, page }),
     getReviewsCount({ filters }),
   ]);
 

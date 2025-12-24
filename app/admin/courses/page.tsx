@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { SquarePenIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import { getSession } from '@/app/lib/auth.get-session';
-import { courseSortingOrderData } from '@/app/lib/sorting-order-data';
+import { CourseSortingOrder } from '@/app/lib/definitions';
 
 export const metadata: Metadata = {
   title: 'Courses',
@@ -23,9 +23,7 @@ interface Props {
 export default async function Page(props: Props) {
   const searchParams = await props.searchParams;
 
-  const { orderBy, page, ...filters } = searchParams;
-
-  const parsedOrderBy = orderBy && !Array.isArray(orderBy) ? JSON.parse(orderBy) : undefined;
+  const { order, page, ...filters } = searchParams;
 
   const currentPage = Number(page) || 1;
 
@@ -40,12 +38,12 @@ export default async function Page(props: Props) {
       <h2 className="text-center text-2xl font-bold">Created courses</h2>
       <div className="space-y-8">
         <div className="flex justify-end">
-          <SortOrder options={courseSortingOrderData} />
+          <SortOrder options={Object.entries(CourseSortingOrder)} />
         </div>
         <Suspense key={JSON.stringify(searchParams)} fallback={<CoursesGridSkeleton />}>
           <CoursesGrid
             filters={{ ...filters, authorId: session.user.id }}
-            orderBy={parsedOrderBy}
+            order={order as keyof typeof CourseSortingOrder}
             page={currentPage}
           />
         </Suspense>
@@ -54,9 +52,9 @@ export default async function Page(props: Props) {
   );
 }
 
-async function CoursesGrid({ filters, orderBy, page }: Parameters<typeof getCourses>[0]) {
+async function CoursesGrid({ filters, order, page }: Parameters<typeof getCourses>[0]) {
   const [courses, count] = await Promise.all([
-    getCourses({ filters, orderBy, page }),
+    getCourses({ filters, order, page }),
     getCoursesCount({ filters }),
   ]);
 

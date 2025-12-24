@@ -7,7 +7,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import ReviewCard, { ReviewCardSkeleton } from './review-card';
-import { reviewSortingOrderData } from '@/app/lib/sorting-order-data';
+import { ReviewSortingOrder } from '@/app/lib/definitions';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -34,9 +34,7 @@ export default async function Page(props: Props) {
 
   if (!course) notFound();
 
-  const { orderBy, page, ...filters } = searchParams;
-
-  const parsedOrderBy = orderBy && !Array.isArray(orderBy) ? JSON.parse(orderBy) : undefined;
+  const { order, page, ...filters } = searchParams;
 
   const currentPage = Number(page) || 1;
 
@@ -45,12 +43,12 @@ export default async function Page(props: Props) {
       <h2 className="text-center text-2xl font-bold">All Reviews</h2>
       <div className="space-y-8">
         <div className="flex justify-end">
-          <SortOrder options={reviewSortingOrderData} />
+          <SortOrder options={Object.entries(ReviewSortingOrder)} />
         </div>
         <Suspense key={JSON.stringify(searchParams)} fallback={<ReviewsGridSkeleton />}>
           <ReviewsGrid
             filters={{ ...filters, courseId: course.id }}
-            orderBy={parsedOrderBy}
+            order={order as keyof typeof ReviewSortingOrder}
             page={currentPage}
           />
         </Suspense>
@@ -59,9 +57,9 @@ export default async function Page(props: Props) {
   );
 }
 
-async function ReviewsGrid({ filters, orderBy, page }: Parameters<typeof getReviews>[0]) {
+async function ReviewsGrid({ filters, order, page }: Parameters<typeof getReviews>[0]) {
   const [reviews, count] = await Promise.all([
-    getReviews({ filters, orderBy, page }),
+    getReviews({ filters, order, page }),
     getReviewsCount({ filters }),
   ]);
 

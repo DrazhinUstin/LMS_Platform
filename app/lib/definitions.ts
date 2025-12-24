@@ -1,4 +1,4 @@
-import type { Course, CourseLevel, Prisma, Review } from '@/generated/prisma';
+import type { CourseLevel, Prisma } from '@/generated/prisma';
 
 export interface CourseFilters {
   query?: string;
@@ -10,7 +10,14 @@ export interface CourseFilters {
   notEnrolledByUserId?: string;
 }
 
-export type CourseSortingOrder = { [key in keyof Course]?: Prisma.SortOrder };
+export enum CourseSortingOrder {
+  CREATED_DESC = 'Newest first',
+  CREATED_ASC = 'Oldest first',
+  PRICE_DESC = 'Most expensive first',
+  PRICE_ASC = 'Less expensive first',
+  RATING_DESC = 'Top rated first',
+  RATING_ASC = 'Low rated first',
+}
 
 export const courseSummarySelect = {
   id: true,
@@ -121,7 +128,12 @@ export interface ReviewFilters {
   courseAuthorId?: string;
 }
 
-export type ReviewSortingOrder = { [key in keyof Review]?: Prisma.SortOrder };
+export enum ReviewSortingOrder {
+  CREATED_DESC = 'Newest first',
+  CREATED_ASC = 'Oldest first',
+  RATING_DESC = 'Top rated first',
+  RATING_ASC = 'Low rated first',
+}
 
 export const reviewSummarySelect = {
   id: true,

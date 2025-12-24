@@ -1,26 +1,46 @@
 import 'server-only';
 import { prisma } from '@/app/lib/prisma';
-import { reviewSortingOrderData } from '@/app/lib/sorting-order-data';
 import {
   type ReviewFilters,
-  type ReviewSortingOrder,
+  ReviewSortingOrder,
   type ReviewSummary,
   reviewSummarySelect,
 } from '@/app/lib/definitions';
+import type { Prisma } from '@/generated/prisma';
 
 export const reviewsPerPage = 8;
 
 export async function getReviews({
   filters = {},
-  orderBy = reviewSortingOrderData[0].value,
+  order = 'CREATED_DESC',
   page = 1,
 }: {
   filters?: ReviewFilters;
-  orderBy?: ReviewSortingOrder;
+  order?: keyof typeof ReviewSortingOrder;
   page?: number;
 }): Promise<ReviewSummary[]> {
   try {
     const { userId, courseId, courseAuthorId } = filters;
+
+    let orderBy: Prisma.ReviewOrderByWithRelationInput;
+
+    switch (order) {
+      case 'CREATED_DESC':
+        orderBy = { createdAt: 'desc' };
+        break;
+      case 'CREATED_ASC':
+        orderBy = { createdAt: 'asc' };
+        break;
+      case 'RATING_DESC':
+        orderBy = { rating: 'desc' };
+        break;
+      case 'RATING_ASC':
+        orderBy = { rating: 'asc' };
+        break;
+      default:
+        orderBy = { createdAt: 'desc' };
+        break;
+    }
 
     const reviews = await prisma.review.findMany({
       where: {

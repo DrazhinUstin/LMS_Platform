@@ -1,6 +1,5 @@
 'use client';
 
-import type { Prisma } from '@/generated/prisma';
 import {
   Select,
   SelectContent,
@@ -10,13 +9,7 @@ import {
 } from '@/app/components/ui/select';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-type OptionType = {
-  id: string | number;
-  name: string;
-  value: { [key: string]: Prisma.SortOrder };
-};
-
-export default function SortOrder({ options }: { options: OptionType[] }) {
+export default function SortOrder({ options }: { options: Array<[value: string, name: string]> }) {
   const router = useRouter();
 
   const pathname = usePathname();
@@ -26,22 +19,19 @@ export default function SortOrder({ options }: { options: OptionType[] }) {
   const handleValueChange = (value: string) => {
     const newSearchParams = new URLSearchParams(searchParams);
 
-    newSearchParams.set('orderBy', value);
+    newSearchParams.set('order', value);
 
     router.push(`${pathname}?${newSearchParams.toString()}`);
   };
 
   return (
-    <Select
-      defaultValue={searchParams.get('orderBy') ?? undefined}
-      onValueChange={handleValueChange}
-    >
+    <Select defaultValue={searchParams.get('order') ?? undefined} onValueChange={handleValueChange}>
       <SelectTrigger>
         <SelectValue placeholder="Select sort order" />
       </SelectTrigger>
       <SelectContent>
-        {options.map(({ id, name, value }) => (
-          <SelectItem key={id} value={JSON.stringify(value)}>
+        {options.map(([value, name]) => (
+          <SelectItem key={value} value={value}>
             {name}
           </SelectItem>
         ))}
