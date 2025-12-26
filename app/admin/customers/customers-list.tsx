@@ -1,9 +1,9 @@
 import { cn, formatPrice } from '@/app/lib/utils';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import UserAvatar from '@/app/components/user-avatar';
-import { customersPerPage, type CustomerTypeWithSelect } from './get-customers';
+import type { Customer } from '@/app/lib/definitions';
 
-export default function CustomersList({ customers }: { customers: CustomerTypeWithSelect[] }) {
+export default function CustomersList({ customers }: { customers: Customer[] }) {
   return (
     <ul className="text-sm">
       <li className="hidden grid-cols-[2fr_2fr_1fr_1fr] gap-2 border-b pb-2 font-semibold lg:grid">
@@ -47,7 +47,7 @@ export default function CustomersList({ customers }: { customers: CustomerTypeWi
   );
 }
 
-export function CustomersListSkeleton() {
+export function CustomersListSkeleton({ length = 8 }: { length?: number }) {
   return (
     <ul className="text-sm">
       <li className="hidden grid-cols-[2fr_2fr_1fr_1fr] gap-2 border-b pb-2 font-semibold lg:grid">
@@ -56,7 +56,7 @@ export function CustomersListSkeleton() {
         <h4>Enrollments</h4>
         <h4>Total amount</h4>
       </li>
-      {Array.from({ length: customersPerPage }).map((_, index) => (
+      {Array.from({ length }).map((_, index) => (
         <li
           key={index}
           className={cn(

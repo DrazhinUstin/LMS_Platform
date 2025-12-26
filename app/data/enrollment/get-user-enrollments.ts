@@ -2,26 +2,23 @@ import 'server-only';
 import { prisma } from '@/app/lib/prisma';
 import { Prisma } from '@/generated/prisma';
 import {
-  type EnrollmentFilters,
-  type EnrollmentSortingOrder,
-  type EnrollmentSummary,
-  enrollmentSummarySelect,
+  EnrollmentSortingOrder,
+  getUserEnrollmentSummarySelect,
+  type UserEnrollmentSummary,
 } from '@/app/lib/definitions';
 
-export async function getEnrollments({
-  filters = {},
+export async function getUserEnrollments({
+  userId,
   order = 'CREATED_DESC',
   page = 1,
   enrollmentsPerPage = 8,
 }: {
-  filters?: EnrollmentFilters;
+  userId: string;
   order?: keyof typeof EnrollmentSortingOrder;
   page?: number;
   enrollmentsPerPage?: number;
-}): Promise<EnrollmentSummary[]> {
+}): Promise<UserEnrollmentSummary[]> {
   try {
-    const { courseAuthorId } = filters;
-
     let orderBy: Prisma.EnrollmentOrderByWithRelationInput;
 
     switch (order) {
@@ -37,11 +34,11 @@ export async function getEnrollments({
     }
 
     const enrollments = await prisma.enrollment.findMany({
-      where: { status: 'ACTIVE', ...(courseAuthorId && { course: { authorId: courseAuthorId } }) },
+      where: { userId, status: 'ACTIVE' },
       orderBy,
       skip: (page - 1) * enrollmentsPerPage,
       take: enrollmentsPerPage,
-      select: enrollmentSummarySelect,
+      select: getUserEnrollmentSummarySelect(userId),
     });
 
     return enrollments;

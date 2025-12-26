@@ -1,5 +1,26 @@
 import type { CourseLevel, Prisma } from '@/generated/prisma';
 
+export enum UserSortingOrder {
+  NAME_DESC = 'By name (z to a)',
+  NAME_ASC = 'By name (a to z)',
+}
+
+export const getCustomerSelect = (courseAuthorId: string) =>
+  ({
+    id: true,
+    name: true,
+    email: true,
+    image: true,
+    enrollments: {
+      where: { course: { authorId: courseAuthorId }, status: 'ACTIVE' },
+      select: { amount: true },
+    },
+  }) satisfies Prisma.UserSelect;
+
+export type Customer = Prisma.UserGetPayload<{
+  select: ReturnType<typeof getCustomerSelect>;
+}>;
+
 export interface CourseFilters {
   query?: string;
   categoryName?: string;
@@ -120,6 +141,81 @@ export const getUserLessonDetailSelect = (userId: string) => {
 
 export type UserLessonDetail = Prisma.LessonGetPayload<{
   select: ReturnType<typeof getUserLessonDetailSelect>;
+}>;
+
+export interface EnrollmentFilters {
+  courseAuthorId?: string;
+}
+
+export enum EnrollmentSortingOrder {
+  CREATED_DESC = 'Newest first',
+  CREATED_ASC = 'Oldest first',
+}
+
+export const enrollmentSummarySelect = {
+  amount: true,
+  status: true,
+  createdAt: true,
+  course: {
+    select: {
+      id: true,
+      title: true,
+      previewImageKey: true,
+      briefDescription: true,
+      categoryName: true,
+      duration: true,
+      level: true,
+    },
+  },
+  user: {
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      image: true,
+    },
+  },
+} satisfies Prisma.EnrollmentSelect;
+
+export type EnrollmentSummary = Prisma.EnrollmentGetPayload<{
+  select: typeof enrollmentSummarySelect;
+}>;
+
+export const getUserEnrollmentSummarySelect = (userId: string) => {
+  return {
+    amount: true,
+    status: true,
+    createdAt: true,
+    course: {
+      select: {
+        id: true,
+        title: true,
+        previewImageKey: true,
+        briefDescription: true,
+        categoryName: true,
+        duration: true,
+        level: true,
+        chapters: {
+          select: {
+            id: true,
+            lessons: {
+              select: {
+                id: true,
+                userProgresses: { where: { userId }, select: { isCompleted: true } },
+              },
+              orderBy: { position: 'asc' },
+            },
+            _count: { select: { lessons: true } },
+          },
+          orderBy: { position: 'asc' },
+        },
+      },
+    },
+  } satisfies Prisma.EnrollmentSelect;
+};
+
+export type UserEnrollmentSummary = Prisma.EnrollmentGetPayload<{
+  select: ReturnType<typeof getUserEnrollmentSummarySelect>;
 }>;
 
 export interface ReviewFilters {

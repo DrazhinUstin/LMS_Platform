@@ -1,14 +1,10 @@
-import { enrollmentsPerPage, type EnrollmentTypeWithSelect } from './get-enrollments';
 import { cn, formatDate, formatPrice } from '@/app/lib/utils';
 import Link from 'next/link';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import UserAvatar from '@/app/components/user-avatar';
+import type { EnrollmentSummary } from '@/app/lib/definitions';
 
-export default function EnrollmentsList({
-  enrollments,
-}: {
-  enrollments: EnrollmentTypeWithSelect[];
-}) {
+export default function EnrollmentsList({ enrollments }: { enrollments: EnrollmentSummary[] }) {
   return (
     <ul className="text-sm">
       <li className="hidden grid-cols-[2fr_2fr_1fr_1fr] gap-2 border-b pb-2 font-semibold lg:grid">
@@ -60,7 +56,7 @@ export default function EnrollmentsList({
   );
 }
 
-export function EnrollmentsListSkeleton() {
+export function EnrollmentsListSkeleton({ length = 8 }: { length?: number }) {
   return (
     <ul className="text-sm">
       <li className="hidden grid-cols-[2fr_2fr_1fr_1fr] gap-2 border-b pb-2 font-semibold lg:grid">
@@ -69,7 +65,7 @@ export function EnrollmentsListSkeleton() {
         <h4>Date</h4>
         <h4>Amount</h4>
       </li>
-      {Array.from({ length: enrollmentsPerPage }).map((_, index) => (
+      {Array.from({ length }).map((_, index) => (
         <li
           key={index}
           className={cn(

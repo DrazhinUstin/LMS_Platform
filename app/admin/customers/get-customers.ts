@@ -1,57 +1,39 @@
 import 'server-only';
 import { prisma } from '@/app/lib/prisma';
-import { Prisma, User } from '@/generated/prisma';
-
-export interface CustomerFilters {
-  authorId: string;
-}
-
-type CustomerSortingOrder = { [key in keyof User]?: Prisma.SortOrder };
-
-export const customerSortingOrderData: {
-  id: number;
-  name: string;
-  value: CustomerSortingOrder;
-}[] = [
-  { id: 1, name: 'By name (a to z)', value: { name: 'desc' } },
-  { id: 2, name: 'By name (z to a)', value: { name: 'asc' } },
-];
-
-export const customersPerPage = 8;
-
-const getCustomersSelect = (authorId: string) =>
-  ({
-    id: true,
-    name: true,
-    email: true,
-    image: true,
-    enrollments: {
-      where: { course: { authorId }, status: 'ACTIVE' },
-      select: { amount: true, course: { select: { id: true, title: true } } },
-    },
-  }) satisfies Prisma.UserSelect;
-
-export type CustomerTypeWithSelect = Prisma.UserGetPayload<{
-  select: ReturnType<typeof getCustomersSelect>;
-}>;
+import { Prisma } from '@/generated/prisma';
+import { getCustomerSelect, type Customer, type UserSortingOrder } from '@/app/lib/definitions';
 
 export async function getCustomers({
-  filters,
-  orderBy = customerSortingOrderData[0].value,
+  courseAuthorId,
+  order = 'NAME_ASC',
   page = 1,
+  customersPerPage = 8,
 }: {
-  filters: CustomerFilters;
-  orderBy?: CustomerSortingOrder;
+  courseAuthorId: string;
+  order?: keyof typeof UserSortingOrder;
   page?: number;
-}): Promise<CustomerTypeWithSelect[]> {
-  const { authorId } = filters;
+  customersPerPage?: number;
+}): Promise<Customer[]> {
+  let orderBy: Prisma.UserOrderByWithRelationInput;
+
+  switch (order) {
+    case 'NAME_ASC':
+      orderBy = { name: 'asc' };
+      break;
+    case 'NAME_DESC':
+      orderBy = { name: 'desc' };
+      break;
+    default:
+      orderBy = { name: 'asc' };
+      break;
+  }
 
   const customers = await prisma.user.findMany({
-    where: { enrollments: { some: { course: { authorId }, status: 'ACTIVE' } } },
+    where: { enrollments: { some: { course: { authorId: courseAuthorId }, status: 'ACTIVE' } } },
     orderBy,
     skip: (page - 1) * customersPerPage,
     take: customersPerPage,
-    select: getCustomersSelect(authorId),
+    select: getCustomerSelect(courseAuthorId),
   });
 
   return customers;

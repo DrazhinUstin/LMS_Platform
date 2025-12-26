@@ -5,8 +5,9 @@ import SortOrder from '@/app/components/sort-order';
 import type { Metadata } from 'next';
 import { getSession } from '@/app/lib/auth.get-session';
 import EnrollmentsList, { EnrollmentsListSkeleton } from './enrollments-list';
-import { enrollmentSortingOrderData, enrollmentsPerPage, getEnrollments } from './get-enrollments';
+import { getEnrollments } from './get-enrollments';
 import { getEnrollmentsCount } from './get-enrollments-count';
+import { EnrollmentSortingOrder } from '@/app/lib/definitions';
 
 export const metadata: Metadata = {
   title: 'Enrollments',
@@ -19,9 +20,7 @@ interface Props {
 export default async function Page(props: Props) {
   const searchParams = await props.searchParams;
 
-  const { orderBy, page, ...filters } = searchParams;
-
-  const parsedOrderBy = orderBy && !Array.isArray(orderBy) ? JSON.parse(orderBy) : undefined;
+  const { order, page, ...filters } = searchParams;
 
   const currentPage = Number(page) || 1;
 
@@ -36,12 +35,15 @@ export default async function Page(props: Props) {
       <h2 className="text-center text-2xl font-bold">Enrollments</h2>
       <div className="space-y-8">
         <div className="flex justify-end">
-          <SortOrder options={enrollmentSortingOrderData} />
+          <SortOrder options={Object.entries(EnrollmentSortingOrder)} />
         </div>
-        <Suspense key={JSON.stringify(searchParams)} fallback={<EnrollmentsListSkeleton />}>
+        <Suspense
+          key={JSON.stringify(searchParams)}
+          fallback={<EnrollmentsListSkeleton length={enrollmentsPerPage} />}
+        >
           <Enrollments
             filters={{ ...filters, courseAuthorId: session.user.id }}
-            orderBy={parsedOrderBy}
+            order={order as keyof typeof EnrollmentSortingOrder}
             page={currentPage}
           />
         </Suspense>
@@ -50,9 +52,9 @@ export default async function Page(props: Props) {
   );
 }
 
-async function Enrollments({ filters, orderBy, page }: Parameters<typeof getEnrollments>[0]) {
+async function Enrollments({ filters, order, page }: Parameters<typeof getEnrollments>[0]) {
   const [enrollments, count] = await Promise.all([
-    getEnrollments({ filters, orderBy, page }),
+    getEnrollments({ filters, order, page, enrollmentsPerPage }),
     getEnrollmentsCount({ filters }),
   ]);
 
@@ -68,3 +70,5 @@ async function Enrollments({ filters, orderBy, page }: Parameters<typeof getEnro
     </div>
   );
 }
+
+const enrollmentsPerPage = 8;

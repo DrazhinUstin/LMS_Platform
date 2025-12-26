@@ -1,15 +1,10 @@
-import type { EnrollmentTypeWithSelect } from '@/app/data/enrollment/get-enrollments';
-import { enrollmentsPerPage } from '@/app/data/enrollment/get-enrollments';
 import { ShoppingCartIcon } from 'lucide-react';
 import { cn, formatDate, formatPrice } from '@/app/lib/utils';
 import Link from 'next/link';
 import { Skeleton } from '@/app/components/ui/skeleton';
+import type { UserEnrollmentSummary } from '@/app/lib/definitions';
 
-export default function EnrollmentsList({
-  enrollments,
-}: {
-  enrollments: EnrollmentTypeWithSelect[];
-}) {
+export default function EnrollmentsList({ enrollments }: { enrollments: UserEnrollmentSummary[] }) {
   return (
     <ul className="text-sm lg:text-base">
       <li className="hidden grid-cols-[3fr_1fr_1fr] gap-2 border-b pb-2 font-semibold lg:grid">
@@ -50,7 +45,7 @@ export default function EnrollmentsList({
   );
 }
 
-export function EnrollmentsListSkeleton() {
+export function EnrollmentsListSkeleton({ length = 8 }: { length?: number }) {
   return (
     <ul className="text-sm lg:text-base">
       <li className="hidden grid-cols-[3fr_1fr_1fr] gap-2 border-b pb-2 font-semibold lg:grid">
@@ -58,7 +53,7 @@ export function EnrollmentsListSkeleton() {
         <span>Date</span>
         <span>Amount</span>
       </li>
-      {Array.from({ length: enrollmentsPerPage }).map((_, index) => (
+      {Array.from({ length }).map((_, index) => (
         <li
           key={index}
           className={cn(

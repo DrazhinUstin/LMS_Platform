@@ -4,9 +4,10 @@ import PaginationBar from '@/app/components/pagination-bar';
 import SortOrder from '@/app/components/sort-order';
 import type { Metadata } from 'next';
 import { getSession } from '@/app/lib/auth.get-session';
-import { customerSortingOrderData, customersPerPage, getCustomers } from './get-customers';
+import { getCustomers } from './get-customers';
 import CustomersList, { CustomersListSkeleton } from './customers-list';
 import { getCustomersCount } from './get-customers-count';
+import { UserSortingOrder } from '@/app/lib/definitions';
 
 export const metadata: Metadata = {
   title: 'Customers',
@@ -19,9 +20,7 @@ interface Props {
 export default async function Page(props: Props) {
   const searchParams = await props.searchParams;
 
-  const { orderBy, page, ...filters } = searchParams;
-
-  const parsedOrderBy = orderBy && !Array.isArray(orderBy) ? JSON.parse(orderBy) : undefined;
+  const { order, page } = searchParams;
 
   const currentPage = Number(page) || 1;
 
@@ -36,12 +35,15 @@ export default async function Page(props: Props) {
       <h2 className="text-center text-2xl font-bold">Customers</h2>
       <div className="space-y-8">
         <div className="flex justify-end">
-          <SortOrder options={customerSortingOrderData} />
+          <SortOrder options={Object.entries(UserSortingOrder)} />
         </div>
-        <Suspense key={JSON.stringify(searchParams)} fallback={<CustomersListSkeleton />}>
+        <Suspense
+          key={JSON.stringify(searchParams)}
+          fallback={<CustomersListSkeleton length={customersPerPage} />}
+        >
           <Customers
-            filters={{ ...filters, authorId: session.user.id }}
-            orderBy={parsedOrderBy}
+            courseAuthorId={session.user.id}
+            order={order as keyof typeof UserSortingOrder}
             page={currentPage}
           />
         </Suspense>
@@ -50,10 +52,10 @@ export default async function Page(props: Props) {
   );
 }
 
-async function Customers({ filters, orderBy, page }: Parameters<typeof getCustomers>[0]) {
+async function Customers({ courseAuthorId, order, page }: Parameters<typeof getCustomers>[0]) {
   const [customers, count] = await Promise.all([
-    getCustomers({ filters, orderBy, page }),
-    getCustomersCount({ filters }),
+    getCustomers({ courseAuthorId, order, page }),
+    getCustomersCount({ courseAuthorId }),
   ]);
 
   const totalPages = Math.ceil(count / customersPerPage);
@@ -68,3 +70,5 @@ async function Customers({ filters, orderBy, page }: Parameters<typeof getCustom
     </div>
   );
 }
+
+const customersPerPage = 8;

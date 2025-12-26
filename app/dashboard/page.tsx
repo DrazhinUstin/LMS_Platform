@@ -14,7 +14,7 @@ import UserCourseCard, {
   CourseCardSkeleton as UserCourseCardSkeleton,
 } from './courses/course-card';
 import { Suspense } from 'react';
-import { getEnrollments } from '@/app/data/enrollment/get-enrollments';
+import { getUserEnrollments } from '@/app/data/enrollment/get-user-enrollments';
 import { Button } from '@/app/components/ui/button';
 import Link from 'next/link';
 import { prisma } from '@/app/lib/prisma';
@@ -49,7 +49,7 @@ export default async function Page() {
 }
 
 async function EnrolledCourses({ userId }: { userId: string }) {
-  const enrollments = await getEnrollments({ filters: { userId } });
+  const enrollments = await getUserEnrollments({ userId });
 
   if (enrollments.length === 0) {
     return (

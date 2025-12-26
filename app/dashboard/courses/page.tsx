@@ -1,16 +1,13 @@
 import { redirect } from 'next/navigation';
-import {
-  enrollmentSortingOrderData,
-  enrollmentsPerPage,
-  getEnrollments,
-} from '@/app/data/enrollment/get-enrollments';
 import { Suspense } from 'react';
-import { getEnrollmentsCount } from '@/app/data/enrollment/get-enrollments-count';
 import PaginationBar from '@/app/components/pagination-bar';
 import SortOrder from '@/app/components/sort-order';
 import CourseCard, { CourseCardSkeleton } from './course-card';
 import type { Metadata } from 'next';
 import { getSession } from '@/app/lib/auth.get-session';
+import { EnrollmentSortingOrder } from '@/app/lib/definitions';
+import { getUserEnrollments } from '@/app/data/enrollment/get-user-enrollments';
+import { getUserEnrollmentsCount } from '@/app/data/enrollment/get-user-enrollments-count';
 
 export const metadata: Metadata = {
   title: 'Courses',
@@ -23,9 +20,7 @@ interface Props {
 export default async function Page(props: Props) {
   const searchParams = await props.searchParams;
 
-  const { orderBy, page, ...filters } = searchParams;
-
-  const parsedOrderBy = orderBy && !Array.isArray(orderBy) ? JSON.parse(orderBy) : undefined;
+  const { order, page } = searchParams;
 
   const currentPage = Number(page) || 1;
 
@@ -40,12 +35,12 @@ export default async function Page(props: Props) {
       <h2 className="text-center text-2xl font-bold">Courses you are enrolled in</h2>
       <div className="space-y-8">
         <div className="flex justify-end">
-          <SortOrder options={enrollmentSortingOrderData} />
+          <SortOrder options={Object.entries(EnrollmentSortingOrder)} />
         </div>
         <Suspense key={JSON.stringify(searchParams)} fallback={<CoursesGridSkeleton />}>
           <CoursesGrid
-            filters={{ ...filters, userId: session.user.id }}
-            orderBy={parsedOrderBy}
+            userId={session.user.id}
+            order={order as keyof typeof EnrollmentSortingOrder}
             page={currentPage}
           />
         </Suspense>
@@ -54,10 +49,10 @@ export default async function Page(props: Props) {
   );
 }
 
-async function CoursesGrid({ filters, orderBy, page }: Parameters<typeof getEnrollments>[0]) {
+async function CoursesGrid({ userId, order, page }: Parameters<typeof getUserEnrollments>[0]) {
   const [enrollments, count] = await Promise.all([
-    getEnrollments({ filters, orderBy, page }),
-    getEnrollmentsCount({ filters }),
+    getUserEnrollments({ userId, order, page, enrollmentsPerPage }),
+    getUserEnrollmentsCount({ userId }),
   ]);
 
   const totalPages = Math.ceil(count / enrollmentsPerPage);
@@ -86,3 +81,5 @@ function CoursesGridSkeleton() {
     </div>
   );
 }
+
+const enrollmentsPerPage = 8;

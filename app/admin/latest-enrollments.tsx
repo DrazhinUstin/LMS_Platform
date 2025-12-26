@@ -1,5 +1,5 @@
 import { getSession } from '@/app/lib/auth.get-session';
-import { enrollmentsPerPage, getEnrollments } from './enrollments/get-enrollments';
+import { getEnrollments } from './enrollments/get-enrollments';
 import UserAvatar from '@/app/components/user-avatar';
 import { formatPrice } from '@/app/lib/utils';
 import { Skeleton } from '@/app/components/ui/skeleton';
@@ -11,7 +11,10 @@ export default async function LatestEnrollments() {
     return null;
   }
 
-  const enrollments = await getEnrollments({ filters: { courseAuthorId: session.user.id } });
+  const enrollments = await getEnrollments({
+    filters: { courseAuthorId: session.user.id },
+    enrollmentsPerPage,
+  });
 
   return (
     <div className="space-y-4">
@@ -57,3 +60,5 @@ export function LatestEnrollmentsSkeleton() {
     </div>
   );
 }
+
+const enrollmentsPerPage = 5;

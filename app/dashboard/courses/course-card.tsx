@@ -1,4 +1,3 @@
-import type { EnrollmentTypeWithSelect } from '@/app/data/enrollment/get-enrollments';
 import { Badge } from '@/app/components/ui/badge';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { getS3ObjectUrl } from '@/app/lib/utils';
@@ -8,8 +7,9 @@ import Link from 'next/link';
 import { Progress } from '@/app/components/ui/progress';
 import CategoryIcon from '@/app/components/category-icon';
 import LevelIcon from '@/app/components/level-icon';
+import { UserEnrollmentSummary } from '@/app/lib/definitions';
 
-export default function CourseCard({ course }: { course: EnrollmentTypeWithSelect['course'] }) {
+export default function CourseCard({ course }: { course: UserEnrollmentSummary['course'] }) {
   const totalLessons = course.chapters.reduce((acc, chapter) => acc + chapter._count.lessons, 0);
 
   const totalCompletedLessons = course.chapters.reduce((acc, chapter) => {

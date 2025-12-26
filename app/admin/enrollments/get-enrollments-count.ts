@@ -1,5 +1,5 @@
+import type { EnrollmentFilters } from '@/app/lib/definitions';
 import { prisma } from '@/app/lib/prisma';
-import type { EnrollmentFilters } from './get-enrollments';
 
 export async function getEnrollmentsCount({ filters = {} }: { filters?: EnrollmentFilters }) {
   const { courseAuthorId } = filters;
