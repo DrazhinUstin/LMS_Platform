@@ -1,8 +1,8 @@
 import { getSession } from '@/app/lib/auth.get-session';
-import { getEnrollments } from './enrollments/get-enrollments';
 import UserAvatar from '@/app/components/user-avatar';
 import { formatPrice } from '@/app/lib/utils';
 import { Skeleton } from '@/app/components/ui/skeleton';
+import { getEnrollments } from '@/app/data/enrollment/get-enrollments';
 
 export default async function LatestEnrollments() {
   const session = await getSession();

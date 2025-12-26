@@ -5,9 +5,9 @@ import SortOrder from '@/app/components/sort-order';
 import type { Metadata } from 'next';
 import { getSession } from '@/app/lib/auth.get-session';
 import EnrollmentsList, { EnrollmentsListSkeleton } from './enrollments-list';
-import { getEnrollments } from './get-enrollments';
-import { getEnrollmentsCount } from './get-enrollments-count';
 import { EnrollmentSortingOrder } from '@/app/lib/definitions';
+import { getEnrollments } from '@/app/data/enrollment/get-enrollments';
+import { getEnrollmentsCount } from '@/app/data/enrollment/get-enrollments-count';
 
 export const metadata: Metadata = {
   title: 'Enrollments',

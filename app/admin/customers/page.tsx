@@ -4,10 +4,10 @@ import PaginationBar from '@/app/components/pagination-bar';
 import SortOrder from '@/app/components/sort-order';
 import type { Metadata } from 'next';
 import { getSession } from '@/app/lib/auth.get-session';
-import { getCustomers } from './get-customers';
 import CustomersList, { CustomersListSkeleton } from './customers-list';
-import { getCustomersCount } from './get-customers-count';
 import { UserSortingOrder } from '@/app/lib/definitions';
+import { getCustomers } from '@/app/data/user/get-customers';
+import { getCustomersCount } from '@/app/data/user/get-customers-count';
 
 export const metadata: Metadata = {
   title: 'Customers',
