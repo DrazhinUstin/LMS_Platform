@@ -1,8 +1,6 @@
 import Link from 'next/link';
 import { cn } from '@/app/lib/utils';
 import { Suspense } from 'react';
-import { Prisma } from '@/generated/prisma';
-import { prisma } from '@/app/lib/prisma';
 import {
   Carousel,
   CarouselContent,
@@ -11,18 +9,20 @@ import {
   CarouselPrevious,
 } from '@/app/components/ui/carousel';
 import CourseCard, { CourseCardSkeleton } from './courses/course-card';
-import { courseSummarySelect } from '@/app/lib/definitions';
+import { CourseSortingOrder } from '@/app/lib/definitions';
+import { getCourses } from '@/app/data/course/get-courses';
 
 interface Props {
-  order?: 'most_recent' | 'most_popular';
+  order?: keyof typeof CourseSortingOrder;
 }
 
 const tabsData: Array<{ label: string; value: Props['order'] }> = [
-  { label: 'Most recent', value: 'most_recent' },
-  { label: 'Most popular', value: 'most_popular' },
+  { label: 'Most recent', value: 'CREATED_DESC' },
+  { label: 'Most popular', value: 'POPULARITY_DESC' },
+  { label: 'Top rated', value: 'RATING_DESC' },
 ];
 
-export default function Featured({ order = 'most_recent' }: Props) {
+export default function Featured({ order = 'CREATED_DESC' }: Props) {
   return (
     <div className="space-y-8">
       <h2 className="text-center text-2xl font-bold">Featured courses</h2>
@@ -52,19 +52,7 @@ export default function Featured({ order = 'most_recent' }: Props) {
 const coursesCount = 4;
 
 async function CoursesCarousel({ order }: Props) {
-  let orderBy: Prisma.CourseOrderByWithRelationInput = {};
-
-  if (order === 'most_recent') orderBy = { createdAt: 'desc' };
-
-  if (order === 'most_popular') orderBy = { enrollments: { _count: 'desc' } };
-
-  const courses = await prisma.course.findMany({
-    orderBy,
-    skip: 0,
-    take: coursesCount,
-    select: courseSummarySelect,
-  });
-
+  const courses = await getCourses({ order, coursesPerPage: coursesCount });
   return (
     <Carousel className="w-full">
       <CarouselContent className="-ml-2">

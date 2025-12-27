@@ -34,6 +34,8 @@ export interface CourseFilters {
 export enum CourseSortingOrder {
   CREATED_DESC = 'Newest first',
   CREATED_ASC = 'Oldest first',
+  POPULARITY_DESC = 'Most popular first',
+  POPULARITY_ASC = 'Less popular first',
   PRICE_DESC = 'Most expensive first',
   PRICE_ASC = 'Less expensive first',
   RATING_DESC = 'Top rated first',

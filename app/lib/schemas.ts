@@ -14,7 +14,7 @@ export const CourseSchema = z.object({
   duration: z.coerce
     .number<string>()
     .positive({ error: 'Only positive numbers are allowed!' })
-    .int({ error: 'Only integers are allowed!' }),
+    .multipleOf(0.5, { error: 'Duration must be an integer or end in .5' }),
   price: z.coerce
     .number<string>()
     .positive({ error: 'Only positive numbers are allowed!' })

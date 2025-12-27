@@ -1,6 +1,6 @@
 import PaginationBar from '@/app/components/pagination-bar';
 import SortOrder from '@/app/components/sort-order';
-import { getReviews, reviewsPerPage } from '@/app/data/review/get-reviews';
+import { getReviews } from '@/app/data/review/get-reviews';
 import { getReviewsCount } from '@/app/data/review/get-reviews-count';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
@@ -51,7 +51,7 @@ export default async function Page(props: Props) {
 
 async function ReviewsGrid({ filters, order, page }: Parameters<typeof getReviews>[0]) {
   const [reviews, count] = await Promise.all([
-    getReviews({ filters, order, page }),
+    getReviews({ filters, order, page, reviewsPerPage }),
     getReviewsCount({ filters }),
   ]);
 
@@ -81,3 +81,5 @@ function ReviewsGridSkeleton() {
     </div>
   );
 }
+
+const reviewsPerPage = 8;

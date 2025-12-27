@@ -98,7 +98,7 @@ export default async function Page({ params }: Props) {
           </span>
           <div>
             <h4 className="text-sm font-medium">Duration</h4>
-            <p className="text-muted-foreground text-sm">{course.duration} min</p>
+            <p className="text-muted-foreground text-sm">{course.duration} hr</p>
           </div>
         </li>
       </ul>

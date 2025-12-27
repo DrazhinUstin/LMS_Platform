@@ -1,7 +1,7 @@
 import CourseCard, { CourseCardSkeleton } from './course-card';
 import { redirect } from 'next/navigation';
 import SortOrder from '@/app/components/sort-order';
-import { coursesPerPage, getCourses } from '@/app/data/course/get-courses';
+import { getCourses } from '@/app/data/course/get-courses';
 import { Suspense } from 'react';
 import getCoursesCount from '@/app/data/course/get-courses-count';
 import PaginationBar from '@/app/components/pagination-bar';
@@ -54,7 +54,7 @@ export default async function Page(props: Props) {
 
 async function CoursesGrid({ filters, order, page }: Parameters<typeof getCourses>[0]) {
   const [courses, count] = await Promise.all([
-    getCourses({ filters, order, page }),
+    getCourses({ filters, order, page, coursesPerPage }),
     getCoursesCount({ filters }),
   ]);
 
@@ -92,3 +92,5 @@ function CoursesGridSkeleton() {
     </div>
   );
 }
+
+const coursesPerPage = 8;

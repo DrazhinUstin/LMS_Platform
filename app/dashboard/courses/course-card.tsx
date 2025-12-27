@@ -48,7 +48,7 @@ export default function CourseCard({ course }: { course: UserEnrollmentSummary['
             </Badge>
             <Badge variant="outline">
               <ClockIcon />
-              {course.duration} min
+              {course.duration} hr
             </Badge>
           </div>
           <div className="space-y-1">

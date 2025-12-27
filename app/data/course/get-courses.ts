@@ -8,16 +8,16 @@ import {
   courseSummarySelect,
 } from '@/app/lib/definitions';
 
-export const coursesPerPage = 8;
-
 export async function getCourses({
   filters = {},
   order = 'CREATED_DESC',
   page = 1,
+  coursesPerPage = 8,
 }: {
   filters?: CourseFilters;
   order?: keyof typeof CourseSortingOrder;
   page?: number;
+  coursesPerPage?: number;
 }): Promise<CourseSummary[]> {
   try {
     const { query, categoryName, level, minPrice, maxPrice, authorId, notEnrolledByUserId } =
@@ -58,6 +58,12 @@ export async function getCourses({
         break;
       case 'CREATED_ASC':
         orderBy = { createdAt: 'asc' };
+        break;
+      case 'POPULARITY_DESC':
+        orderBy = { enrollments: { _count: 'desc' } };
+        break;
+      case 'POPULARITY_ASC':
+        orderBy = { enrollments: { _count: 'asc' } };
         break;
       case 'PRICE_DESC':
         orderBy = { price: 'desc' };

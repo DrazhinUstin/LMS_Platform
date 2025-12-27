@@ -157,11 +157,11 @@ export default function CreateCourseForm({ categories }: { categories: Category[
           name="duration"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Duration (in minutes)</FormLabel>
+              <FormLabel>Duration (in hours)</FormLabel>
               <FormControl>
                 <Input
                   type="number"
-                  placeholder="The duration of your course (in minutes)"
+                  placeholder="The duration of your course (in hours)"
                   {...field}
                 />
               </FormControl>

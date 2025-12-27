@@ -74,7 +74,7 @@ export default function CourseDetails({ course }: { course: CourseDetail }) {
             </span>
             <div>
               <h4 className="text-sm font-medium">Duration</h4>
-              <p className="text-muted-foreground text-sm">{course.duration} min</p>
+              <p className="text-muted-foreground text-sm">{course.duration} hr</p>
             </div>
           </li>
         </ul>
@@ -135,7 +135,7 @@ export default function CourseDetails({ course }: { course: CourseDetail }) {
               <span className="bg-primary/20 text-primary grid size-10 place-items-center rounded-full">
                 <ClockIcon className="size-5" />
               </span>
-              <p>{course.duration} min length course</p>
+              <p>{course.duration} hr length course</p>
             </li>
             <li className="grid grid-cols-[auto_1fr] items-center gap-x-2">
               <span className="bg-primary/20 text-primary grid size-10 place-items-center rounded-full">

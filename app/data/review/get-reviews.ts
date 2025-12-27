@@ -8,16 +8,16 @@ import {
 } from '@/app/lib/definitions';
 import type { Prisma } from '@/generated/prisma';
 
-export const reviewsPerPage = 8;
-
 export async function getReviews({
   filters = {},
   order = 'CREATED_DESC',
   page = 1,
+  reviewsPerPage = 8,
 }: {
   filters?: ReviewFilters;
   order?: keyof typeof ReviewSortingOrder;
   page?: number;
+  reviewsPerPage?: number;
 }): Promise<ReviewSummary[]> {
   try {
     const { userId, courseId, courseAuthorId } = filters;

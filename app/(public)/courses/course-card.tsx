@@ -1,6 +1,6 @@
 import CategoryIcon from '@/app/components/category-icon';
 import LevelIcon from '@/app/components/level-icon';
-import StarRating from '@/app/components/star-rating';
+import StarRating, { StarRatingSkeleton } from '@/app/components/star-rating';
 import { Badge } from '@/app/components/ui/badge';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import type { CourseSummary } from '@/app/lib/definitions';
@@ -41,7 +41,7 @@ export default function CourseCard({ course }: { course: CourseSummary }) {
             </Badge>
             <Badge variant="outline">
               <ClockIcon />
-              {course.duration} min
+              {course.duration} hr
             </Badge>
           </div>
         </div>
@@ -57,7 +57,7 @@ export function CourseCardSkeleton() {
       <div className="space-y-2 rounded-b-lg border border-t-0 p-2">
         <Skeleton className="h-6 w-3/4" />
         <div className="flex items-center gap-x-2">
-          <StarRating rating={0} />
+          <StarRatingSkeleton />
           <Skeleton className="h-5 w-20" />
         </div>
         <Skeleton className="h-8 w-full" />

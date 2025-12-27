@@ -4,6 +4,7 @@ import Hero from './hero';
 import Featured from './featured';
 import MotivationCards from './motivation-cards';
 import FAQ from './faq';
+import { CourseSortingOrder } from '@/app/lib/definitions';
 
 export default async function Page({
   searchParams,
@@ -18,7 +19,7 @@ export default async function Page({
       <Suspense fallback={<CategoriesSkeleton />}>
         <Categories />
       </Suspense>
-      <Featured order={featured_order as React.ComponentProps<typeof Featured>['order']} />
+      <Featured order={featured_order as keyof typeof CourseSortingOrder} />
       <FAQ />
     </main>
   );

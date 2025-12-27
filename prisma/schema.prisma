@@ -96,7 +96,7 @@ model Course {
   previewImageKey  String
   briefDescription String
   description      String
-  duration         Int
+  duration         Float
   price            Int
   stripePriceId    String       @unique
   avgRating        Float?
