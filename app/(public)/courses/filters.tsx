@@ -39,26 +39,44 @@ export default function Filters({ categories }: { categories: Category[] }) {
     return value === searchParams.get(key);
   });
 
-  const applyFilters = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const applyFilters = (filtersToApply: FiltersType) => {
     const newSearchParams = new URLSearchParams(searchParams);
 
-    newSearchParams.set('page', '1');
+    if (newSearchParams.has('page')) newSearchParams.set('page', '1');
 
-    Object.entries(filters).forEach(([key, value]) => {
+    Object.entries(filtersToApply).forEach(([key, value]) => {
       if (!value || value === 'unassigned') {
         newSearchParams.delete(key);
       } else {
         newSearchParams.set(key, value);
       }
 
-      router.push(`${pathname}?${newSearchParams.toString()}`);
+      router.replace(`${pathname}?${newSearchParams.toString()}`);
     });
   };
 
+  const resetFilters = () => {
+    const clearedFilters: FiltersType = {
+      query: '',
+      categoryName: '',
+      level: '',
+      minPrice: '',
+      maxPrice: '',
+    };
+
+    setFilters(clearedFilters);
+
+    applyFilters(clearedFilters);
+  };
+
   return (
-    <form className="space-y-8" onSubmit={applyFilters}>
+    <form
+      className="space-y-8"
+      onSubmit={(e) => {
+        e.preventDefault();
+        applyFilters(filters);
+      }}
+    >
       <div className="space-y-2">
         <Label htmlFor="query">Search query</Label>
         <Input
@@ -129,9 +147,16 @@ export default function Filters({ categories }: { categories: Category[] }) {
           />
         </div>
       </div>
-      <Button type="submit" className="w-full" disabled={areFiltersApplied}>
-        Apply filters
-      </Button>
+      <div className="text-center">
+        <Button type="submit" className="w-full" disabled={areFiltersApplied}>
+          Apply filters
+        </Button>
+        {Object.keys(filters).some((key) => searchParams.has(key)) && (
+          <Button type="button" variant="ghost" size="sm" className="mt-2" onClick={resetFilters}>
+            Reset filters
+          </Button>
+        )}
+      </div>
     </form>
   );
 }

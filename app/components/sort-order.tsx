@@ -21,7 +21,7 @@ export default function SortOrder({ options }: { options: Array<[value: string, 
 
     newSearchParams.set('order', value);
 
-    router.push(`${pathname}?${newSearchParams.toString()}`);
+    router.replace(`${pathname}?${newSearchParams.toString()}`);
   };
 
   return (
