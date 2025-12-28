@@ -3,6 +3,7 @@
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/app/components/ui/radio-group';
 import {
   Select,
   SelectContent,
@@ -11,7 +12,9 @@ import {
   SelectValue,
 } from '@/app/components/ui/select';
 import type { CourseFilters } from '@/app/lib/definitions';
+import { cn } from '@/app/lib/utils';
 import { CourseLevel, type Category } from '@/generated/prisma';
+import { StarIcon } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
@@ -27,6 +30,7 @@ export default function Filters({ categories }: { categories: Category[] }) {
   const [filters, setFilters] = useState<FiltersType>({
     query: searchParams.get('query') ?? '',
     categoryName: searchParams.get('categoryName') ?? '',
+    avgRating: searchParams.get('avgRating') ?? '',
     level: searchParams.get('level') ?? '',
     minPrice: searchParams.get('minPrice') ?? '',
     maxPrice: searchParams.get('maxPrice') ?? '',
@@ -59,6 +63,7 @@ export default function Filters({ categories }: { categories: Category[] }) {
     const clearedFilters: FiltersType = {
       query: '',
       categoryName: '',
+      avgRating: '',
       level: '',
       minPrice: '',
       maxPrice: '',
@@ -71,7 +76,7 @@ export default function Filters({ categories }: { categories: Category[] }) {
 
   return (
     <form
-      className="space-y-8"
+      className="space-y-4"
       onSubmit={(e) => {
         e.preventDefault();
         applyFilters(filters);
@@ -104,6 +109,38 @@ export default function Filters({ categories }: { categories: Category[] }) {
             ))}
           </SelectContent>
         </Select>
+      </div>
+      <div className="space-y-2">
+        <Label asChild>
+          <h4>Rating</h4>
+        </Label>
+        <RadioGroup
+          value={filters.avgRating}
+          onValueChange={(val) => setFilters({ ...filters, avgRating: val })}
+          className="gap-2"
+        >
+          <div className="flex items-center gap-x-2">
+            <RadioGroupItem value="" id="unassigned" />
+            <Label htmlFor="unassigned">All</Label>
+          </div>
+          {['4.5', '4', '3.5'].map((value) => (
+            <div key={value} className="flex items-center gap-x-2">
+              <RadioGroupItem value={value} id={value} />
+              <div className="flex items-center gap-x-0.5">
+                {Array.from({ length: 5 }, (_, index) => (
+                  <StarIcon
+                    key={index}
+                    className={cn(
+                      'fill-input text-input size-3.5 shrink-0',
+                      index < +value && 'fill-primary text-primary'
+                    )}
+                  />
+                ))}
+              </div>
+              <Label htmlFor={value}>{value} & up</Label>
+            </div>
+          ))}
+        </RadioGroup>
       </div>
       <div className="space-y-2">
         <Label htmlFor="level">Level</Label>

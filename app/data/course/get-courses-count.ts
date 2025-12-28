@@ -5,8 +5,16 @@ import { prisma } from '@/app/lib/prisma';
 
 export default async function getCoursesCount({ filters = {} }: { filters?: CourseFilters }) {
   try {
-    const { query, categoryName, level, minPrice, maxPrice, authorId, notEnrolledByUserId } =
-      filters;
+    const {
+      query,
+      categoryName,
+      avgRating,
+      level,
+      minPrice,
+      maxPrice,
+      authorId,
+      notEnrolledByUserId,
+    } = filters;
 
     let queryWhereInput: Prisma.CourseWhereInput = {};
 
@@ -22,6 +30,7 @@ export default async function getCoursesCount({ filters = {} }: { filters?: Cour
     const where: Prisma.CourseWhereInput = {
       ...queryWhereInput,
       ...(categoryName && { categoryName }),
+      ...(avgRating && { avgRating: { gte: +avgRating } }),
       ...(level && { level }),
       ...((minPrice || maxPrice) && {
         price: {

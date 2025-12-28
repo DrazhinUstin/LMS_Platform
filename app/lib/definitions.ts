@@ -24,6 +24,7 @@ export type Customer = Prisma.UserGetPayload<{
 export interface CourseFilters {
   query?: string;
   categoryName?: string;
+  avgRating?: string;
   level?: CourseLevel;
   minPrice?: string;
   maxPrice?: string;

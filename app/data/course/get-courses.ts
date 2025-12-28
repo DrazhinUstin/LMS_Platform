@@ -20,8 +20,16 @@ export async function getCourses({
   coursesPerPage?: number;
 }): Promise<CourseSummary[]> {
   try {
-    const { query, categoryName, level, minPrice, maxPrice, authorId, notEnrolledByUserId } =
-      filters;
+    const {
+      query,
+      categoryName,
+      avgRating,
+      level,
+      minPrice,
+      maxPrice,
+      authorId,
+      notEnrolledByUserId,
+    } = filters;
 
     let queryWhereInput: Prisma.CourseWhereInput = {};
 
@@ -37,6 +45,7 @@ export async function getCourses({
     const where: Prisma.CourseWhereInput = {
       ...queryWhereInput,
       ...(categoryName && { categoryName }),
+      ...(avgRating && { avgRating: { gte: +avgRating } }),
       ...(level && { level }),
       ...((minPrice || maxPrice) && {
         price: {
