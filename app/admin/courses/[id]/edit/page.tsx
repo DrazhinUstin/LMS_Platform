@@ -1,7 +1,8 @@
-import { prisma } from '@/app/lib/prisma';
 import EditCourseForm from './edit-course-form';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import { getCourse } from '@/app/data/course/get-course';
+import { getCategories } from '@/app/data/category/get-categories';
 
 export const metadata: Metadata = {
   title: 'Edit course details',
@@ -10,10 +11,7 @@ export const metadata: Metadata = {
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
-  const [course, categories] = await Promise.all([
-    prisma.course.findUnique({ where: { id } }),
-    prisma.category.findMany(),
-  ]);
+  const [course, categories] = await Promise.all([getCourse(id), getCategories()]);
 
   if (!course) {
     notFound();

@@ -1,7 +1,7 @@
 'use client';
 
 import { CourseSchema } from '@/app/lib/schemas';
-import { type Category, Course, CourseLevel, CourseStatus } from '@/generated/prisma';
+import { type Category, CourseLevel, CourseStatus } from '@/generated/prisma';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -28,12 +28,13 @@ import FileUploader from '@/app/components/file-uploader';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
+import type { CourseDetail } from '@/app/lib/definitions';
 
 export default function EditCourseForm({
   course,
   categories,
 }: {
-  course: Course;
+  course: CourseDetail;
   categories: Category[];
 }) {
   const [isPending, startTransition] = useTransition();

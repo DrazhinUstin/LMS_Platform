@@ -36,13 +36,13 @@ export default async function Layout({ params, children }: Props) {
         className="hover:text-primary flex w-max items-center gap-x-4 transition-colors"
       >
         <ArrowLeftIcon />
-        <div className="relative aspect-video w-20">
+        <div className="relative aspect-video w-20 shrink-0">
           <Image
             src={getS3ObjectUrl(course.previewImageKey)}
             alt={course.title}
             fill
             sizes="80px"
-            className="shrink-0 object-cover"
+            className="rounded-sm object-cover"
           />
         </div>
         <h4 className="font-semibold">{course.title}</h4>

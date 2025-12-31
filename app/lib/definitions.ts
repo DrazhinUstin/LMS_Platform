@@ -70,6 +70,7 @@ export const courseDetailSelect = {
   stripePriceId: true,
   avgRating: true,
   level: true,
+  status: true,
   categoryName: true,
   chapters: {
     select: {
@@ -98,6 +99,7 @@ export const getUserCourseDetailSelect = (userId: string) => {
     stripePriceId: true,
     avgRating: true,
     level: true,
+    status: true,
     categoryName: true,
     chapters: {
       select: {
