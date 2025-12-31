@@ -45,7 +45,7 @@ export default function DeleteChapterDialog({
   return (
     <Dialog open={isDialogOpen} onOpenChange={(open) => !isPending && setIsDialogOpen(open)}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon" title="Delete chapter">
+        <Button variant="ghost" size="icon-sm" title="Delete chapter">
           <Trash2Icon className="text-destructive" />
         </Button>
       </DialogTrigger>

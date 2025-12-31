@@ -44,7 +44,7 @@ export default function DeleteCourseForm({ course }: { course: Course }) {
       <div className="space-y-2">
         <h4 className="text-lg font-semibold">
           Delete the course{' '}
-          <Link href={`/admin/courses/${course.id}/edit`} className="text-primary hover:underline">
+          <Link href={`/admin/courses/${course.id}`} className="text-primary hover:underline">
             &quot;{course.title}&quot;
           </Link>
           ?

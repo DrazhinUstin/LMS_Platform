@@ -72,7 +72,7 @@ export default function EditChapterDialog({ chapter }: { chapter: ChapterData })
   return (
     <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon" title="Edit chapter">
+        <Button variant="ghost" size="icon-sm" title="Edit chapter">
           <SquarePenIcon />
         </Button>
       </DialogTrigger>

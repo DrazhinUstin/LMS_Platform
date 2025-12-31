@@ -45,7 +45,7 @@ export default function DeleteLessonDialog({
   return (
     <Dialog open={isDialogOpen} onOpenChange={(open) => !isPending && setIsDialogOpen(open)}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon" title="Delete lesson">
+        <Button variant="ghost" size="icon-sm" title="Delete lesson">
           <Trash2Icon className="text-destructive" />
         </Button>
       </DialogTrigger>

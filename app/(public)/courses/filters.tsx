@@ -123,7 +123,7 @@ export default function Filters({ categories }: { categories: Category[] }) {
             <RadioGroupItem value="" id="unassigned" />
             <Label htmlFor="unassigned">All</Label>
           </div>
-          {['4.5', '4', '3.5'].map((value) => (
+          {['4.5', '4', '3'].map((value) => (
             <div key={value} className="flex items-center gap-x-2">
               <RadioGroupItem value={value} id={value} />
               <div className="flex items-center gap-x-0.5">

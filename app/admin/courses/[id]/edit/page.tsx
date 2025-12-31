@@ -21,7 +21,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 
   return (
     <main className="space-y-8">
-      <h2 className="text-center text-2xl font-bold">Edit a course</h2>
+      <h2 className="text-center text-2xl font-bold">Edit course</h2>
       <EditCourseForm course={course} categories={categories} />
     </main>
   );

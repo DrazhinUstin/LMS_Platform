@@ -7,15 +7,19 @@ export const getUserLesson = cache(
   async ({
     lessonId,
     userId,
+    isAuthor = false,
   }: {
     lessonId: string;
     userId: string;
+    isAuthor?: boolean;
   }): Promise<UserLessonDetail | null> => {
     try {
       const course = await prisma.lesson.findUnique({
         where: {
           id: lessonId,
-          chapter: { course: { enrollments: { some: { userId, status: 'ACTIVE' } } } },
+          ...(isAuthor
+            ? { chapter: { course: { authorId: userId } } }
+            : { chapter: { course: { enrollments: { some: { userId, status: 'ACTIVE' } } } } }),
         },
         select: getUserLessonDetailSelect(userId),
       });

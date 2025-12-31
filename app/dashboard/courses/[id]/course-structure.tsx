@@ -12,7 +12,13 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/app/lib/utils';
 import type { UserCourseDetail } from '@/app/lib/definitions';
 
-export default function CourseStructure({ course }: { course: UserCourseDetail }) {
+export default function CourseStructure({
+  course,
+  coursePath,
+}: {
+  course: UserCourseDetail;
+  coursePath?: string;
+}) {
   const pathname = usePathname();
   return (
     <div className="space-y-2">
@@ -54,7 +60,13 @@ export default function CourseStructure({ course }: { course: UserCourseDetail }
                 )}
                 asChild
               >
-                <Link href={`/dashboard/courses/${course.id}/${chapter.id}/${lesson.id}`}>
+                <Link
+                  href={
+                    coursePath
+                      ? `${coursePath}/${chapter.id}/${lesson.id}`
+                      : `/dashboard/courses/${course.id}/${chapter.id}/${lesson.id}`
+                  }
+                >
                   <span className="bg-primary/10 grid size-6 shrink-0 place-items-center rounded-full">
                     <PlayIcon />
                   </span>

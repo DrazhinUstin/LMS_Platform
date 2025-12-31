@@ -28,9 +28,9 @@ export default function CourseCard({ course }: { course: CourseSummary }) {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem asChild>
-            <Link href={`/courses/${course.id}`}>
+            <Link href={`/admin/courses/${course.id}`}>
               <EyeIcon />
-              Preview
+              View
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
