@@ -1,12 +1,22 @@
 import { prisma } from '@/app/lib/prisma';
 import EnrollmentsPerDayChart from './enrollments-per-day-chart';
 import { Skeleton } from '@/app/components/ui/skeleton';
+import { getSession } from '@/app/lib/auth.get-session';
 
 type ChartData = React.ComponentProps<typeof EnrollmentsPerDayChart>['chartData'];
 
 export default async function EnrollmentsPerDay() {
+  const session = await getSession();
+
+  if (!session) {
+    return null;
+  }
+
   const enrollments = await prisma.enrollment.findMany({
-    where: { createdAt: { gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) } },
+    where: {
+      course: { authorId: session.user.id },
+      createdAt: { gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) },
+    },
     orderBy: { createdAt: 'asc' },
     select: { createdAt: true },
   });

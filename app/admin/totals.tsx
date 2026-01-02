@@ -12,7 +12,9 @@ export default async function Totals() {
 
   const [totalUsers, totalCustomers, totalCourses, totalLessons] = await Promise.all([
     prisma.user.count({ where: { id: { not: session.user.id } } }),
-    prisma.user.count({ where: { enrollments: { some: { status: 'ACTIVE' } } } }),
+    prisma.user.count({
+      where: { enrollments: { some: { status: 'ACTIVE', course: { authorId: session.user.id } } } },
+    }),
     prisma.course.count({ where: { authorId: session.user.id } }),
     prisma.lesson.count({ where: { chapter: { course: { authorId: session.user.id } } } }),
   ]);

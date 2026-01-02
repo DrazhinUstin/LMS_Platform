@@ -1,8 +1,9 @@
 import EditCourseForm from './edit-course-form';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getCourse } from '@/app/data/course/get-course';
 import { getCategories } from '@/app/data/category/get-categories';
+import { getSession } from '@/app/lib/auth.get-session';
 
 export const metadata: Metadata = {
   title: 'Edit course details',
@@ -11,7 +12,13 @@ export const metadata: Metadata = {
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
-  const [course, categories] = await Promise.all([getCourse(id), getCategories()]);
+  const session = await getSession();
+
+  if (!session) {
+    redirect('/login');
+  }
+
+  const [course, categories] = await Promise.all([getCourse(id, session.user.id), getCategories()]);
 
   if (!course) {
     notFound();

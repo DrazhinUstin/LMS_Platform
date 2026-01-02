@@ -1,7 +1,8 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import EditLessonForm from './edit-lesson-form';
 import type { Metadata } from 'next';
 import { getLesson } from '@/app/data/lesson/get-lesson';
+import { getSession } from '@/app/lib/auth.get-session';
 
 export const metadata: Metadata = {
   title: 'Edit lesson',
@@ -14,7 +15,13 @@ export default async function Page({
 }) {
   const { lessonId } = await params;
 
-  const lesson = await getLesson(lessonId);
+  const session = await getSession();
+
+  if (!session) {
+    redirect('/login');
+  }
+
+  const lesson = await getLesson(lessonId, session.user.id);
 
   if (!lesson) {
     notFound();

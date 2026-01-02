@@ -23,14 +23,19 @@ export async function createChapter(courseId: string, data: z.infer<typeof Chapt
 
     const { title } = validation.data;
 
-    const courseLastChapter = await prisma.chapter.findFirst({
-      where: { courseId },
-      orderBy: { position: 'desc' },
-      select: { position: true },
+    const courseWithLastChapter = await prisma.course.findUnique({
+      where: { id: courseId, authorId: session.user.id },
+      select: { chapters: { orderBy: { position: 'desc' }, take: 1, select: { position: true } } },
     });
 
+    if (!courseWithLastChapter) {
+      throw new Error('Course not found or you are not authorized to update it!');
+    }
+
+    const lastChapter = courseWithLastChapter.chapters[0];
+
     const createdChapter = await prisma.chapter.create({
-      data: { courseId, title, position: (courseLastChapter?.position ?? 0) + 1 },
+      data: { courseId, title, position: (lastChapter?.position ?? 0) + 1 },
     });
 
     revalidatePath(`/admin/courses/${courseId}/edit/structure`);
@@ -57,7 +62,7 @@ export async function editChapter(chapterId: string, data: z.infer<typeof Chapte
     }
 
     const updatedChapter = await prisma.chapter.update({
-      where: { id: chapterId },
+      where: { id: chapterId, course: { authorId: session.user.id } },
       data: validation.data,
     });
 
@@ -65,6 +70,10 @@ export async function editChapter(chapterId: string, data: z.infer<typeof Chapte
 
     return updatedChapter;
   } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      throw new Error('Chapter not found or you are not authorized to update it.');
+    }
+
     console.error(error);
     throw error;
   }
@@ -85,12 +94,12 @@ export async function deleteChapter({
     }
 
     const course = await prisma.course.findUnique({
-      where: { id: courseId },
+      where: { id: courseId, authorId: session.user.id, chapters: { some: { id: chapterId } } },
       select: { chapters: { select: { id: true }, orderBy: { position: 'asc' } } },
     });
 
     if (!course) {
-      throw new Error('Course does not exist!');
+      throw new Error('Course not found or you are not authorized to update it!');
     }
 
     const chaptersToReorder = course.chapters
@@ -129,14 +138,19 @@ export async function createLesson(chapterId: string, data: z.infer<typeof Lesso
       throw new Error('Invalid data!');
     }
 
-    const chapterLastLesson = await prisma.lesson.findFirst({
-      where: { chapterId },
-      orderBy: { position: 'desc' },
-      select: { position: true },
+    const chapterWithLastLesson = await prisma.chapter.findUnique({
+      where: { id: chapterId, course: { authorId: session.user.id } },
+      select: { lessons: { orderBy: { position: 'desc' }, take: 1, select: { position: true } } },
     });
 
+    if (!chapterWithLastLesson) {
+      throw new Error('Chapter not found or you are not authorized to update it!');
+    }
+
+    const lastLesson = chapterWithLastLesson.lessons[0];
+
     const { chapter, ...createdLesson } = await prisma.lesson.create({
-      data: { chapterId, ...validation.data, position: (chapterLastLesson?.position ?? 0) + 1 },
+      data: { chapterId, ...validation.data, position: (lastLesson?.position ?? 0) + 1 },
       include: { chapter: { select: { courseId: true } } },
     });
 
@@ -164,12 +178,16 @@ export async function deleteLesson({
     }
 
     const chapter = await prisma.chapter.findUnique({
-      where: { id: chapterId },
+      where: {
+        id: chapterId,
+        course: { authorId: session.user.id },
+        lessons: { some: { id: lessonId } },
+      },
       select: { courseId: true, lessons: { select: { id: true }, orderBy: { position: 'asc' } } },
     });
 
     if (!chapter) {
-      throw new Error('Chapter does not exist!');
+      throw new Error('Chapter not found or you are not authorized to update it!');
     }
 
     const lessonsToReorder = chapter.lessons
@@ -205,13 +223,22 @@ export async function reorderChapters(courseId: string, data: ChapterPosition[])
     }
 
     const reorderedChapters = await prisma.$transaction(
-      data.map(({ id, position }) => prisma.chapter.update({ where: { id }, data: { position } }))
+      data.map(({ id, position }) =>
+        prisma.chapter.update({
+          where: { id, courseId, course: { authorId: session.user.id } },
+          data: { position },
+        })
+      )
     );
 
     revalidatePath(`/admin/courses/${courseId}/edit/structure`);
 
     return reorderedChapters;
   } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      throw new Error('Chapter not found or you are not authorized to update it.');
+    }
+
     console.error(error);
     throw error;
   }
@@ -228,13 +255,22 @@ export async function reorderLessons(courseId: string, data: LessonPosition[]) {
     }
 
     const reorderedLessons = await prisma.$transaction(
-      data.map(({ id, position }) => prisma.lesson.update({ where: { id }, data: { position } }))
+      data.map(({ id, position }) =>
+        prisma.lesson.update({
+          where: { id, chapter: { courseId, course: { authorId: session.user.id } } },
+          data: { position },
+        })
+      )
     );
 
     revalidatePath(`/admin/courses/${courseId}/edit/structure`);
 
     return reorderedLessons;
   } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      throw new Error('Lesson not found or you are not authorized to update it.');
+    }
+
     console.error(error);
     throw error;
   }

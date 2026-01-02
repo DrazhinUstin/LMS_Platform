@@ -1,7 +1,8 @@
-import { prisma } from '@/app/lib/prisma';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import DeleteCourseForm from './delete-course-form';
 import type { Metadata } from 'next';
+import { getSession } from '@/app/lib/auth.get-session';
+import { getCourse } from '@/app/data/course/get-course';
 
 export const metadata: Metadata = {
   title: 'Delete course',
@@ -10,7 +11,13 @@ export const metadata: Metadata = {
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
-  const course = await prisma.course.findUnique({ where: { id } });
+  const session = await getSession();
+
+  if (!session) {
+    redirect('/login');
+  }
+
+  const course = await getCourse(id, session.user.id);
 
   if (!course) {
     notFound();

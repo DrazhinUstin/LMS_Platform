@@ -17,12 +17,12 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     const { id } = await params;
 
     const course = await prisma.course.findUnique({
-      where: { id },
+      where: { id, authorId: session.user.id },
       select: { id: true, stripeProductId: true, price: true, stripePriceId: true },
     });
 
     if (!course) {
-      return new Response('Record not found!', {
+      return new Response('Record not found or you are not authorized to update it!', {
         status: 404,
       });
     }

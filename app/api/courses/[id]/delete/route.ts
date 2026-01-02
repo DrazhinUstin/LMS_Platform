@@ -16,12 +16,12 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
     const { id } = await params;
 
     const course = await prisma.course.findUnique({
-      where: { id },
+      where: { id, authorId: session.user.id },
       select: { id: true, stripeProductId: true, stripePriceId: true },
     });
 
     if (!course) {
-      return new Response('Record not found!', {
+      return new Response('Record not found or you are not authorized to delete it!', {
         status: 404,
       });
     }

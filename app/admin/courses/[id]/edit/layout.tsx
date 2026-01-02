@@ -1,10 +1,11 @@
 import { getCourse } from '@/app/data/course/get-course';
 import NavMenu from './nav-menu';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { getS3ObjectUrl } from '@/app/lib/utils';
 import { Button } from '@/app/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
+import { getSession } from '@/app/lib/auth.get-session';
 
 export default async function Layout({
   children,
@@ -15,7 +16,13 @@ export default async function Layout({
 }) {
   const { id } = await params;
 
-  const course = await getCourse(id);
+  const session = await getSession();
+
+  if (!session) {
+    redirect('/login');
+  }
+
+  const course = await getCourse(id, session.user.id);
 
   if (!course) {
     notFound();
