@@ -48,6 +48,11 @@ export default function CourseCard({ course }: { course: CourseSummary }) {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      {course.status === 'DRAFT' && (
+        <Badge variant="secondary" className="absolute top-2 left-2 z-50">
+          {course.status}
+        </Badge>
+      )}
       <div className="relative aspect-video w-full overflow-hidden rounded-t-lg">
         <Image
           src={getS3ObjectUrl(course.previewImageKey)}

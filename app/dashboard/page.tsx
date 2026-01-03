@@ -91,7 +91,7 @@ async function CategoryCourses({ userId }: { userId: string }) {
   const category = categories[randomIndex];
 
   const courses = await getCourses({
-    filters: { categoryName: category.name, notEnrolledByUserId: userId },
+    filters: { categoryName: category.name, notEnrolledByUserId: userId, status: 'PUBLISHED' },
   });
 
   if (courses.length === 0) {
@@ -117,7 +117,9 @@ async function CategoryCourses({ userId }: { userId: string }) {
 }
 
 async function OtherCourses({ userId }: { userId: string }) {
-  const courses = await getCourses({ filters: { notEnrolledByUserId: userId } });
+  const courses = await getCourses({
+    filters: { notEnrolledByUserId: userId, status: 'PUBLISHED' },
+  });
 
   if (courses.length === 0) {
     return null;

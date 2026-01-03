@@ -17,7 +17,7 @@ export async function enrollInCourse(courseId: string) {
     }
 
     const course = await prisma.course.findUnique({
-      where: { id: courseId },
+      where: { id: courseId, status: 'PUBLISHED' },
       select: { price: true, stripePriceId: true },
     });
 

@@ -1,4 +1,4 @@
-import type { CourseLevel, Prisma } from '@/generated/prisma';
+import type { CourseLevel, CourseStatus, Prisma } from '@/generated/prisma';
 
 export enum UserSortingOrder {
   NAME_DESC = 'By name (z to a)',
@@ -26,6 +26,7 @@ export interface CourseFilters {
   categoryName?: string;
   avgRating?: string;
   level?: CourseLevel;
+  status?: CourseStatus;
   minPrice?: string;
   maxPrice?: string;
   authorId?: string;
@@ -52,6 +53,7 @@ export const courseSummarySelect = {
   price: true,
   avgRating: true,
   level: true,
+  status: true,
   categoryName: true,
   _count: { select: { reviews: true } },
 } satisfies Prisma.CourseSelect;

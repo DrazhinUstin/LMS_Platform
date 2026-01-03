@@ -52,7 +52,11 @@ export default function Featured({ order = 'CREATED_DESC' }: Props) {
 const coursesCount = 4;
 
 async function CoursesCarousel({ order }: Props) {
-  const courses = await getCourses({ order, coursesPerPage: coursesCount });
+  const courses = await getCourses({
+    filters: { status: 'PUBLISHED' },
+    order,
+    coursesPerPage: coursesCount,
+  });
   return (
     <Carousel className="w-full">
       <CarouselContent className="-ml-2">

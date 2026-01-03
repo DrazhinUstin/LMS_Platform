@@ -6,6 +6,7 @@ import { Button } from '@/app/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getSession } from '@/app/lib/auth.get-session';
+import { Badge } from '@/app/components/ui/badge';
 
 export default async function Layout({
   children,
@@ -39,6 +40,11 @@ export default async function Layout({
             sizes="128px"
             className="rounded-sm object-cover"
           />
+          {course.status === 'DRAFT' && (
+            <Badge variant="secondary" className="absolute top-0.5 left-0.5">
+              {course.status}
+            </Badge>
+          )}
         </div>
         <div className="space-y-2">
           <h4 className="font-semibold">{course.title}</h4>

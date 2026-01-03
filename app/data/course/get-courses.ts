@@ -25,6 +25,7 @@ export async function getCourses({
       categoryName,
       avgRating,
       level,
+      status,
       minPrice,
       maxPrice,
       authorId,
@@ -47,6 +48,7 @@ export async function getCourses({
       ...(categoryName && { categoryName }),
       ...(avgRating && { avgRating: { gte: +avgRating } }),
       ...(level && { level }),
+      ...(status && { status }),
       ...((minPrice || maxPrice) && {
         price: {
           ...(minPrice && { gte: Math.round(+minPrice * 100) }),

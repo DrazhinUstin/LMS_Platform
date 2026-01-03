@@ -10,6 +10,7 @@ export default async function getCoursesCount({ filters = {} }: { filters?: Cour
       categoryName,
       avgRating,
       level,
+      status,
       minPrice,
       maxPrice,
       authorId,
@@ -32,6 +33,7 @@ export default async function getCoursesCount({ filters = {} }: { filters?: Cour
       ...(categoryName && { categoryName }),
       ...(avgRating && { avgRating: { gte: +avgRating } }),
       ...(level && { level }),
+      ...(status && { status }),
       ...((minPrice || maxPrice) && {
         price: {
           ...(minPrice && { gte: Math.round(+minPrice * 100) }),

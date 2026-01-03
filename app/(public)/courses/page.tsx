@@ -39,7 +39,7 @@ export default async function Page({ searchParams }: Props) {
           </div>
           <Suspense key={JSON.stringify(awaitedSearchParams)} fallback={<CoursesGridSkeleton />}>
             <CoursesGrid
-              filters={filters}
+              filters={{ ...filters, status: 'PUBLISHED' }}
               order={order as keyof typeof CourseSortingOrder}
               page={currentPage}
             />
