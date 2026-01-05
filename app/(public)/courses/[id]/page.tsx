@@ -1,7 +1,7 @@
 import { getCourse } from '@/app/data/course/get-course';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import CourseDetails from './course-details';
+import CourseDetail from './course-detail';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -29,7 +29,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <main className="mx-auto w-[90vw] max-w-7xl space-y-8 py-8">
-      <CourseDetails course={course} />
+      <CourseDetail course={course} />
     </main>
   );
 }

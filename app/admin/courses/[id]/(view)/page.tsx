@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import { Button } from '@/app/components/ui/button';
 import Link from 'next/link';
 import { getUserCourse } from '@/app/data/course/get-user-course';
+import { SquarePenIcon } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Course preview',
@@ -26,9 +27,11 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   return (
     <main className="space-y-8">
       <CourseDetail course={course} />
-      <hr />
       <Button className="w-full" asChild>
-        <Link href={`/admin/courses/${course.id}/edit`}>Edit course</Link>
+        <Link href={`/admin/courses/${course.id}/edit`}>
+          <SquarePenIcon />
+          Edit course
+        </Link>
       </Button>
     </main>
   );

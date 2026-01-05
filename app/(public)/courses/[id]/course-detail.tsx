@@ -1,5 +1,6 @@
-import { formatPrice, getS3ObjectUrl } from '@/app/lib/utils';
+import { formatDate, formatPrice, getS3ObjectUrl } from '@/app/lib/utils';
 import {
+  Calendar1Icon,
   ChevronsUpDownIcon,
   ClockIcon,
   InfinityIcon,
@@ -21,7 +22,7 @@ import StarRating from '@/app/components/star-rating';
 import Link from 'next/link';
 import type { CourseDetail } from '@/app/lib/definitions';
 
-export default function CourseDetails({ course }: { course: CourseDetail }) {
+export default function CourseDetail({ course }: { course: CourseDetail }) {
   return (
     <div className="grid items-start gap-8 lg:grid-cols-3">
       <div className="space-y-8 lg:col-span-2">
@@ -48,10 +49,9 @@ export default function CourseDetails({ course }: { course: CourseDetail }) {
           </Link>
         </div>
         <p>{course.briefDescription}</p>
-        <hr />
-        <ul className="flex flex-wrap gap-x-4 gap-y-2">
+        <ul className="grid gap-x-4 gap-y-8 border-t border-b py-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           <li className="flex items-center gap-x-2">
-            <span className="bg-primary/20 text-primary grid size-10 place-items-center rounded-full">
+            <span className="bg-primary/20 text-primary grid size-10 shrink-0 place-items-center rounded-full">
               <CategoryIcon categoryName={course.categoryName} className="size-5" />
             </span>
             <div>
@@ -60,7 +60,7 @@ export default function CourseDetails({ course }: { course: CourseDetail }) {
             </div>
           </li>
           <li className="flex items-center gap-x-2">
-            <span className="bg-primary/20 text-primary grid size-10 place-items-center rounded-full">
+            <span className="bg-primary/20 text-primary grid size-10 shrink-0 place-items-center rounded-full">
               <LevelIcon level={course.level} className="size-5" />
             </span>
             <div>
@@ -69,7 +69,7 @@ export default function CourseDetails({ course }: { course: CourseDetail }) {
             </div>
           </li>
           <li className="flex items-center gap-x-2">
-            <span className="bg-primary/20 text-primary grid size-10 place-items-center rounded-full">
+            <span className="bg-primary/20 text-primary grid size-10 shrink-0 place-items-center rounded-full">
               <ClockIcon className="size-5" />
             </span>
             <div>
@@ -77,14 +77,21 @@ export default function CourseDetails({ course }: { course: CourseDetail }) {
               <p className="text-muted-foreground text-sm">{course.duration} hr</p>
             </div>
           </li>
+          <li className="flex items-center gap-x-2">
+            <span className="bg-primary/20 text-primary grid size-10 shrink-0 place-items-center rounded-full">
+              <Calendar1Icon className="size-5" />
+            </span>
+            <div>
+              <h4 className="text-sm font-medium">Last updated</h4>
+              <p className="text-muted-foreground text-sm">{formatDate(course.updatedAt)}</p>
+            </div>
+          </li>
         </ul>
-        <hr />
         <h2 className="text-2xl font-bold">Course description</h2>
         <div
           className="prose prose-neutral prose-sm sm:prose-base dark:prose-invert"
           dangerouslySetInnerHTML={{ __html: course.description }}
         />
-        <hr />
         <h2 className="text-2xl font-bold">Course structure</h2>
         <div className="space-y-4">
           {course.chapters.map((chapter, chapterIndex) => (

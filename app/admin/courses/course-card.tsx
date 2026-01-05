@@ -1,6 +1,13 @@
 import { Badge } from '@/app/components/ui/badge';
 import { formatPrice, getS3ObjectUrl } from '@/app/lib/utils';
-import { ClockIcon, EllipsisIcon, EyeIcon, SquarePenIcon, Trash2Icon } from 'lucide-react';
+import {
+  ClockIcon,
+  EllipsisIcon,
+  EyeIcon,
+  ShoppingCartIcon,
+  SquarePenIcon,
+  Trash2Icon,
+} from 'lucide-react';
 import Image from 'next/image';
 import {
   DropdownMenu,
@@ -33,6 +40,14 @@ export default function CourseCard({ course }: { course: CourseSummary }) {
               View
             </Link>
           </DropdownMenuItem>
+          {course.status === 'PUBLISHED' && (
+            <DropdownMenuItem asChild>
+              <Link href={`/courses/${course.id}`}>
+                <ShoppingCartIcon />
+                View in store
+              </Link>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem asChild>
             <Link href={`/admin/courses/${course.id}/edit`}>
               <SquarePenIcon />

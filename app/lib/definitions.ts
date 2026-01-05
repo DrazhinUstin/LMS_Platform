@@ -74,6 +74,7 @@ export const courseDetailSelect = {
   level: true,
   status: true,
   categoryName: true,
+  updatedAt: true,
   chapters: {
     select: {
       id: true,
@@ -90,19 +91,7 @@ export type CourseDetail = Prisma.CourseGetPayload<{ select: typeof courseDetail
 
 export const getUserCourseDetailSelect = (userId: string) => {
   return {
-    id: true,
-    stripeProductId: true,
-    title: true,
-    previewImageKey: true,
-    briefDescription: true,
-    description: true,
-    duration: true,
-    price: true,
-    stripePriceId: true,
-    avgRating: true,
-    level: true,
-    status: true,
-    categoryName: true,
+    ...courseDetailSelect,
     chapters: {
       select: {
         id: true,
@@ -119,7 +108,6 @@ export const getUserCourseDetailSelect = (userId: string) => {
       },
       orderBy: { position: 'asc' },
     },
-    _count: { select: { reviews: true, chapters: true } },
   } satisfies Prisma.CourseSelect;
 };
 
