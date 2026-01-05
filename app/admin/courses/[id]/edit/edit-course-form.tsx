@@ -1,7 +1,7 @@
 'use client';
 
 import { CourseSchema } from '@/app/lib/schemas';
-import { type Category, CourseLevel, CourseStatus } from '@/generated/prisma';
+import { type Category, type Course, CourseLevel, CourseStatus } from '@/generated/prisma';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -71,9 +71,23 @@ export default function EditCourseForm({
           throw new Error();
         }
 
-        toast('Course edited successfully!');
+        const data: Course = await response.json();
 
-        router.push('/admin/courses');
+        form.reset({
+          title: data.title,
+          previewImageKey: data.previewImageKey,
+          briefDescription: data.briefDescription,
+          description: data.description,
+          duration: data.duration.toString(),
+          price: (data.price / 100).toString(),
+          categoryName: data.categoryName,
+          level: data.level,
+          status: data.status,
+        });
+
+        router.refresh();
+
+        toast('Course edited successfully!');
       } catch {
         toast.error('Failed to edit a course. Please try again.');
       }
@@ -260,7 +274,12 @@ export default function EditCourseForm({
             </FormItem>
           )}
         />
-        <ButtonLoading type="submit" className="w-full" loading={isPending}>
+        <ButtonLoading
+          type="submit"
+          className="w-full"
+          loading={isPending}
+          disabled={!form.formState.isDirty}
+        >
           Submit
         </ButtonLoading>
       </form>

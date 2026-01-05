@@ -37,7 +37,15 @@ export default function EditLessonForm({ lesson }: { lesson: LessonDetail }) {
   function onSubmit(values: z.output<typeof LessonSchema>) {
     startTransition(async () => {
       try {
-        await editLesson(lesson.id, values);
+        const editedLesson = await editLesson(lesson.id, values);
+
+        form.reset({
+          title: editedLesson.title,
+          description: editedLesson.description ?? undefined,
+          posterKey: editedLesson.posterKey ?? undefined,
+          videoKey: editedLesson.videoKey ?? undefined,
+        });
+
         toast('Lesson edited successfully!');
       } catch {
         toast.error('Failed to edit a lesson. Please try again.');
@@ -116,7 +124,12 @@ export default function EditLessonForm({ lesson }: { lesson: LessonDetail }) {
             </FormItem>
           )}
         />
-        <ButtonLoading type="submit" className="w-full" loading={isPending}>
+        <ButtonLoading
+          type="submit"
+          className="w-full"
+          loading={isPending}
+          disabled={!form.formState.isDirty}
+        >
           Submit
         </ButtonLoading>
       </form>

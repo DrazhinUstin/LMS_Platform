@@ -26,7 +26,8 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   return (
     <main className="space-y-8">
       <CourseDetail course={course} />
-      <Button asChild>
+      <hr />
+      <Button className="w-full" asChild>
         <Link href={`/admin/courses/${course.id}/edit`}>Edit course</Link>
       </Button>
     </main>

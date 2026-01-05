@@ -30,7 +30,8 @@ export default async function Page({
   return (
     <main className="space-y-8">
       <LessonDetails lesson={lesson} />
-      <Button asChild>
+      <hr />
+      <Button className="w-full" asChild>
         <Link href={`/admin/courses/${courseId}/edit/structure/${lesson.chapterId}/${lesson.id}`}>
           Edit lesson
         </Link>
