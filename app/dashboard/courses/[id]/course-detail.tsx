@@ -1,4 +1,5 @@
 import CategoryIcon from '@/app/components/category-icon';
+import HTMLOutput from '@/app/components/html-output';
 import LevelIcon from '@/app/components/level-icon';
 import StarRating from '@/app/components/star-rating';
 import type { UserCourseDetail } from '@/app/lib/definitions';
@@ -72,10 +73,7 @@ export default function CourseDetail({ course }: { course: UserCourseDetail }) {
         </li>
       </ul>
       <h2 className="text-2xl font-bold">Course description</h2>
-      <div
-        className="prose prose-neutral prose-sm sm:prose-base dark:prose-invert"
-        dangerouslySetInnerHTML={{ __html: course.description }}
-      />
+      <HTMLOutput html={course.description} />
     </div>
   );
 }

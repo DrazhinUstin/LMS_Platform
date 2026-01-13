@@ -21,6 +21,7 @@ import CourseEnrollment, { CourseEnrollmentFallback } from './course-enrollment'
 import StarRating from '@/app/components/star-rating';
 import Link from 'next/link';
 import type { CourseDetail } from '@/app/lib/definitions';
+import HTMLOutput from '@/app/components/html-output';
 
 export default function CourseDetail({ course }: { course: CourseDetail }) {
   return (
@@ -88,10 +89,7 @@ export default function CourseDetail({ course }: { course: CourseDetail }) {
           </li>
         </ul>
         <h2 className="text-2xl font-bold">Course description</h2>
-        <div
-          className="prose prose-neutral prose-sm sm:prose-base dark:prose-invert"
-          dangerouslySetInnerHTML={{ __html: course.description }}
-        />
+        <HTMLOutput html={course.description} />
         <h2 className="text-2xl font-bold">Course structure</h2>
         <div className="space-y-4">
           {course.chapters.map((chapter, chapterIndex) => (
