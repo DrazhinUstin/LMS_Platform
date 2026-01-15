@@ -24,7 +24,12 @@ export default function CourseProgress({
   return (
     <div className="space-y-2">
       <h3 className="truncate text-xl font-semibold">
-        <Link href={coursePath ?? `/dashboard/courses/${course.id}`}>{course.title}</Link>
+        <Link
+          href={coursePath ?? `/dashboard/courses/${course.id}`}
+          className="hover:text-primary transition-colors"
+        >
+          {course.title}
+        </Link>
       </h3>
       <Progress value={(totalCompletedLessons / totalLessons) * 100} />
       <p className="text-muted-foreground flex justify-between gap-x-1 text-xs">

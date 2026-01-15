@@ -168,7 +168,7 @@ export default function EditCourseStructure({ courseId, data }: Props) {
                     )
                   )
                 }
-                className="rounded-lg border shadow-sm"
+                className="bg-card text-card-foreground rounded-lg border shadow-md"
               >
                 <div className="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 p-2">
                   <div>
@@ -257,7 +257,7 @@ function SortableItem({ id, data, children }: SortableItemProps) {
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} className="mx-auto max-w-[800px]">
+    <div ref={setNodeRef} style={style} {...attributes} className="mx-auto max-w-4xl">
       {children(listeners)}
     </div>
   );

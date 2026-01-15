@@ -41,7 +41,7 @@ export default function VerifyOtpForm({ email }: { email: string }) {
   }
 
   return (
-    <div className="w-full max-w-96 space-y-4 rounded-md border p-8 shadow-md">
+    <div className="bg-card text-card-foreground w-full max-w-lg space-y-4 rounded-lg border p-8 shadow-md">
       <h2 className="text-center text-xl font-semibold">Login with OTP</h2>
       <p className="text-center text-sm">
         Check your email for the one-time password we sent you and enter it in the field below

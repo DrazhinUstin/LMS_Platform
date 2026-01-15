@@ -18,7 +18,10 @@ import { StarIcon } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
-type FiltersType = Record<Exclude<keyof CourseFilters, 'authorId' | 'notEnrolledByUserId'>, string>;
+type FiltersType = Record<
+  Exclude<keyof CourseFilters, 'authorId' | 'notEnrolledByUserId' | 'status'>,
+  string
+>;
 
 export default function Filters({ categories }: { categories: Category[] }) {
   const router = useRouter();

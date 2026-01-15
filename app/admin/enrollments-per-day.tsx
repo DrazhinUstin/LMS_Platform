@@ -37,7 +37,7 @@ export default async function EnrollmentsPerDay() {
   });
 
   return (
-    <div className="space-y-4 rounded-md border p-8 shadow-md">
+    <div className="bg-card text-card-foreground space-y-4 rounded-lg border p-8 shadow-md">
       <h2 className="text-2xl font-bold">Enrollments per day</h2>
       <p className="text-muted-foreground">
         Total enrollments for the last 30 days:{' '}
@@ -52,7 +52,7 @@ export default async function EnrollmentsPerDay() {
 
 export function EnrollmentsPerDaySkeleton() {
   return (
-    <div className="space-y-4 rounded-md border p-8 shadow-md">
+    <div className="bg-card text-card-foreground space-y-4 rounded-lg border p-8 shadow-md">
       <Skeleton className="h-8 w-52" />
       <Skeleton className="h-6 w-64" />
       <Skeleton className="aspect-auto h-[250px] w-full" />

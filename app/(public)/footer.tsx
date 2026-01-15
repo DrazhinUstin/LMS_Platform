@@ -8,11 +8,17 @@ export default function Footer() {
       <div className="mx-auto w-[90vw] max-w-7xl">
         <div className="flex flex-col items-center gap-2 md:flex-row md:justify-between">
           <nav className="flex h-5 items-center gap-x-4 text-sm">
-            <Link href="/">Home</Link>
+            <Link href="/" className="hover:text-primary transition-colors">
+              Home
+            </Link>
             <Separator orientation="vertical" />
-            <Link href="/courses">Courses</Link>
+            <Link href="/courses" className="hover:text-primary transition-colors">
+              Courses
+            </Link>
             <Separator orientation="vertical" />
-            <Link href="/about">About</Link>
+            <Link href="/about" className="hover:text-primary transition-colors">
+              About
+            </Link>
           </nav>
           <p className="text-xs">
             &copy; {new Date().getFullYear()} LMS Platform. All rights reserved.

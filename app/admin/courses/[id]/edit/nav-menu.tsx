@@ -13,16 +13,19 @@ function getLinks(courseId: string): Array<{ label: string; href: string }> {
 
 export default function NavMenu() {
   const { id } = useParams<{ id: string }>();
+
   const pathname = usePathname();
+
   return (
-    <nav className="bg-muted mx-auto w-max rounded-sm p-1 shadow-2xs">
+    <nav className="bg-card text-card-foreground mx-auto w-max rounded-lg shadow-md">
       {getLinks(id).map(({ label, href }) => (
         <Link
           key={label}
           href={href}
           className={cn(
-            'inline-block rounded-sm px-2 py-1',
-            href === pathname && 'bg-background dark:bg-input shadow-2xs'
+            'inline-flex min-w-28 justify-center rounded-lg p-1.5 text-sm',
+            href === pathname &&
+              'bg-primary text-primary-foreground dark:bg-input dark:text-foreground'
           )}
         >
           {label}

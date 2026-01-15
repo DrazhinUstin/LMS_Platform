@@ -95,7 +95,7 @@ export default function CourseDetail({ course }: { course: CourseDetail }) {
           {course.chapters.map((chapter, chapterIndex) => (
             <Collapsible
               key={chapter.id}
-              className="rounded-sm border shadow-sm"
+              className="bg-card text-card-foreground rounded-lg border shadow-md"
               defaultOpen={chapterIndex === 0}
             >
               <div className="grid grid-cols-[1fr_auto] items-center p-2">
@@ -126,7 +126,7 @@ export default function CourseDetail({ course }: { course: CourseDetail }) {
           ))}
         </div>
       </div>
-      <div className="rounded-sm border shadow-sm lg:sticky lg:top-28">
+      <div className="bg-card text-card-foreground rounded-lg border shadow-md lg:sticky lg:top-28">
         <div className="p-4">
           <h3 className="flex justify-between text-xl font-semibold">
             Buy for

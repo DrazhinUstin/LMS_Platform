@@ -21,11 +21,11 @@ export default function EnrollmentsList({ enrollments }: { enrollments: UserEnro
           )}
         >
           <div className="flex items-center gap-x-4">
-            <ShoppingCartIcon className="size-5 shrink-0" />
+            <ShoppingCartIcon className="text-muted-foreground size-5 shrink-0" />
             <h4 className="line-clamp-1">
               <Link
                 href={`/dashboard/courses/${enrollment.course.id}`}
-                className="text-primary hover:underline"
+                className="hover:text-primary transition-colors"
               >
                 {enrollment.course.title}
               </Link>

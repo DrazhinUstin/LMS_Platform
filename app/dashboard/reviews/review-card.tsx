@@ -17,7 +17,7 @@ import DeleteReviewDialog from '@/app/(public)/courses/[id]/reviews/delete-revie
 
 export default function ReviewCard({ review }: { review: ReviewSummary }) {
   return (
-    <article className="space-y-4 rounded-lg border p-4 shadow-md">
+    <article className="bg-card text-card-foreground space-y-4 rounded-lg border p-4 shadow-md">
       <div className="grid grid-cols-[1fr_auto] gap-x-4">
         <div className="flex items-center gap-x-4">
           <Link href={`/courses/${review.course.id}`}>
@@ -66,7 +66,7 @@ export default function ReviewCard({ review }: { review: ReviewSummary }) {
 
 export function ReviewCardSkeleton() {
   return (
-    <article className="space-y-4 rounded-lg border p-4 shadow-md">
+    <article className="bg-card text-card-foreground space-y-4 rounded-lg border p-4 shadow-md">
       <div className="flex items-center gap-x-4">
         <Skeleton className="aspect-video w-20" />
         <Skeleton className="h-6 w-1/2" />

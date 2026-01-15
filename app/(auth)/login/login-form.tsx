@@ -13,11 +13,11 @@ import GoogleMark from '@/app/components/google-mark';
 
 export default function LoginForm() {
   return (
-    <div className="w-full max-w-96 space-y-4 rounded-md border p-8 shadow-md">
+    <div className="bg-card text-card-foreground w-full max-w-lg space-y-4 rounded-lg border p-8 shadow-md">
       <h2 className="text-center text-xl font-semibold">Login with</h2>
       <EmailOtp />
-      <div className="before:bg-border relative flex items-center justify-center before:absolute before:-z-10 before:h-[1px] before:w-full">
-        <span className="bg-background px-4">or</span>
+      <div className="before:bg-border relative flex items-center justify-center before:absolute before:h-[1px] before:w-full">
+        <span className="bg-card z-10 px-4">or</span>
       </div>
       <SocialProviders />
     </div>

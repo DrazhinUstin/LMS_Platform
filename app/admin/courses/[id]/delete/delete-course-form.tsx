@@ -38,13 +38,16 @@ export default function DeleteCourseForm({ course }: { course: CourseDetail }) {
 
   return (
     <form
-      className="mx-auto w-full max-w-[820px] space-y-4 rounded-md border p-4 shadow-md"
+      className="bg-card text-card-foreground mx-auto w-full max-w-4xl space-y-4 rounded-lg border p-4 shadow-md"
       onSubmit={handleSubmit}
     >
       <div className="space-y-2">
-        <h4 className="text-lg font-semibold">
+        <h4 className="text-lg font-medium">
           Delete the course{' '}
-          <Link href={`/admin/courses/${course.id}`} className="text-primary hover:underline">
+          <Link
+            href={`/admin/courses/${course.id}`}
+            className="hover:text-primary font-semibold transition-colors"
+          >
             &quot;{course.title}&quot;
           </Link>
           ?

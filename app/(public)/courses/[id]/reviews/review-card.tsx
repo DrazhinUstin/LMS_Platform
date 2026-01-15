@@ -5,7 +5,7 @@ import type { ReviewSummary } from '@/app/lib/definitions';
 
 export default function ReviewCard({ review }: { review: ReviewSummary }) {
   return (
-    <article className="space-y-4 rounded-lg border p-4 shadow-md">
+    <article className="bg-card text-card-foreground space-y-4 rounded-lg border p-4 shadow-md">
       <div className="flex items-center gap-x-2">
         <UserAvatar src={review.user.image} width={40} height={40} className="size-10" />
         <h4 className="font-medium">{review.user.name ?? 'Anonymous user'}</h4>
@@ -19,7 +19,7 @@ export default function ReviewCard({ review }: { review: ReviewSummary }) {
 
 export function ReviewCardSkeleton() {
   return (
-    <article className="space-y-4 rounded-lg border p-4 shadow-md">
+    <article className="bg-card text-card-foreground space-y-4 rounded-lg border p-4 shadow-md">
       <div className="flex items-center gap-x-2">
         <Skeleton className="size-10 rounded-full" />
         <Skeleton className="h-6 w-24" />

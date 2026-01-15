@@ -98,7 +98,7 @@ export default function EditCourseForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="mx-auto w-full max-w-[820px] space-y-8 rounded-md border p-8 shadow-md"
+        className="bg-card text-card-foreground mx-auto w-full max-w-4xl space-y-8 rounded-lg border p-8 shadow-md"
         noValidate
       >
         <FormField

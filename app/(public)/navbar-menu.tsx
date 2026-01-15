@@ -24,10 +24,22 @@ export default function NavbarMenu({ user }: { user: Session['user'] | null }) {
           isMenuOpen && 'translate-x-0'
         )}
       >
-        <Link href="/">Home</Link>
-        <Link href="/courses">Courses</Link>
-        {user && user.role === 'user' && <Link href="/dashboard">Dashboard</Link>}
-        {user && user.role === 'admin' && <Link href="/admin">Admin</Link>}
+        <Link href="/" className="hover:text-primary transition-colors">
+          Home
+        </Link>
+        <Link href="/courses" className="hover:text-primary transition-colors">
+          Courses
+        </Link>
+        {user && user.role === 'user' && (
+          <Link href="/dashboard" className="hover:text-primary transition-colors">
+            Dashboard
+          </Link>
+        )}
+        {user && user.role === 'admin' && (
+          <Link href="/admin" className="hover:text-primary transition-colors">
+            Admin
+          </Link>
+        )}
       </nav>
       <button
         onClick={() => setIsMenuOpen(!isMenuOpen)}

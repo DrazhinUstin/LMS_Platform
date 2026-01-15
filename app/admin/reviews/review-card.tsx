@@ -8,7 +8,7 @@ import UserAvatar from '@/app/components/user-avatar';
 
 export default function ReviewCard({ review }: { review: ReviewSummary }) {
   return (
-    <article className="rounded-lg border shadow-md">
+    <article className="bg-card text-card-foreground rounded-lg border shadow-md">
       <div className="border-b p-4">
         <div className="flex items-center gap-x-4">
           <Link href={`/courses/${review.course.id}`}>
@@ -50,7 +50,7 @@ export default function ReviewCard({ review }: { review: ReviewSummary }) {
 
 export function ReviewCardSkeleton() {
   return (
-    <article className="rounded-lg border shadow-md">
+    <article className="bg-card text-card-foreground rounded-lg border shadow-md">
       <div className="border-b p-4">
         <div className="flex items-center gap-x-4">
           <Skeleton className="aspect-video w-20" />

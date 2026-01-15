@@ -24,7 +24,7 @@ export default function CourseCard({ course }: { course: UserEnrollmentSummary['
 
   return (
     <Link href={`/dashboard/courses/${course.id}`}>
-      <article className="group relative rounded-lg shadow-md">
+      <article className="group bg-card text-card-foreground relative rounded-lg shadow-md">
         <div className="relative aspect-video w-full overflow-hidden rounded-t-lg">
           <Image
             src={getS3ObjectUrl(course.previewImageKey)}
@@ -65,7 +65,7 @@ export default function CourseCard({ course }: { course: UserEnrollmentSummary['
 
 export function CourseCardSkeleton() {
   return (
-    <article className="relative rounded-lg shadow-md">
+    <article className="bg-card text-card-foreground relative rounded-lg shadow-md">
       <Skeleton className="aspect-video w-full rounded-none rounded-t-lg" />
       <div className="space-y-2 rounded-b-lg border border-t-0 p-2">
         <Skeleton className="h-6 w-3/4" />

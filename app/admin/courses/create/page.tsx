@@ -10,7 +10,7 @@ export default async function Page() {
   const categories = await getCategories();
   return (
     <main className="space-y-8">
-      <h2 className="text-center text-2xl font-bold">Create a new course</h2>
+      <h2 className="text-center text-2xl font-bold">Create new course</h2>
       <CreateCourseForm categories={categories} />
     </main>
   );

@@ -26,7 +26,7 @@ import StarRating, { StarRatingSkeleton } from '@/app/components/star-rating';
 
 export default function CourseCard({ course }: { course: CourseSummary }) {
   return (
-    <article className="relative rounded-lg shadow-md">
+    <article className="bg-card text-card-foreground relative rounded-lg shadow-md">
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="absolute top-2 right-2 z-50">
           <Button variant="outline" size="icon">
@@ -113,7 +113,7 @@ export default function CourseCard({ course }: { course: CourseSummary }) {
 
 export function CourseCardSkeleton() {
   return (
-    <article className="relative rounded-lg shadow-md">
+    <article className="bg-card text-card-foreground relative rounded-lg shadow-md">
       <Skeleton className="aspect-video w-full rounded-none rounded-t-lg" />
       <div className="space-y-2 rounded-b-lg border border-t-0 p-2">
         <Skeleton className="h-6 w-3/4" />

@@ -36,7 +36,7 @@ export default function EnrollmentsList({ enrollments }: { enrollments: Enrollme
             <p className="line-clamp-1">
               <Link
                 href={`/courses/${enrollment.course.id}`}
-                className="text-primary hover:underline"
+                className="hover:text-primary transition-colors"
               >
                 {enrollment.course.title}
               </Link>
