@@ -124,3 +124,12 @@
   content: attr(data-placeholder);
   @apply text-muted-foreground pointer-events-none float-left h-0;
 }
+
+@keyframes appearance {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
