@@ -125,6 +125,16 @@
   @apply text-muted-foreground pointer-events-none float-left h-0;
 }
 
+div[data-youtube-video] {
+  iframe {
+    display: block;
+    width: 100%;
+    max-width: 640px;
+    height: auto;
+    aspect-ratio: 16/9;
+  }
+}
+
 @keyframes appearance {
   0% {
     opacity: 0;

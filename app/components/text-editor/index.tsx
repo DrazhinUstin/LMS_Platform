@@ -3,6 +3,7 @@
 import { useEditor, EditorContent, type Content } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { Placeholder, CharacterCount } from '@tiptap/extensions';
+import Youtube from '@tiptap/extension-youtube';
 import Menubar from './menubar';
 import CharactersCount from './characters-count';
 
@@ -25,6 +26,9 @@ export default function TextEditor({
       }),
       CharacterCount.configure({
         limit: charactersLimit,
+      }),
+      Youtube.configure({
+        nocookie: true,
       }),
     ],
     editorProps: {

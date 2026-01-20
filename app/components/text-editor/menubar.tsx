@@ -22,6 +22,7 @@ import {
   XIcon,
 } from 'lucide-react';
 import { cn } from '@/app/lib/utils';
+import AddYoutubeVideoDialog from './add-youtube-video-dialog';
 
 export default function Menubar({ editor }: { editor: Editor }) {
   const editorState = useEditorState({
@@ -237,6 +238,7 @@ export default function Menubar({ editor }: { editor: Editor }) {
         >
           <BetweenHorizonalStartIcon />
         </Button>
+        <AddYoutubeVideoDialog editor={editor} />
         <Button
           type="button"
           variant="outline"
