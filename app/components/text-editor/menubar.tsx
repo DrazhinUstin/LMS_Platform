@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/app/lib/utils';
 import AddYoutubeVideoDialog from './add-youtube-video-dialog';
+import AddLinkDialog from './add-link-dialog';
 
 export default function Menubar({ editor }: { editor: Editor }) {
   const editorState = useEditorState({
@@ -112,6 +113,7 @@ export default function Menubar({ editor }: { editor: Editor }) {
         >
           <CodeIcon />
         </Button>
+        <AddLinkDialog editor={editor} />
         <Button
           type="button"
           variant="outline"
