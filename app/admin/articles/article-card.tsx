@@ -1,0 +1,101 @@
+import CategoryIcon from '@/app/components/category-icon';
+import { Badge } from '@/app/components/ui/badge';
+import { Button } from '@/app/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/app/components/ui/dropdown-menu';
+import { formatDate, getS3ObjectUrl } from '@/app/lib/utils';
+import type { Article } from '@/generated/prisma';
+import { ClockIcon, EllipsisIcon, EyeIcon, SquarePenIcon, Trash2Icon } from 'lucide-react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Skeleton } from '@/app/components/ui/skeleton';
+
+export default function ArticleCard({ article }: { article: Article }) {
+  return (
+    <article className="bg-card text-card-foreground relative mx-auto w-full max-w-2xl space-y-4 rounded-lg p-4 shadow-md">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild className="absolute top-2 right-2 z-50">
+          <Button variant="outline" size="icon-sm">
+            <EllipsisIcon />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem asChild>
+            <Link href={`/admin/articles/${article.id}`}>
+              <EyeIcon />
+              View
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href={`/admin/articles/${article.id}/edit`}>
+              <SquarePenIcon />
+              Edit
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <Link href={`/admin/articles/${article.id}/delete`}>
+              <Trash2Icon className="text-destructive" />
+              Delete
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <div className="flex items-center gap-2">
+        <p className="text-muted-foreground text-sm">{formatDate(article.createdAt)}</p>
+        {article.status === 'DRAFT' && <Badge variant="secondary">{article.status}</Badge>}
+      </div>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+        {article.posterKey && (
+          <div className="relative aspect-video w-full sm:flex-1">
+            <Image
+              src={getS3ObjectUrl(article.posterKey)}
+              alt={article.title}
+              fill
+              sizes="(min-width: 640px) 25vw, 100vw"
+              className="rounded-md object-cover"
+            />
+          </div>
+        )}
+        <div className="space-y-4 sm:-order-1 sm:flex-2">
+          <h4 className="line-clamp-2 font-semibold">{article.title}</h4>
+          <p className="text-muted-foreground line-clamp-3 text-sm">{article.briefDescription}</p>
+        </div>
+      </div>
+      <div className="flex flex-wrap items-center gap-2">
+        <Badge>
+          <CategoryIcon categoryName={article.categoryName} />
+          {article.categoryName}
+        </Badge>
+        <Badge variant="secondary">
+          <ClockIcon />
+          {article.readingTime} min read
+        </Badge>
+      </div>
+    </article>
+  );
+}
+
+export function ArticleCardSkeleton() {
+  return (
+    <article className="bg-card text-card-foreground mx-auto w-full max-w-2xl space-y-4 rounded-lg p-4 shadow-md">
+      <Skeleton className="h-5 w-20" />
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+        <Skeleton className="aspect-video w-full sm:flex-1" />
+        <div className="space-y-4 sm:-order-1 sm:flex-2">
+          <Skeleton className="h-6 w-1/2" />
+          <Skeleton className="h-14 w-full" />
+        </div>
+      </div>
+      <div className="flex flex-wrap items-center gap-2">
+        <Skeleton className="h-5 w-16" />
+        <Skeleton className="h-5 w-16" />
+      </div>
+    </article>
+  );
+}

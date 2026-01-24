@@ -24,6 +24,7 @@ model User {
   enrollments      Enrollment[]
   lessonProgresses LessonProgress[]
   reviews          Review[]
+  authoredArticles Article[]
 
   role       String?
   banned     Boolean?  @default(false)
@@ -82,9 +83,10 @@ model Verification {
 }
 
 model Category {
-  id      Int      @id @default(autoincrement())
-  name    String   @unique
-  courses Course[]
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  courses  Course[]
+  articles Article[]
 
   @@map("categories")
 }
@@ -202,4 +204,27 @@ model Review {
 
   @@unique([userId, courseId])
   @@map("reviews")
+}
+
+model Article {
+  id               String        @id @default(uuid())
+  title            String
+  posterKey        String?
+  briefDescription String
+  content          String
+  readingTime      Int
+  status           ArticleStatus @default(DRAFT)
+  category         Category      @relation(fields: [categoryName], references: [name], onDelete: Cascade)
+  categoryName     String
+  author           User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId         String
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@map("articles")
+}
+
+enum ArticleStatus {
+  DRAFT
+  PUBLISHED
 }

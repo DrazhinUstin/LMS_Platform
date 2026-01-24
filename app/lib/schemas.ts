@@ -1,4 +1,4 @@
-import { CourseLevel, CourseStatus } from '@/generated/prisma';
+import { ArticleStatus, CourseLevel, CourseStatus } from '@/generated/prisma';
 import z from 'zod';
 
 const requiredString = z.string().refine((str) => !!str.trim().length, { error: 'Required!' });
@@ -52,4 +52,19 @@ export const ReviewSchema = z.object({
     .int()
     .min(1, { error: 'Rating must be bigger than 1' })
     .max(5, { error: 'Rating must be smaller than 5' }),
+});
+
+export const ArticleSchema = z.object({
+  categoryName: requiredString,
+  title: requiredString.max(100, { error: 'The title must not be longer than 100 characters!' }),
+  briefDescription: requiredString.max(200, {
+    error: 'The brief description must not be longer than 200 characters!',
+  }),
+  content: requiredString,
+  readingTime: z.coerce
+    .number<string>()
+    .positive({ error: 'Only positive numbers are allowed!' })
+    .int({ error: 'The reading time must be an integer' }),
+  status: z.enum(Object.values(ArticleStatus)),
+  posterKey: requiredString.optional(),
 });
