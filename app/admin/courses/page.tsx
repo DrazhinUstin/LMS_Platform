@@ -7,7 +7,7 @@ import getCoursesCount from '@/app/data/course/get-courses-count';
 import PaginationBar from '@/app/components/pagination-bar';
 import { Button } from '@/app/components/ui/button';
 import Link from 'next/link';
-import { SquarePenIcon } from 'lucide-react';
+import { PlusIcon, SquarePenIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import { getSession } from '@/app/lib/auth.get-session';
 import { CourseSortingOrder } from '@/app/lib/definitions';
@@ -35,6 +35,12 @@ export default async function Page(props: Props) {
 
   return (
     <main className="space-y-8">
+      <Button asChild>
+        <Link href="/admin/courses/create">
+          <PlusIcon />
+          Create course
+        </Link>
+      </Button>
       <h2 className="text-center text-2xl font-bold">Created courses</h2>
       <div className="space-y-8">
         <div className="flex justify-end">

@@ -5,7 +5,6 @@ import {
   HouseIcon,
   LayoutGridIcon,
   LayoutListIcon,
-  SquarePenIcon,
   StarIcon,
   Users2Icon,
 } from 'lucide-react';
@@ -24,11 +23,6 @@ const sidebarNavLinks: React.ComponentProps<typeof Sidebar>['navLinks'] = [
   { title: 'Home', icon: <HouseIcon className="size-5" />, href: '/admin' },
   { title: 'Courses', icon: <LayoutGridIcon className="size-5" />, href: '/admin/courses' },
   { title: 'Articles', icon: <LayoutListIcon className="size-5" />, href: '/admin/articles' },
-  {
-    title: 'Quick create',
-    icon: <SquarePenIcon className="size-5" />,
-    href: '/admin/courses/create',
-  },
   {
     title: 'Enrollments',
     icon: <CircleDollarSign className="size-5" />,
