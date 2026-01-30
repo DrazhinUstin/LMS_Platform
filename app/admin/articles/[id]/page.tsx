@@ -4,8 +4,8 @@ import type { Metadata } from 'next';
 import { Button } from '@/app/components/ui/button';
 import Link from 'next/link';
 import { SquarePenIcon } from 'lucide-react';
-import ArticleDetail from './article-detail';
 import { getArticle } from '@/app/data/article/get-article';
+import ArticleDetail from '@/app/(public)/articles/[id]/article-detail';
 
 export const metadata: Metadata = {
   title: 'Article preview',
