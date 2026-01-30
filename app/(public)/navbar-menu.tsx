@@ -37,14 +37,17 @@ export default function NavbarMenu({ user }: { user: Session['user'] | null }) {
         )}
         ref={menuRef}
       >
-        <Link href="/" className="hover:text-primary opacity-0 transition-colors md:opacity-100">
-          Home
-        </Link>
         <Link
           href="/courses"
           className="hover:text-primary opacity-0 transition-colors md:opacity-100"
         >
           Courses
+        </Link>
+        <Link
+          href="/articles"
+          className="hover:text-primary opacity-0 transition-colors md:opacity-100"
+        >
+          Articles
         </Link>
         {user && user.role === 'user' && (
           <Link

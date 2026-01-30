@@ -1,16 +1,13 @@
+import Filters from './filters';
 import SortOrder from '@/app/components/sort-order';
 import { Suspense } from 'react';
+import { getCategories } from '@/app/data/category/get-categories';
 import PaginationBar from '@/app/components/pagination-bar';
 import type { Metadata } from 'next';
 import { ArticleSortingOrder } from '@/app/lib/definitions';
 import { getArticles } from '@/app/data/article/get-articles';
 import { getArticlesCount } from '@/app/data/article/get-articles-count';
 import ArticleCard, { ArticleCardSkeleton } from './article-card';
-import { getSession } from '@/app/lib/auth.get-session';
-import { redirect } from 'next/navigation';
-import { PlusIcon } from 'lucide-react';
-import Link from 'next/link';
-import { Button } from '@/app/components/ui/button';
 
 export const metadata: Metadata = {
   title: 'Articles',
@@ -21,36 +18,33 @@ interface Props {
 }
 
 export default async function Page(props: Props) {
-  const [searchParams, session] = await Promise.all([props.searchParams, getSession()]);
-
-  if (!session) {
-    redirect('/login');
-  }
+  const searchParams = await props.searchParams;
 
   const { order, page, ...filters } = searchParams;
 
   const currentPage = Number(page) || 1;
 
+  const categories = await getCategories();
+
   return (
-    <main className="space-y-8">
-      <Button asChild>
-        <Link href="/admin/articles/create">
-          <PlusIcon />
-          Create article
-        </Link>
-      </Button>
-      <h2 className="text-center text-2xl font-bold">Created articles</h2>
-      <div className="space-y-8">
-        <div className="flex justify-end">
-          <SortOrder options={Object.entries(ArticleSortingOrder)} />
+    <main className="mx-auto w-[90vw] max-w-7xl space-y-8 py-8">
+      <h2 className="text-center text-2xl font-bold">Articles</h2>
+      <div className="grid gap-8 lg:grid-cols-[auto_1fr] lg:items-start">
+        <div className="lg:sticky lg:top-[7rem] lg:w-60">
+          <Filters categories={categories} />
         </div>
-        <Suspense key={JSON.stringify(searchParams)} fallback={<ArticlesListSkeleton />}>
-          <ArticlesList
-            filters={{ ...filters, authorId: session.user.id }}
-            order={order as keyof typeof ArticleSortingOrder}
-            page={currentPage}
-          />
-        </Suspense>
+        <div className="space-y-8">
+          <div className="flex justify-end">
+            <SortOrder options={Object.entries(ArticleSortingOrder)} />
+          </div>
+          <Suspense key={JSON.stringify(searchParams)} fallback={<ArticlesListSkeleton />}>
+            <ArticlesList
+              filters={{ ...filters, status: 'PUBLISHED' }}
+              order={order as keyof typeof ArticleSortingOrder}
+              page={currentPage}
+            />
+          </Suspense>
+        </div>
       </div>
     </main>
   );
@@ -72,7 +66,7 @@ async function ArticlesList({ filters, order, page }: Parameters<typeof getArtic
         ))}
       </div>
       {articles.length === 0 && (
-        <p className="text-center">Unfortunately, you have no any articles yet 😞</p>
+        <p className="text-center">Unfortunately, no articles matching your query were found 😞</p>
       )}
       <PaginationBar currentPage={page as number} totalPages={totalPages} className="mt-8" />
     </div>

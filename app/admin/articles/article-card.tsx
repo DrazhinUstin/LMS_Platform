@@ -17,7 +17,7 @@ import type { ArticleSummary } from '@/app/lib/definitions';
 
 export default function ArticleCard({ article }: { article: ArticleSummary }) {
   return (
-    <article className="bg-card text-card-foreground relative mx-auto w-full max-w-2xl space-y-4 rounded-lg p-4 shadow-md">
+    <article className="bg-card text-card-foreground relative mx-auto w-full max-w-2xl space-y-4 rounded-lg border p-4 shadow-md">
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="absolute top-2 right-2 z-50">
           <Button variant="outline" size="icon-sm">
@@ -57,7 +57,7 @@ export default function ArticleCard({ article }: { article: ArticleSummary }) {
               src={getS3ObjectUrl(article.posterKey)}
               alt={article.title}
               fill
-              sizes="(min-width: 640px) 25vw, 100vw"
+              sizes="(max-width: 640px) 100vw, (max-width: 672px) 33vw, 212px"
               className="rounded-md object-cover"
             />
           </div>
@@ -83,7 +83,7 @@ export default function ArticleCard({ article }: { article: ArticleSummary }) {
 
 export function ArticleCardSkeleton() {
   return (
-    <article className="bg-card text-card-foreground mx-auto w-full max-w-2xl space-y-4 rounded-lg p-4 shadow-md">
+    <article className="bg-card text-card-foreground mx-auto w-full max-w-2xl space-y-4 rounded-lg border p-4 shadow-md">
       <Skeleton className="h-5 w-20" />
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
         <Skeleton className="aspect-video w-full sm:flex-1" />

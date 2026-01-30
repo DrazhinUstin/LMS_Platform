@@ -16,8 +16,8 @@ export default function Footer() {
               Courses
             </Link>
             <Separator orientation="vertical" />
-            <Link href="/about" className="hover:text-primary transition-colors">
-              About
+            <Link href="/articles" className="hover:text-primary transition-colors">
+              Articles
             </Link>
           </nav>
           <p className="text-xs">

@@ -240,6 +240,18 @@ export const reviewSummarySelect = {
 
 export type ReviewSummary = Prisma.ReviewGetPayload<{ select: typeof reviewSummarySelect }>;
 
+export interface ArticleFilters {
+  query?: string;
+  categoryName?: string;
+  status?: CourseStatus;
+  authorId?: string;
+}
+
+export enum ArticleSortingOrder {
+  CREATED_DESC = 'Newest first',
+  CREATED_ASC = 'Oldest first',
+}
+
 export const articleSummarySelect = {
   id: true,
   title: true,
