@@ -2,7 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 import DeleteArticleForm from './delete-article-form';
 import type { Metadata } from 'next';
 import { getSession } from '@/app/lib/auth.get-session';
-import { prisma } from '@/app/lib/prisma';
+import { getArticle } from '@/app/data/article/get-article';
 
 export const metadata: Metadata = {
   title: 'Delete article',
@@ -17,7 +17,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     redirect('/login');
   }
 
-  const article = await prisma.article.findUnique({ where: { id, authorId: session.user.id } });
+  const article = await getArticle({ id, authorId: session.user.id });
 
   if (!article) {
     notFound();

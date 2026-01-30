@@ -28,12 +28,13 @@ import FileUploader from '@/app/components/file-uploader';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
+import type { ArticleDetail } from '@/app/lib/definitions';
 
 export default function EditArticleForm({
   article,
   categories,
 }: {
-  article: Article;
+  article: ArticleDetail;
   categories: Category[];
 }) {
   const [isPending, startTransition] = useTransition();

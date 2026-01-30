@@ -239,3 +239,24 @@ export const reviewSummarySelect = {
 } satisfies Prisma.ReviewSelect;
 
 export type ReviewSummary = Prisma.ReviewGetPayload<{ select: typeof reviewSummarySelect }>;
+
+export const articleSummarySelect = {
+  id: true,
+  title: true,
+  posterKey: true,
+  briefDescription: true,
+  readingTime: true,
+  status: true,
+  categoryName: true,
+  createdAt: true,
+} satisfies Prisma.ArticleSelect;
+
+export type ArticleSummary = Prisma.ArticleGetPayload<{ select: typeof articleSummarySelect }>;
+
+export const articleDetailSelect = {
+  ...articleSummarySelect,
+  content: true,
+  updatedAt: true,
+} satisfies Prisma.ArticleSelect;
+
+export type ArticleDetail = Prisma.ArticleGetPayload<{ select: typeof articleDetailSelect }>;

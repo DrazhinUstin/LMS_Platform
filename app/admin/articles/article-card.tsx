@@ -9,13 +9,13 @@ import {
   DropdownMenuTrigger,
 } from '@/app/components/ui/dropdown-menu';
 import { formatDate, getS3ObjectUrl } from '@/app/lib/utils';
-import type { Article } from '@/generated/prisma';
 import { ClockIcon, EllipsisIcon, EyeIcon, SquarePenIcon, Trash2Icon } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Skeleton } from '@/app/components/ui/skeleton';
+import type { ArticleSummary } from '@/app/lib/definitions';
 
-export default function ArticleCard({ article }: { article: Article }) {
+export default function ArticleCard({ article }: { article: ArticleSummary }) {
   return (
     <article className="bg-card text-card-foreground relative mx-auto w-full max-w-2xl space-y-4 rounded-lg p-4 shadow-md">
       <DropdownMenu>

@@ -4,13 +4,13 @@ import ButtonLoading from '@/app/components/button-loading';
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
-import type { Article } from '@/generated/prisma';
+import type { ArticleDetail } from '@/app/lib/definitions';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { toast } from 'sonner';
 
-export default function DeleteArticleForm({ article }: { article: Article }) {
+export default function DeleteArticleForm({ article }: { article: ArticleDetail }) {
   const [isPending, startTransition] = useTransition();
 
   const [title, setTitle] = useState('');

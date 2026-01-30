@@ -3,7 +3,7 @@ import { notFound, redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getCategories } from '@/app/data/category/get-categories';
 import { getSession } from '@/app/lib/auth.get-session';
-import { prisma } from '@/app/lib/prisma';
+import { getArticle } from '@/app/data/article/get-article';
 
 export const metadata: Metadata = {
   title: 'Edit article',
@@ -19,7 +19,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   }
 
   const [article, categories] = await Promise.all([
-    prisma.article.findUnique({ where: { id, authorId: session.user.id } }),
+    getArticle({ id, authorId: session.user.id }),
     getCategories(),
   ]);
 
