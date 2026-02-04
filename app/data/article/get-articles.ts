@@ -49,6 +49,12 @@ export async function getArticles({
       case 'CREATED_ASC':
         orderBy = { createdAt: 'asc' };
         break;
+      case 'LIKES_DESC':
+        orderBy = { likes: { _count: 'desc' } };
+        break;
+      case 'LIKES_ASC':
+        orderBy = { likes: { _count: 'asc' } };
+        break;
       default:
         orderBy = { createdAt: 'desc' };
         break;

@@ -9,7 +9,15 @@ import {
   DropdownMenuTrigger,
 } from '@/app/components/ui/dropdown-menu';
 import { formatDate, getS3ObjectUrl } from '@/app/lib/utils';
-import { ClockIcon, EllipsisIcon, EyeIcon, SquarePenIcon, Trash2Icon } from 'lucide-react';
+import {
+  ClockIcon,
+  EllipsisIcon,
+  EyeIcon,
+  SquarePenIcon,
+  ThumbsUpIcon,
+  Trash2Icon,
+  UsersRoundIcon,
+} from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Skeleton } from '@/app/components/ui/skeleton';
@@ -31,6 +39,14 @@ export default function ArticleCard({ article }: { article: ArticleSummary }) {
               View
             </Link>
           </DropdownMenuItem>
+          {article.status === 'PUBLISHED' && (
+            <DropdownMenuItem asChild>
+              <Link href={`/articles/${article.id}`}>
+                <UsersRoundIcon />
+                View on public page
+              </Link>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem asChild>
             <Link href={`/admin/articles/${article.id}/edit`}>
               <SquarePenIcon />
@@ -76,6 +92,10 @@ export default function ArticleCard({ article }: { article: ArticleSummary }) {
           <ClockIcon />
           {article.readingTime} min read
         </Badge>
+        <Badge variant="outline">
+          <ThumbsUpIcon />
+          {article._count.likes}
+        </Badge>
       </div>
     </article>
   );
@@ -95,6 +115,7 @@ export function ArticleCardSkeleton() {
       <div className="flex flex-wrap items-center gap-2">
         <Skeleton className="h-5 w-16" />
         <Skeleton className="h-5 w-16" />
+        <Skeleton className="h-5 w-8" />
       </div>
     </article>
   );

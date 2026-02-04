@@ -250,6 +250,8 @@ export interface ArticleFilters {
 export enum ArticleSortingOrder {
   CREATED_DESC = 'Newest first',
   CREATED_ASC = 'Oldest first',
+  LIKES_DESC = 'Most liked first',
+  LIKES_ASC = 'Less liked first',
 }
 
 export const articleSummarySelect = {
@@ -261,6 +263,7 @@ export const articleSummarySelect = {
   status: true,
   categoryName: true,
   createdAt: true,
+  _count: { select: { likes: true } },
 } satisfies Prisma.ArticleSelect;
 
 export type ArticleSummary = Prisma.ArticleGetPayload<{ select: typeof articleSummarySelect }>;
