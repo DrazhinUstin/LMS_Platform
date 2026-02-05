@@ -60,7 +60,7 @@ async function ArticlesList({ filters, order, page }: Parameters<typeof getArtic
 
   return (
     <div>
-      <div className="space-y-8">
+      <div className="flex flex-col gap-y-8">
         {articles.map((article) => (
           <ArticleCard key={article.id} article={article} />
         ))}

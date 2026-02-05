@@ -5,7 +5,7 @@ import type { ArticleFilters } from '@/app/lib/definitions';
 
 export async function getArticlesCount({ filters = {} }: { filters?: ArticleFilters }) {
   try {
-    const { query, categoryName, status, authorId } = filters;
+    const { query, categoryName, minReadingTime, maxReadingTime, status, authorId } = filters;
 
     let queryWhereInput: Prisma.ArticleWhereInput = {};
 
@@ -21,6 +21,12 @@ export async function getArticlesCount({ filters = {} }: { filters?: ArticleFilt
     const where: Prisma.ArticleWhereInput = {
       ...queryWhereInput,
       ...(categoryName && { categoryName }),
+      ...((minReadingTime || maxReadingTime) && {
+        readingTime: {
+          ...(minReadingTime && { gte: +minReadingTime }),
+          ...(maxReadingTime && { lte: +maxReadingTime }),
+        },
+      }),
       ...(status && { status }),
       ...(authorId && { authorId }),
     };

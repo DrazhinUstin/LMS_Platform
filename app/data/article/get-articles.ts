@@ -20,7 +20,7 @@ export async function getArticles({
   articlesPerPage?: number;
 }): Promise<ArticleSummary[]> {
   try {
-    const { query, categoryName, status, authorId } = filters;
+    const { query, categoryName, minReadingTime, maxReadingTime, status, authorId } = filters;
 
     let queryWhereInput: Prisma.ArticleWhereInput = {};
 
@@ -36,6 +36,12 @@ export async function getArticles({
     const where: Prisma.ArticleWhereInput = {
       ...queryWhereInput,
       ...(categoryName && { categoryName }),
+      ...((minReadingTime || maxReadingTime) && {
+        readingTime: {
+          ...(minReadingTime && { gte: +minReadingTime }),
+          ...(maxReadingTime && { lte: +maxReadingTime }),
+        },
+      }),
       ...(status && { status }),
       ...(authorId && { authorId }),
     };

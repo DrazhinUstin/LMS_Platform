@@ -243,6 +243,8 @@ export type ReviewSummary = Prisma.ReviewGetPayload<{ select: typeof reviewSumma
 export interface ArticleFilters {
   query?: string;
   categoryName?: string;
+  minReadingTime?: string;
+  maxReadingTime?: string;
   status?: CourseStatus;
   authorId?: string;
 }

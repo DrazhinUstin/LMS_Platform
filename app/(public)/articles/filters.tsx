@@ -27,6 +27,8 @@ export default function Filters({ categories }: { categories: Category[] }) {
   const [filters, setFilters] = useState<FiltersType>({
     query: searchParams.get('query') ?? '',
     categoryName: searchParams.get('categoryName') ?? '',
+    minReadingTime: searchParams.get('minReadingTime') ?? '',
+    maxReadingTime: searchParams.get('maxReadingTime') ?? '',
   });
 
   const areFiltersApplied = Object.entries(filters).every(([key, value]) => {
@@ -56,6 +58,8 @@ export default function Filters({ categories }: { categories: Category[] }) {
     const clearedFilters: FiltersType = {
       query: '',
       categoryName: '',
+      minReadingTime: '',
+      maxReadingTime: '',
     };
 
     setFilters(clearedFilters);
@@ -98,6 +102,27 @@ export default function Filters({ categories }: { categories: Category[] }) {
             ))}
           </SelectContent>
         </Select>
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="readingTime">Reading time (in minutes)</Label>
+        <div className="flex items-center gap-x-2">
+          <Input
+            type="number"
+            id="readingTime"
+            placeholder="From"
+            min={0}
+            value={filters.minReadingTime}
+            onChange={(e) => setFilters({ ...filters, minReadingTime: e.target.value })}
+          />
+          <span>-</span>
+          <Input
+            type="number"
+            placeholder="To"
+            min={0}
+            value={filters.maxReadingTime}
+            onChange={(e) => setFilters({ ...filters, maxReadingTime: e.target.value })}
+          />
+        </div>
       </div>
       <div className="text-center">
         <Button type="submit" className="w-full" disabled={areFiltersApplied}>
