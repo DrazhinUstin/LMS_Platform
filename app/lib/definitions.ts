@@ -265,7 +265,7 @@ export const articleSummarySelect = {
   status: true,
   categoryName: true,
   createdAt: true,
-  _count: { select: { likes: true } },
+  _count: { select: { likes: true, comments: true } },
 } satisfies Prisma.ArticleSelect;
 
 export type ArticleSummary = Prisma.ArticleGetPayload<{ select: typeof articleSummarySelect }>;

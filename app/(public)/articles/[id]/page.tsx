@@ -4,6 +4,9 @@ import { getArticle } from '@/app/data/article/get-article';
 import ArticleDetail from './article-detail';
 import ArticleLikes, { ArticleLikesFallback } from './article-likes';
 import { Suspense } from 'react';
+import { Button } from '@/app/components/ui/button';
+import Link from 'next/link';
+import { MessageCircleIcon } from 'lucide-react';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -32,9 +35,17 @@ export default async function Page({ params }: Props) {
   return (
     <main className="mx-auto w-[90vw] max-w-2xl space-y-8 py-8">
       <ArticleDetail article={article} />
-      <Suspense fallback={<ArticleLikesFallback likesCount={article._count.likes} />}>
-        <ArticleLikes article={article} />
-      </Suspense>
+      <div className="flex gap-x-4">
+        <Suspense fallback={<ArticleLikesFallback likesCount={article._count.likes} />}>
+          <ArticleLikes article={article} />
+        </Suspense>
+        <Button variant="outline" asChild>
+          <Link href={`/articles/${article.id}/comments`}>
+            <MessageCircleIcon />
+            {article._count.comments}
+          </Link>
+        </Button>
+      </div>
     </main>
   );
 }

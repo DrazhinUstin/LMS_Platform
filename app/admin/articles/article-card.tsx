@@ -13,6 +13,7 @@ import {
   ClockIcon,
   EllipsisIcon,
   EyeIcon,
+  MessageCircleIcon,
   SquarePenIcon,
   ThumbsUpIcon,
   Trash2Icon,
@@ -96,6 +97,10 @@ export default function ArticleCard({ article }: { article: ArticleSummary }) {
           <ThumbsUpIcon />
           {article._count.likes}
         </Badge>
+        <Badge variant="outline">
+          <MessageCircleIcon />
+          {article._count.comments}
+        </Badge>
       </div>
     </article>
   );
@@ -115,6 +120,7 @@ export function ArticleCardSkeleton() {
       <div className="flex flex-wrap items-center gap-2">
         <Skeleton className="h-5 w-16" />
         <Skeleton className="h-5 w-16" />
+        <Skeleton className="h-5 w-8" />
         <Skeleton className="h-5 w-8" />
       </div>
     </article>

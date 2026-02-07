@@ -1,7 +1,7 @@
 import CategoryIcon from '@/app/components/category-icon';
 import { Badge } from '@/app/components/ui/badge';
 import { formatDate, getS3ObjectUrl } from '@/app/lib/utils';
-import { ClockIcon, ThumbsUpIcon } from 'lucide-react';
+import { ClockIcon, MessageCircleIcon, ThumbsUpIcon } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Skeleton } from '@/app/components/ui/skeleton';
@@ -45,6 +45,10 @@ export default function ArticleCard({ article }: { article: ArticleSummary }) {
             <ThumbsUpIcon />
             {article._count.likes}
           </Badge>
+          <Badge variant="outline">
+            <MessageCircleIcon />
+            {article._count.comments}
+          </Badge>
         </div>
       </article>
     </Link>
@@ -65,6 +69,7 @@ export function ArticleCardSkeleton() {
       <div className="flex flex-wrap items-center gap-2">
         <Skeleton className="h-5 w-16" />
         <Skeleton className="h-5 w-16" />
+        <Skeleton className="h-5 w-8" />
         <Skeleton className="h-5 w-8" />
       </div>
     </article>
