@@ -277,3 +277,31 @@ export const articleDetailSelect = {
 } satisfies Prisma.ArticleSelect;
 
 export type ArticleDetail = Prisma.ArticleGetPayload<{ select: typeof articleDetailSelect }>;
+
+export interface CommentFilters {
+  articleId?: string;
+  userId?: string;
+}
+
+export enum CommentSortingOrder {
+  CREATED_DESC = 'Newest first',
+  CREATED_ASC = 'Oldest first',
+}
+
+export const commentSummarySelect = {
+  id: true,
+  text: true,
+  createdAt: true,
+  updatedAt: true,
+  user: { select: { id: true, name: true, image: true } },
+  article: { select: { id: true, title: true, posterKey: true } },
+  parent: {
+    select: {
+      id: true,
+      text: true,
+      user: { select: { id: true, name: true, image: true } },
+    },
+  },
+} satisfies Prisma.CommentSelect;
+
+export type CommentSummary = Prisma.CommentGetPayload<{ select: typeof commentSummarySelect }>;
