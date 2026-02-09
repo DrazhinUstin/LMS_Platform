@@ -68,3 +68,7 @@ export const ArticleSchema = z.object({
   status: z.enum(Object.values(ArticleStatus)),
   posterKey: requiredString.optional(),
 });
+
+export const CommentSchema = z.object({
+  text: requiredString.max(500, { error: 'The comment must not be longer than 500 characters!' }),
+});

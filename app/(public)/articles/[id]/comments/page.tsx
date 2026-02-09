@@ -5,6 +5,7 @@ import { getCommentsCount } from '@/app/data/comment/get-comments-count';
 import { CommentSortingOrder } from '@/app/lib/definitions';
 import { Suspense } from 'react';
 import CommentCard, { CommentCardSkeleton } from './comment-card';
+import AddCommentForm from './add-comment-form';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -32,6 +33,7 @@ export default async function Page(props: Props) {
             page={currentPage}
           />
         </Suspense>
+        <AddCommentForm articleId={id} />
       </div>
     </main>
   );
