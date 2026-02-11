@@ -12,6 +12,8 @@ import type { CommentSummary } from '@/app/lib/definitions';
 import { EllipsisIcon } from 'lucide-react';
 import EditCommentDialog from './edit-comment-dialog';
 import DeleteCommentDialog from './delete-comment-dialog';
+import ReplyToCommentDialog from './reply-to-comment-dialog';
+import { formatDate } from '@/app/lib/utils';
 
 export default function CommentCard({
   comment,
@@ -34,7 +36,7 @@ export default function CommentCard({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                {loggedInUser.id === comment.user.id && (
+                {loggedInUser.id === comment.user.id ? (
                   <>
                     <div>
                       <EditCommentDialog comment={comment} className="w-full" />
@@ -44,6 +46,10 @@ export default function CommentCard({
                       <DeleteCommentDialog comment={comment} className="w-full" />
                     </div>
                   </>
+                ) : (
+                  <div>
+                    <ReplyToCommentDialog parent={comment} className="w-full" />
+                  </div>
                 )}
               </DropdownMenuContent>
             </DropdownMenu>
@@ -56,6 +62,7 @@ export default function CommentCard({
           </div>
         )}
         <p>{comment.text}</p>
+        <p className="text-muted-foreground text-end text-xs">{formatDate(comment.createdAt)}</p>
       </div>
     </div>
   );
@@ -70,6 +77,7 @@ export function CommentCardSkeleton() {
           <Skeleton className="h-5 w-1/2" />
         </div>
         <Skeleton className="h-14 w-full" />
+        <Skeleton className="ml-auto h-4 w-20" />
       </div>
     </div>
   );

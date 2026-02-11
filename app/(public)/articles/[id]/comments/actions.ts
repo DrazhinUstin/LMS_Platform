@@ -97,3 +97,47 @@ export async function deleteComment(id: string) {
     throw error;
   }
 }
+
+export async function replyToComment({
+  articleId,
+  parentId,
+  data,
+}: {
+  articleId: string;
+  parentId: string;
+  data: z.infer<typeof CommentSchema>;
+}) {
+  try {
+    const session = await getSession();
+
+    if (!session) {
+      throw new Error('Unauthorized!');
+    }
+
+    const article = await prisma.article.findUnique({
+      where: { id: articleId, comments: { some: { id: parentId } } },
+      select: { id: true },
+    });
+
+    if (!article) {
+      throw new Error('Article or comment not found!');
+    }
+
+    const validation = CommentSchema.safeParse(data);
+
+    if (!validation.success) {
+      throw new Error('Invalid data!');
+    }
+
+    const createdComment = await prisma.comment.create({
+      data: { articleId: article.id, userId: session.user.id, parentId, ...validation.data },
+    });
+
+    revalidatePath('/articles');
+
+    return createdComment;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
