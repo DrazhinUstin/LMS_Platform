@@ -6,6 +6,8 @@ import { CommentSortingOrder } from '@/app/lib/definitions';
 import { Suspense } from 'react';
 import CommentCard, { CommentCardSkeleton } from './comment-card';
 import AddCommentForm from './add-comment-form';
+import { getSession } from '@/app/lib/auth.get-session';
+import type { Session } from '@/app/lib/auth';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -13,7 +15,11 @@ type Props = {
 };
 
 export default async function Page(props: Props) {
-  const [{ id }, searchParams] = await Promise.all([props.params, props.searchParams]);
+  const [{ id }, searchParams, session] = await Promise.all([
+    props.params,
+    props.searchParams,
+    getSession(),
+  ]);
 
   const { order, page } = searchParams;
 
@@ -31,15 +37,21 @@ export default async function Page(props: Props) {
             filters={{ articleId: id }}
             order={order as keyof typeof CommentSortingOrder}
             page={currentPage}
+            session={session}
           />
         </Suspense>
-        <AddCommentForm articleId={id} />
+        {session && <AddCommentForm articleId={id} />}
       </div>
     </main>
   );
 }
 
-async function CommentsList({ filters, order, page }: Parameters<typeof getComments>[0]) {
+async function CommentsList({
+  filters,
+  order,
+  page,
+  session,
+}: Parameters<typeof getComments>[0] & { session: Session | null }) {
   const [comments, count] = await Promise.all([
     getComments({ filters, order, page, commentsPerPage }),
     getCommentsCount({ filters }),
@@ -51,7 +63,7 @@ async function CommentsList({ filters, order, page }: Parameters<typeof getComme
     <div>
       <div className="space-y-8">
         {comments.map((comment) => (
-          <CommentCard key={comment.id} comment={comment} />
+          <CommentCard key={comment.id} comment={comment} loggedInUser={session?.user ?? null} />
         ))}
       </div>
       {comments.length === 0 && (
