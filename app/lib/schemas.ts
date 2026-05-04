@@ -72,3 +72,8 @@ export const ArticleSchema = z.object({
 export const CommentSchema = z.object({
   text: requiredString.max(500, { error: 'The comment must not be longer than 500 characters!' }),
 });
+
+export const ProfileSchema = z.object({
+  name: requiredString.max(500, { error: 'The name must not be longer than 500 characters!' }),
+  shortBio: z.string().max(1000, 'The bio must not be longer than 1000 characters!').optional(),
+});

@@ -16,6 +16,7 @@ model User {
   email            String
   emailVerified    Boolean
   image            String?
+  shortBio         String?
   createdAt        DateTime
   updatedAt        DateTime
   sessions         Session[]
