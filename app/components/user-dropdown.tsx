@@ -36,6 +36,10 @@ export default function UserDropdown({ user }: { user: Session['user'] }) {
           </DropdownMenuItem>
         )}
         <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link href="/user">Profile</Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
         <div>
           <LogoutButton className="w-full" />
         </div>
