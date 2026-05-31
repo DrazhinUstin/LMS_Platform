@@ -13,8 +13,9 @@ export default function NavMenu({ navLinks }: { navLinks: { title: string; href:
           key={title}
           href={href}
           className={cn(
-            'hover:bg-primary hover:text-primary-foreground text-muted-foreground px-2 py-1 transition-colors',
-            href === pathname && 'bg-primary text-primary-foreground'
+            'hover:bg-accent hover:text-accent-foreground text-muted-foreground px-2 py-1 transition-colors',
+            href === pathname &&
+              'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground'
           )}
         >
           {title}

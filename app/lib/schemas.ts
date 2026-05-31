@@ -77,3 +77,7 @@ export const ProfileSchema = z.object({
   name: requiredString.max(500, { error: 'The name must not be longer than 500 characters!' }),
   shortBio: z.string().max(1000, 'The bio must not be longer than 1000 characters!').optional(),
 });
+
+export const AccountSchema = z.object({
+  email: z.email(),
+});
