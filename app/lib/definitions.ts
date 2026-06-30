@@ -278,6 +278,23 @@ export const articleDetailSelect = {
 
 export type ArticleDetail = Prisma.ArticleGetPayload<{ select: typeof articleDetailSelect }>;
 
+export interface LikeFilters {
+  articleId?: string;
+  userId?: string;
+}
+
+export enum LikeSortingOrder {
+  CREATED_DESC = 'Newest first',
+  CREATED_ASC = 'Oldest first',
+}
+
+export const likeSummarySelect = {
+  likedAt: true,
+  article: { select: articleSummarySelect },
+} satisfies Prisma.LikeSelect;
+
+export type LikeSummary = Prisma.LikeGetPayload<{ select: typeof likeSummarySelect }>;
+
 export interface CommentFilters {
   articleId?: string;
   userId?: string;

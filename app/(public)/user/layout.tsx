@@ -7,6 +7,7 @@ const navLinks: React.ComponentProps<typeof NavMenu>['navLinks'] = [
   { title: 'Profile', href: '/user' },
   { title: 'Photo', href: '/user/photo' },
   { title: 'Account', href: '/user/account' },
+  { title: 'Activity', href: '/user/activity/likes' },
 ];
 
 export default async function Layout({
